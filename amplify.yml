@@ -1,22 +1,24 @@
 version: 1
-frontend:
-  phases:
-    preBuild:
-      commands:
-        # Install pnpm globally
-        - npm install -g pnpm@9
-        # Install all dependencies from root (handles workspace:* protocol)
-        - pnpm install --frozen-lockfile
-    build:
-      commands:
-        # Build the web app
-        - cd apps/web && pnpm run build
-  artifacts:
-    baseDirectory: apps/web/dist
-    files:
-      - '**/*'
-  cache:
-    paths:
-      - node_modules/**/*
-      - apps/web/node_modules/**/*
-      - packages/shared/node_modules/**/*
+applications:
+  - appRoot: apps/web
+    frontend:
+      phases:
+        preBuild:
+          commands:
+            # Go to root and install pnpm
+            - cd ../..
+            - npm install -g pnpm@9
+            # Install all dependencies from monorepo root
+            - pnpm install --frozen-lockfile
+        build:
+          commands:
+            # Build runs from apps/web directory
+            - pnpm run build
+      artifacts:
+        baseDirectory: dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - ../../node_modules/**/*
+          - node_modules/**/*
