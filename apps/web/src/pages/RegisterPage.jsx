@@ -12,6 +12,7 @@ import {
   Box,
   Group,
 } from '@mantine/core';
+import { useMediaQuery } from '@mantine/hooks';
 import { IconUser, IconBuildingHospital, IconStethoscope, IconFlask, IconPill } from '@tabler/icons-react';
 import logo from '@/assets/logo.png';
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -44,6 +45,7 @@ function RegisterPage() {
   const [active, setActive] = useState(0);
   const navigate = useNavigate();
   const { register, status } = useAuth();
+  const isMobile = useMediaQuery('(max-width: 576px)');
 
   useEffect(() => {
     if (status === 'authenticated') {
@@ -144,36 +146,7 @@ function RegisterPage() {
           active={active} 
           allowNextStepsSelect={false}
           size="sm"
-          styles={{
-            root: {
-              '@media (max-width: 576px)': {
-                gap: '8px',
-              },
-            },
-            separator: {
-              marginLeft: 4,
-              marginRight: 4,
-              minWidth: 20,
-              '@media (max-width: 576px)': {
-                display: 'none',
-              },
-            },
-            steps: {
-              '@media (max-width: 576px)': {
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                gap: 8,
-              },
-            },
-            step: {
-              '@media (max-width: 576px)': {
-                padding: 0,
-              },
-            },
-            stepBody: {
-              marginLeft: 8,
-            },
-          }}
+          orientation={isMobile ? 'vertical' : 'horizontal'}
         >
           <Stepper.Step label="Select Role" description="Choose your role">
             {renderRoleSelection()}
