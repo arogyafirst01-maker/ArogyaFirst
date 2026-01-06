@@ -1005,29 +1005,23 @@ export default function LandingPage() {
                 radius="xl"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
                   border: '2px solid hsl(var(--border))',
                   animationDelay: `${index * 0.1}s`,
+                  position: 'relative',
                 }}
                 onMouseEnter={(e) => {
-                  // Scale up current card
-                  e.currentTarget.style.transform = 'scale(1.05) translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 25px 50px -12px hsl(var(--primary) / 0.25)';
-                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.6)';
-                  e.currentTarget.style.zIndex = '10';
-                  // Show details
-                  const details = e.currentTarget.querySelector('.feature-details');
-                  if (details) {
-                    details.style.maxHeight = '150px';
-                    details.style.opacity = '1';
-                  }
-                  // Dim and blur other cards
+                  // Scale up and lift current card with enhanced shadow
+                  e.currentTarget.style.transform = 'scale(1.08) translateY(-12px)';
+                  e.currentTarget.style.boxShadow = '0 30px 60px -15px hsl(var(--primary) / 0.35)';
+                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.7)';
+                  e.currentTarget.style.zIndex = '20';
+                  // Subtle dim other cards (no blur for cleaner look)
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
                     if (card !== e.currentTarget) {
-                      card.style.filter = 'blur(2px)';
-                      card.style.opacity = '0.5';
-                      card.style.transform = 'scale(0.98)';
+                      card.style.opacity = '0.4';
+                      card.style.transform = 'scale(0.95)';
                     }
                   });
                 }}
@@ -1037,16 +1031,9 @@ export default function LandingPage() {
                   e.currentTarget.style.boxShadow = '';
                   e.currentTarget.style.borderColor = '';
                   e.currentTarget.style.zIndex = '';
-                  // Hide details
-                  const details = e.currentTarget.querySelector('.feature-details');
-                  if (details) {
-                    details.style.maxHeight = '0px';
-                    details.style.opacity = '0';
-                  }
                   // Reset all cards
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
-                    card.style.filter = '';
                     card.style.opacity = '';
                     card.style.transform = '';
                   });
@@ -1070,33 +1057,7 @@ export default function LandingPage() {
                 <Text size="xl" fw={700} mb="sm">
                   {feature.title}
                 </Text>
-                <Text c="dimmed" mb="sm">{feature.description}</Text>
-                <Box 
-                  className="feature-details"
-                  style={{
-                    maxHeight: '0px',
-                    overflow: 'hidden',
-                    opacity: 0,
-                    transition: 'all 0.4s ease',
-                  }}
-                >
-                  <Stack gap={4} mt="sm">
-                    {feature.details.map((detail, i) => (
-                      <Group key={i} gap="xs">
-                        <Box 
-                          w={6} 
-                          h={6} 
-                          style={{ 
-                            borderRadius: '50%', 
-                            background: feature.gradient,
-                            flexShrink: 0,
-                          }} 
-                        />
-                        <Text size="sm" c="dimmed">{detail}</Text>
-                      </Group>
-                    ))}
-                  </Stack>
-                </Box>
+                <Text c="dimmed">{feature.description}</Text>
               </Card>
             ))}
           </SimpleGrid>
@@ -1408,10 +1369,10 @@ export default function LandingPage() {
                 Legal
               </Text>
               <Stack gap="xs">
-                <Anchor size="sm" c="dimmed" href="/privacy-policy">Privacy Policy</Anchor>
-                <Anchor size="sm" c="dimmed" href="/terms-of-service">Terms of Service</Anchor>
-                <Anchor size="sm" c="dimmed" href="/hipaa-compliance">HIPAA Compliance</Anchor>
-                <Anchor size="sm" c="dimmed" href="/cookie-policy">Cookie Policy</Anchor>
+                <Anchor size="sm" c="dimmed" href="/privacy">Privacy Policy</Anchor>
+                <Anchor size="sm" c="dimmed" href="/terms">Terms of Service</Anchor>
+                <Anchor size="sm" c="dimmed" href="mailto:hipaa@arogyafirst.com">HIPAA Compliance</Anchor>
+                <Anchor size="sm" c="dimmed" href="/privacy">Cookie Policy</Anchor>
               </Stack>
             </Box>
           </SimpleGrid>

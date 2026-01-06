@@ -434,7 +434,7 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
               <TextInput label="Full Name" placeholder="Enter your full name" required {...form.getInputProps('name')} />
               <TextInput label="Phone" placeholder="10-digit phone number" required {...form.getInputProps('phone')} />
               <TextInput label="Location" placeholder="City, State" {...form.getInputProps('location')} />
-              <DateInput label="Date of Birth" placeholder="Select your date of birth" required {...form.getInputProps('dateOfBirth')} />
+              <DateInput label="Date of Birth" placeholder="Select your date of birth" required maxDate={new Date()} {...form.getInputProps('dateOfBirth')} />
               <TextInput label="Aadhaar Last 4 Digits" placeholder="1234" {...form.getInputProps('aadhaarLast4')} />
             </>
           )}
@@ -462,7 +462,7 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
               <TextInput label="Qualification" placeholder="MBBS, MD, etc." required {...form.getInputProps('qualification')} />
               <NumberInput label="Experience (years)" placeholder="0" min={0} required {...form.getInputProps('experience')} />
               <TextInput label="Location" placeholder="City, State" required {...form.getInputProps('location')} />
-              <DateInput label="Date of Birth" placeholder="Select your date of birth" required {...form.getInputProps('dateOfBirth')} />
+              <DateInput label="Date of Birth" placeholder="Select your date of birth" required maxDate={new Date()} {...form.getInputProps('dateOfBirth')} />
               <TextInput label="Aadhaar Last 4 Digits" placeholder="1234" required {...form.getInputProps('aadhaarLast4')} />
               <TextInput label="Specialization" placeholder="Cardiology, etc." required {...form.getInputProps('specialization')} />
               <TextInput label="Hospital ID (optional)" placeholder="If affiliated with a hospital" {...form.getInputProps('hospitalId')} />
