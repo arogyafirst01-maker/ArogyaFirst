@@ -13,7 +13,7 @@ import {
   Tabs,
   LoadingOverlay,
 } from '@mantine/core';
-import { IconBell, IconShield, IconEye } from '@tabler/icons-react';
+import { IconBell, IconShield } from '@tabler/icons-react';
 import { useAuth } from '../contexts/AuthContext';
 import useAuthFetch from '../hooks/useAuthFetch';
 import { usePageTitle } from '../hooks/usePageTitle.js';
@@ -153,18 +153,7 @@ const SettingsPage = () => {
     handleUpdateSettings({ privacy: newSettings.privacy });
   };
 
-  // Helper to update accessibility settings
-  const updateAccessibility = (field, value) => {
-    const newSettings = {
-      ...settings,
-      accessibility: {
-        ...settings.accessibility,
-        [field]: value
-      }
-    };
-    setSettings(newSettings);
-    handleUpdateSettings({ accessibility: newSettings.accessibility });
-  };
+  
 
   if (status === 'loading' || loading) {
     return (
@@ -252,9 +241,6 @@ const SettingsPage = () => {
             <Tabs.Tab value="privacy" leftSection={<IconShield size={16} />}>
               Privacy & Security
             </Tabs.Tab>
-            <Tabs.Tab value="accessibility" leftSection={<IconEye size={16} />}>
-              Accessibility
-            </Tabs.Tab>
           </Tabs.List>
 
           <Tabs.Panel value="notifications">
@@ -267,14 +253,6 @@ const SettingsPage = () => {
               </div>
 
               <NotificationSection title="Email Notifications" channel="emailNotifications" />
-              
-              <Divider />
-              
-              <NotificationSection title="SMS Notifications" channel="smsNotifications" />
-              
-              <Divider />
-              
-              <NotificationSection title="Push Notifications" channel="pushNotifications" />
             </Stack>
           </Tabs.Panel>
 
@@ -316,38 +294,6 @@ const SettingsPage = () => {
                 checked={settings.privacy?.allowMarketingCommunications ?? false}
                 onChange={(e) => updatePrivacy('allowMarketingCommunications', e.currentTarget.checked)}
                 aria-label="Allow marketing communications"
-              />
-            </Stack>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="accessibility">
-            <Stack gap="lg">
-              <div>
-                <Title order={4} mb="md">Accessibility</Title>
-                <Text size="sm" c="dimmed" mb="lg">
-                  Customize the application to better suit your needs.
-                </Text>
-              </div>
-
-              <Switch
-                label="High Contrast Mode"
-                description="Enable high contrast colors for better visibility"
-                checked={settings.accessibility?.highContrast ?? false}
-                onChange={(e) => updateAccessibility('highContrast', e.currentTarget.checked)}
-                aria-label="High contrast mode"
-              />
-
-              <Select
-                label="Font Size"
-                description="Adjust the text size throughout the application"
-                data={[
-                  { value: 'SMALL', label: 'Small' },
-                  { value: 'MEDIUM', label: 'Medium' },
-                  { value: 'LARGE', label: 'Large' }
-                ]}
-                value={settings.accessibility?.fontSize || 'MEDIUM'}
-                onChange={(value) => updateAccessibility('fontSize', value)}
-                aria-label="Font size setting"
               />
             </Stack>
           </Tabs.Panel>
