@@ -982,27 +982,56 @@ export default function LandingPage() {
             </Text>
           </Stack>
 
-          <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
+          <SimpleGrid 
+            cols={{ base: 1, md: 2, lg: 3 }} 
+            spacing="lg"
+            className="features-grid"
+            style={{
+              '--card-blur': '0px',
+              '--card-opacity': '1',
+            }}
+          >
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="glass-card animate-slide-up"
+                className="glass-card animate-slide-up feature-card"
                 p="xl"
                 radius="xl"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
                   border: '2px solid hsl(var(--border))',
                   animationDelay: `${index * 0.1}s`,
                 }}
-                styles={{
-                  root: {
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: 'var(--shadow-elevated)',
-                      borderColor: 'hsl(var(--primary) / 0.5)',
-                    },
-                  },
+                onMouseEnter={(e) => {
+                  // Scale up current card
+                  e.currentTarget.style.transform = 'scale(1.05) translateY(-8px)';
+                  e.currentTarget.style.boxShadow = '0 25px 50px -12px hsl(var(--primary) / 0.25)';
+                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.6)';
+                  e.currentTarget.style.zIndex = '10';
+                  // Dim and blur other cards
+                  const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
+                  allCards.forEach(card => {
+                    if (card !== e.currentTarget) {
+                      card.style.filter = 'blur(2px)';
+                      card.style.opacity = '0.5';
+                      card.style.transform = 'scale(0.98)';
+                    }
+                  });
+                }}
+                onMouseLeave={(e) => {
+                  // Reset current card
+                  e.currentTarget.style.transform = '';
+                  e.currentTarget.style.boxShadow = '';
+                  e.currentTarget.style.borderColor = '';
+                  e.currentTarget.style.zIndex = '';
+                  // Reset all cards
+                  const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
+                  allCards.forEach(card => {
+                    card.style.filter = '';
+                    card.style.opacity = '';
+                    card.style.transform = '';
+                  });
                 }}
               >
                 <Box
@@ -1015,6 +1044,7 @@ export default function LandingPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
+                    transition: 'transform 0.3s ease',
                   }}
                 >
                   <feature.icon size={28} color="white" />
