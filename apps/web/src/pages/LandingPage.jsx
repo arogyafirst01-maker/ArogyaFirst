@@ -61,36 +61,42 @@ export default function LandingPage() {
       title: 'Real-Time Booking',
       description: 'Book OPD appointments, hospital beds, and lab tests with live availability updates.',
       gradient: 'var(--gradient-primary)',
+      details: ['OPD slot booking', 'Hospital bed reservations', 'Lab test scheduling', 'Live availability status'],
     },
     {
       icon: IconShield,
       title: 'Secure Records',
       description: 'OCR-enabled document storage with encrypted access and quick retrieval.',
       gradient: 'var(--gradient-secondary)',
+      details: ['End-to-end encryption', 'OCR document scanning', 'Quick search & retrieval', 'HIPAA compliant storage'],
     },
     {
       icon: IconClock,
       title: '24/7 Access',
       description: 'Access your health records, prescriptions, and test reports anytime, anywhere.',
       gradient: 'var(--gradient-accent)',
+      details: ['Mobile-friendly interface', 'Cloud-based storage', 'Offline access support', 'Multi-device sync'],
     },
     {
       icon: IconFileText,
       title: 'Digital Prescriptions',
       description: 'Doctors can prescribe digitally, and pharmacies receive them instantly.',
       gradient: 'var(--gradient-primary)',
+      details: ['E-prescription generation', 'Direct pharmacy sharing', 'Dosage reminders', 'Refill requests'],
     },
     {
       icon: IconUsers,
       title: 'Unified Platform',
       description: 'Connects patients, doctors, hospitals, labs, and pharmacies in one ecosystem.',
       gradient: 'var(--gradient-secondary)',
+      details: ['5 user portals', 'Seamless referrals', 'Integrated billing', 'Cross-platform sync'],
     },
     {
       icon: IconBolt,
       title: 'Instant Updates',
       description: 'Real-time notifications for appointments, reports, and prescriptions.',
       gradient: 'var(--gradient-accent)',
+      details: ['Email notifications', 'Appointment reminders', 'Report ready alerts', 'Prescription updates'],
     },
   ];
 
@@ -1009,6 +1015,12 @@ export default function LandingPage() {
                   e.currentTarget.style.boxShadow = '0 25px 50px -12px hsl(var(--primary) / 0.25)';
                   e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.6)';
                   e.currentTarget.style.zIndex = '10';
+                  // Show details
+                  const details = e.currentTarget.querySelector('.feature-details');
+                  if (details) {
+                    details.style.maxHeight = '150px';
+                    details.style.opacity = '1';
+                  }
                   // Dim and blur other cards
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
@@ -1025,6 +1037,12 @@ export default function LandingPage() {
                   e.currentTarget.style.boxShadow = '';
                   e.currentTarget.style.borderColor = '';
                   e.currentTarget.style.zIndex = '';
+                  // Hide details
+                  const details = e.currentTarget.querySelector('.feature-details');
+                  if (details) {
+                    details.style.maxHeight = '0px';
+                    details.style.opacity = '0';
+                  }
                   // Reset all cards
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
@@ -1052,7 +1070,33 @@ export default function LandingPage() {
                 <Text size="xl" fw={700} mb="sm">
                   {feature.title}
                 </Text>
-                <Text c="dimmed">{feature.description}</Text>
+                <Text c="dimmed" mb="sm">{feature.description}</Text>
+                <Box 
+                  className="feature-details"
+                  style={{
+                    maxHeight: '0px',
+                    overflow: 'hidden',
+                    opacity: 0,
+                    transition: 'all 0.4s ease',
+                  }}
+                >
+                  <Stack gap={4} mt="sm">
+                    {feature.details.map((detail, i) => (
+                      <Group key={i} gap="xs">
+                        <Box 
+                          w={6} 
+                          h={6} 
+                          style={{ 
+                            borderRadius: '50%', 
+                            background: feature.gradient,
+                            flexShrink: 0,
+                          }} 
+                        />
+                        <Text size="sm" c="dimmed">{detail}</Text>
+                      </Group>
+                    ))}
+                  </Stack>
+                </Box>
               </Card>
             ))}
           </SimpleGrid>
@@ -1287,11 +1331,33 @@ export default function LandingPage() {
                 Product
               </Text>
               <Stack gap="xs">
-                {['Features', 'Pricing', 'Security', 'Updates'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Features
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => document.getElementById('portals')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  Portals
+                </Anchor>
+                <Anchor size="sm" c="dimmed" href="mailto:support@arogyafirst.com">
+                  Contact Sales
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Home
+                </Anchor>
               </Stack>
             </Box>
 
@@ -1301,11 +1367,11 @@ export default function LandingPage() {
                 Portals
               </Text>
               <Stack gap="xs">
-                {['Patients', 'Doctors', 'Hospitals', 'Labs', 'Pharmacies'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor size="sm" c="dimmed" href="/login?role=patient">Patients</Anchor>
+                <Anchor size="sm" c="dimmed" href="/login?role=doctor">Doctors</Anchor>
+                <Anchor size="sm" c="dimmed" href="/login?role=hospital">Hospitals</Anchor>
+                <Anchor size="sm" c="dimmed" href="/login?role=lab">Labs</Anchor>
+                <Anchor size="sm" c="dimmed" href="/login?role=pharmacy">Pharmacies</Anchor>
               </Stack>
             </Box>
 
@@ -1315,11 +1381,24 @@ export default function LandingPage() {
                 Company
               </Text>
               <Stack gap="xs">
-                {['About Us', 'Careers', 'Contact', 'Blog'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' })}
+                >
+                  About Us
+                </Anchor>
+                <Anchor size="sm" c="dimmed" href="mailto:careers@arogyafirst.com">Careers</Anchor>
+                <Anchor size="sm" c="dimmed" href="mailto:support@arogyafirst.com">Contact</Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                >
+                  Home
+                </Anchor>
               </Stack>
             </Box>
 
@@ -1329,11 +1408,10 @@ export default function LandingPage() {
                 Legal
               </Text>
               <Stack gap="xs">
-                {['Privacy Policy', 'Terms of Service', 'HIPAA Compliance', 'Cookie Policy'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor size="sm" c="dimmed" href="/privacy-policy">Privacy Policy</Anchor>
+                <Anchor size="sm" c="dimmed" href="/terms-of-service">Terms of Service</Anchor>
+                <Anchor size="sm" c="dimmed" href="/hipaa-compliance">HIPAA Compliance</Anchor>
+                <Anchor size="sm" c="dimmed" href="/cookie-policy">Cookie Policy</Anchor>
               </Stack>
             </Box>
           </SimpleGrid>
