@@ -548,14 +548,18 @@ export default function LandingPage() {
                       <br />
                       <Text
                         component="span"
-                        inherit
                         style={{
-                          background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
+                          fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+                          fontWeight: 900,
+                          background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
                           WebkitBackgroundClip: 'text',
                           backgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
                           color: 'transparent',
                           position: 'relative',
+                          display: 'inline-block',
+                          textShadow: '0 0 40px rgba(255, 165, 0, 0.3)',
+                          letterSpacing: '-2px',
                         }}
                       >
                         {user?.patientData?.name || user?.hospitalData?.name || user?.doctorData?.name || user?.labData?.name || user?.pharmacyData?.name || 'User'}!
@@ -563,11 +567,11 @@ export default function LandingPage() {
                           component="span"
                           style={{
                             position: 'absolute',
-                            bottom: -2,
+                            bottom: 0,
                             left: 0,
-                            right: 0,
-                            height: 3,
-                            background: 'linear-gradient(90deg, #00ff88, #00b894)',
+                            width: '60%',
+                            height: 4,
+                            background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
                             borderRadius: 2,
                           }}
                         />
