@@ -1,0 +1,26 @@
+version: 1
+applications:
+  - frontend:
+      phases:
+        preBuild:
+          commands:
+            # Install pnpm
+            - npm install -g pnpm@9
+            # Install dependencies from root (handles workspace protocol)
+            - pnpm install --frozen-lockfile
+        build:
+          commands:
+            # Build the shared package first
+            - cd packages/shared && pnpm run lint || true
+            # Build the web app
+            - cd apps/web && pnpm run build
+      artifacts:
+        baseDirectory: apps/web/dist
+        files:
+          - '**/*'
+      cache:
+        paths:
+          - node_modules/**/*
+          - apps/web/node_modules/**/*
+          - packages/shared/node_modules/**/*
+    appRoot: .

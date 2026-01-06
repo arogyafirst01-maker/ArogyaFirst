@@ -1,0 +1,3 @@
+# Place logo.png in this directory for the favicon
+# Referenced by: index.html
+<link rel="icon" href="/logo.png" />

@@ -1,0 +1,251 @@
+/* CSS Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Smooth Scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Custom Scrollbar Styles */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+/* Accessibility: Skip to Main Content Link */
+.skip-link {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #0066CC;
+  color: white;
+  padding: 8px 16px;
+  text-decoration: none;
+  z-index: 100;
+  border-radius: 0 0 4px 0;
+  font-weight: 600;
+  transition: top 0.2s ease-in-out;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
+/* Accessibility: Focus Visible Styles */
+:focus-visible {
+  outline: 3px solid #0066CC;
+  outline-offset: 3px;
+  border-radius: 2px;
+  animation: focusPulse 0.3s ease-in-out;
+}
+
+@keyframes focusPulse {
+  0% {
+    outline-width: 2px;
+    outline-offset: 2px;
+  }
+  100% {
+    outline-width: 3px;
+    outline-offset: 3px;
+  }
+}
+
+/* Accessibility: Screen Reader Only Content */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* Smooth Transitions for Interactive Elements */
+a, button, input, select, textarea {
+  transition: all 0.2s ease-in-out;
+}
+
+/* Reduced Motion Support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* High Contrast Mode Support */
+@media (prefers-contrast: high) {
+  :focus-visible {
+    outline-width: 4px;
+    outline-color: currentColor;
+  }
+
+  a {
+    text-decoration: underline;
+  }
+
+  button {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ARIA Live Regions */
+[aria-live] {
+  position: relative;
+}
+
+/* Loading State Accessibility */
+[aria-busy="true"] {
+  cursor: wait;
+  opacity: 0.7;
+}
+
+/* Custom Design System */
+:root {
+  /* Light Mode Colors (HSL) */
+  --background: 0 0% 98%;
+  --foreground: 210 15% 15%;
+  --primary: 197 100% 36%;
+  --primary-light: 197 100% 45%;
+  --primary-dark: 197 100% 28%;
+  --secondary: 162 72% 36%;
+  --secondary-light: 162 72% 45%;
+  --accent: 34 100% 56%;
+  --accent-hover: 34 100% 48%;
+  --muted: 210 20% 96%;
+  --muted-foreground: 210 10% 45%;
+  --border: 210 20% 90%;
+  --card: 0 0% 100%;
+  
+  /* Gradients */
+  --gradient-primary: linear-gradient(135deg, hsl(197 100% 36%), hsl(197 100% 45%));
+  --gradient-secondary: linear-gradient(135deg, hsl(162 72% 36%), hsl(162 72% 45%));
+  --gradient-accent: linear-gradient(135deg, hsl(34 100% 56%), hsl(34 100% 48%));
+  --gradient-hero: linear-gradient(135deg, hsl(197 100% 36%) 0%, hsl(162 72% 36%) 100%);
+  
+  /* Shadows */
+  --shadow-glass: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+  --shadow-card: 0 4px 20px 0 rgba(0, 119, 182, 0.1);
+  --shadow-elevated: 0 10px 40px 0 rgba(0, 119, 182, 0.15);
+  
+  /* Border Radius */
+  --radius: 0.75rem;
+}
+
+.dark {
+  --background: 210 20% 10%;
+  --foreground: 0 0% 95%;
+  --primary: 197 100% 45%;
+  --secondary: 162 72% 45%;
+  --accent: 34 100% 60%;
+  --muted: 210 20% 18%;
+  --muted-foreground: 210 10% 60%;
+  --border: 210 20% 20%;
+  --card: 210 20% 12%;
+  --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 4px 20px 0 rgba(0, 119, 182, 0.2);
+  --shadow-elevated: 0 10px 40px 0 rgba(0, 119, 182, 0.3);
+}
+
+/* Custom Animations */
+@keyframes pulse-health {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Glassmorphism */
+.glass-card {
+  background: hsl(var(--card) / 0.7);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  box-shadow: var(--shadow-glass);
+}
+
+/* Gradient Text */
+.gradient-text {
+  background: var(--gradient-hero);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Animation Classes */
+.animate-pulse-health {
+  animation: pulse-health 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+.animate-slide-up {
+  animation: slide-up 0.6s ease-out forwards;
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
+}
+

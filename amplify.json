@@ -1,0 +1,20 @@
+{
+  "productName": "ArogyaFirst",
+  "projectName": "ArogyaFirst",
+  "appId": "arogyafirst-web",
+  "appName": "arogyafirst-web",
+  "basePath": "apps/web",
+  "frontendBuildCommand": "pnpm run build",
+  "buildArtifactsPath": "dist",
+  "staticPath": "public",
+  "indexDocument": "index.html",
+  "errorDocument": "index.html",
+  "environmentVariables": {
+    "VITE_API_BASE_URL": "http://arogyafirst-prod-v3.us-east-1.elasticbeanstalk.com",
+    "NODE_ENV": "production"
+  },
+  "buildSettings": {
+    "artifactsPath": "dist",
+    "baseDirectory": "apps/web"
+  }
+}

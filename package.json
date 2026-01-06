@@ -1,0 +1,39 @@
+{
+  "name": "arogyafirst-monorepo",
+  "private": true,
+  "type": "module",
+  "packageManager": "pnpm@9.15.0",
+  "engines": {
+    "node": ">=22.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "pnpm --parallel -r dev",
+    "build": "pnpm -r build",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier . --cache --write",
+    "test:manual": "echo 'Please refer to docs/TESTING_GUIDE.md and docs/TESTING_CHECKLIST.md for manual testing instructions'",
+    "docs": "echo 'Documentation available in docs/ directory. See README.md for links.'",
+    "security:audit": "pnpm audit --audit-level=moderate && echo 'Review docs/SECURITY_AUDIT.md for comprehensive security checklist'",
+    "deploy:check": "echo 'Pre-deployment checklist:' && echo '1. Review docs/TESTING_CHECKLIST.md' && echo '2. Review docs/SECURITY_AUDIT.md' && echo '3. Follow docs/DEPLOYMENT.md' && echo '4. Ensure all environment variables are set'"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.0.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "globals": "^15.0.0",
+    "prettier": "^3.0.0",
+    "terser": "^5.44.1"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "fsevents"
+    ]
+  }
+}

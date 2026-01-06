@@ -1,0 +1,260 @@
+export const PAYMENT_METHODS = {
+  ONLINE: 'ONLINE',
+  CASH: 'CASH',
+  MANUAL: 'MANUAL'
+};
+export const ROLES = {
+  PATIENT: 'PATIENT',
+  HOSPITAL: 'HOSPITAL',
+  DOCTOR: 'DOCTOR',
+  LAB: 'LAB',
+  PHARMACY: 'PHARMACY',
+  ADMIN: 'ADMIN'
+};
+
+export const BOOKING_TYPES = {
+  OPD: 'OPD',
+  IPD: 'IPD',
+  LAB: 'LAB'
+};
+
+export const BOOKING_STATUS = {
+  PENDING: 'PENDING',
+  CONFIRMED: 'CONFIRMED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW'
+};
+
+export const PAYMENT_STATUS = {
+  PENDING: 'PENDING',
+  SUCCESS: 'SUCCESS',
+  FAILED: 'FAILED',
+  REFUNDED: 'REFUNDED'
+};
+
+export const REFUND_STATUS = {
+  PENDING: 'PENDING',
+  PROCESSED: 'PROCESSED',
+  FAILED: 'FAILED'
+};
+
+export const VERIFICATION_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED'
+};
+
+export const CONSULTATION_TYPES = {
+  IN_PERSON: 'IN_PERSON',
+  TELECONSULTATION: 'TELECONSULTATION',
+  BOTH: 'BOTH'
+};
+
+export const DOCUMENT_TYPES = {
+  PRESCRIPTION: 'PRESCRIPTION',
+  LAB_REPORT: 'LAB_REPORT',
+  MEDICAL_RECORD: 'MEDICAL_RECORD',
+  INSURANCE: 'INSURANCE',
+  ID_PROOF: 'ID_PROOF',
+  OTHER: 'OTHER'
+};
+
+export const DOCUMENT_UPLOAD_SOURCE = {
+  PATIENT_UPLOAD: 'PATIENT_UPLOAD',
+  PROVIDER_SUBMISSION: 'PROVIDER_SUBMISSION'
+};
+
+export const CONSENT_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  REVOKED: 'REVOKED',
+  EXPIRED: 'EXPIRED'
+};
+
+export const PRESCRIPTION_STATUS = {
+  PENDING: 'PENDING',
+  FULFILLED: 'FULFILLED',
+  CANCELLED: 'CANCELLED'
+};
+
+export const TEMPLATE_CATEGORIES = {
+  COMMON_COLD: 'Common Cold',
+  FEVER: 'Fever',
+  DIABETES_MANAGEMENT: 'Diabetes Management',
+  HYPERTENSION: 'Hypertension',
+  RESPIRATORY_INFECTION: 'Respiratory Infection',
+  GASTROINTESTINAL: 'Gastrointestinal',
+  PAIN_MANAGEMENT: 'Pain Management',
+  SKIN_CONDITIONS: 'Skin Conditions',
+  GENERAL: 'General',
+  OTHER: 'Other'
+};
+
+export const MEDICINE_DOSAGE_UNITS = {
+  MG: 'mg',
+  ML: 'ml',
+  G: 'g',
+  MCG: 'mcg',
+  IU: 'IU',
+  PERCENT: '%'
+};
+
+export const REFERRAL_STATUS = {
+  PENDING: 'PENDING',
+  ACCEPTED: 'ACCEPTED',
+  COMPLETED: 'COMPLETED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED'
+};
+
+export const PO_STATUS = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  ORDERED: 'ORDERED',
+  PARTIAL: 'PARTIAL',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED'
+};
+
+export const REFERRAL_TYPES = {
+  INTER_DEPARTMENTAL: 'INTER_DEPARTMENTAL',
+  DOCTOR_TO_DOCTOR: 'DOCTOR_TO_DOCTOR',
+  DOCTOR_TO_PHARMACY: 'DOCTOR_TO_PHARMACY',
+  LAB_TO_LAB: 'LAB_TO_LAB'
+};
+
+export const MACHINE_STATUS = {
+  OPERATIONAL: 'OPERATIONAL',
+  MAINTENANCE: 'MAINTENANCE',
+  OUT_OF_SERVICE: 'OUT_OF_SERVICE'
+};
+
+export const QC_RESULT = {
+  PASS: 'PASS',
+  FAIL: 'FAIL',
+  WARNING: 'WARNING'
+};
+
+export const QC_PARAMETER_STATUS = {
+  WITHIN_RANGE: 'WITHIN_RANGE',
+  OUT_OF_RANGE: 'OUT_OF_RANGE'
+};
+
+export const SHIFT_TYPES = {
+  MORNING: 'MORNING',
+  AFTERNOON: 'AFTERNOON',
+  EVENING: 'EVENING',
+  NIGHT: 'NIGHT',
+  FULL_DAY: 'FULL_DAY'
+};
+
+export const SCHEDULE_STATUS = {
+  SCHEDULED: 'SCHEDULED',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW'
+};
+
+export const HEALTH_ARTICLE_CATEGORIES = {
+  GENERAL: 'general',
+  NUTRITION: 'nutrition',
+  EXERCISE: 'exercise',
+  MENTAL_HEALTH: 'mental-health',
+  CHRONIC_DISEASES: 'chronic-diseases',
+  PREVENTIVE_CARE: 'preventive-care'
+};
+
+export const MEDICAL_HISTORY_TYPES = {
+  BOOKING: 'booking',
+  PRESCRIPTION: 'prescription',
+  DOCUMENT: 'document',
+  CONSULTATION: 'consultation'
+};
+
+export const CONSULTATION_STATUS = {
+  SCHEDULED: 'SCHEDULED',
+  IN_PROGRESS: 'IN_PROGRESS',
+  COMPLETED: 'COMPLETED',
+  CANCELLED: 'CANCELLED',
+  NO_SHOW: 'NO_SHOW'
+};
+
+export const CONSULTATION_MODE = {
+  VIDEO_CALL: 'VIDEO_CALL',
+  CHAT: 'CHAT',
+  IN_PERSON: 'IN_PERSON'
+};
+
+export const INVOICE_STATUS = {
+  DRAFT: 'DRAFT',
+  ISSUED: 'ISSUED',
+  PAID: 'PAID',
+  CANCELLED: 'CANCELLED',
+  OVERDUE: 'OVERDUE'
+};
+
+export const INVOICE_ITEM_TYPE = {
+  LAB_TEST: 'LAB_TEST',
+  PRESCRIPTION: 'PRESCRIPTION',
+  CONSULTATION: 'CONSULTATION',
+  OTHER: 'OTHER'
+};
+
+export const TAX_TYPES = {
+  GST: 'GST',
+  CGST: 'CGST',
+  SGST: 'SGST',
+  IGST: 'IGST'
+};
+
+export const CONTACT_SUBJECTS = [
+  'General Inquiry',
+  'Technical Support',
+  'Billing Question',
+  'Feature Request',
+  'Bug Report',
+  'Other',
+];
+
+export const CONTACT_SUBJECT_MAP = {
+  GENERAL_INQUIRY: 'General Inquiry',
+  TECHNICAL_SUPPORT: 'Technical Support',
+  BILLING_QUESTION: 'Billing Question',
+  FEATURE_REQUEST: 'Feature Request',
+  BUG_REPORT: 'Bug Report',
+  OTHER: 'Other',
+};
+
+export const LOCATION_STATUS = {
+  ACTIVE: 'ACTIVE',
+  INACTIVE: 'INACTIVE',
+  PENDING: 'PENDING'
+};
+
+export const BRANCH_CODE_REGEX = /^[A-Z0-9]{2,20}$/;
+export const MAX_LOCATIONS_PER_CHAIN = 100;
+// Bed Allocation Constants
+export const BED_ASSIGNMENT_STATUS = {
+  WAITING_IN_QUEUE: 'WAITING_IN_QUEUE',
+  BED_ASSIGNED: 'BED_ASSIGNED',
+  BED_OCCUPIED: 'BED_OCCUPIED',
+  BED_RELEASED: 'BED_RELEASED',
+  QUEUE_CANCELLED: 'QUEUE_CANCELLED'
+};
+
+export const PRIORITY_LEVELS = {
+  CRITICAL: 'CRITICAL',
+  HIGH: 'HIGH',
+  MEDIUM: 'MEDIUM',
+  LOW: 'LOW'
+};
+
+export const BED_TYPES = {
+  GENERAL: 'General',
+  ICU: 'ICU',
+  PRIVATE: 'Private',
+  SEMI_PRIVATE: 'Semi-Private',
+  EMERGENCY: 'Emergency'
+};

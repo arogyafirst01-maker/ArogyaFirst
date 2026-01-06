@@ -1,0 +1,41 @@
+{
+  "name": "@arogyafirst/api",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "nodemon src/server.js",
+    "start": "node app-server.js",
+    "start:prod": "node app-server.js",
+    "start:test": "node simple-server.js",
+    "lint": "eslint src",
+    "seed": "node src/scripts/seedDatabase.js"
+  },
+  "dependencies": {
+    "@arogyafirst/shared": "file:../../packages/shared",
+    "@vendia/serverless-express": "^4.10.1",
+    "agora-access-token": "^2.0.4",
+    "bcryptjs": "^3.0.2",
+    "cloudinary": "^2.0.0",
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "csv-parse": "^5.5.0",
+    "dayjs": "^1.11.10",
+    "dotenv": "^16.0.0",
+    "express": "^5.0.0",
+    "file-type": "^19.5.0",
+    "helmet": "^7.0.0",
+    "json2csv": "^5.0.7",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.0.0",
+    "morgan": "^1.10.0",
+    "multer": "^2.0.2",
+    "nodemailer": "^6.9.0",
+    "pdfkit": "^0.15.0",
+    "razorpay": "^2.9.0",
+    "resend": "^6.6.0",
+    "twilio": "^5.3.5"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}

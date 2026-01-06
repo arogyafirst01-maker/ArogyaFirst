@@ -1,0 +1,9 @@
+packages:
+  - "apps/*"
+  - "packages/*"
+
+catalog:
+  "@arogyafirst/web:react": "^19.0.0"
+  "@arogyafirst/web:react-dom": "^19.0.0"
+  "@arogyafirst/api:express": "^5.0.0"
+  "@arogyafirst/api:mongoose": "^8.0.0"
