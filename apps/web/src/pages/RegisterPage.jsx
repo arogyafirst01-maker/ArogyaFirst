@@ -143,26 +143,35 @@ function RegisterPage() {
         <Stepper 
           active={active} 
           allowNextStepsSelect={false}
+          size="sm"
           styles={{
-            separator: {
-              marginLeft: 0,
-              marginRight: 0,
-              minWidth: 20,
-              '@media (max-width: 768px)': {
-                minWidth: 10,
+            root: {
+              '@media (max-width: 576px)': {
+                gap: '8px',
               },
             },
-            stepIcon: {
-              '@media (max-width: 768px)': {
-                width: 32,
-                height: 32,
-                minWidth: 32,
+            separator: {
+              marginLeft: 4,
+              marginRight: 4,
+              minWidth: 20,
+              '@media (max-width: 576px)': {
+                display: 'none',
+              },
+            },
+            steps: {
+              '@media (max-width: 576px)': {
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+                gap: 8,
+              },
+            },
+            step: {
+              '@media (max-width: 576px)': {
+                padding: 0,
               },
             },
             stepBody: {
-              '@media (max-width: 768px)': {
-                display: 'none',
-              },
+              marginLeft: 8,
             },
           }}
         >

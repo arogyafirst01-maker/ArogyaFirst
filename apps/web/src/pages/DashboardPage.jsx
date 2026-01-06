@@ -127,6 +127,17 @@ export default function DashboardPage() {
   // Hospitals, labs, and pharmacies are automatically redirected to their dedicated dashboards above
   // Hospitals, labs, and pharmacies are automatically redirected to their dedicated dashboards above
 
+  // Get user's display name based on role
+  const getUserDisplayName = () => {
+    if (!user) return 'User';
+    if (user.patientData?.name) return user.patientData.name;
+    if (user.doctorData?.name) return user.doctorData.name;
+    if (user.hospitalData?.name) return user.hospitalData.name;
+    if (user.labData?.name) return user.labData.name;
+    if (user.pharmacyData?.name) return user.pharmacyData.name;
+    return user.email || 'User';
+  };
+
   return (
     <Container size="xl" py="xl">
       <Stack gap="xl">
@@ -136,7 +147,7 @@ export default function DashboardPage() {
             {role}
           </Badge>
         </Group>
-        <Text size="lg">Welcome back, {user.email}!</Text>
+        <Text size="lg">Welcome back, {getUserDisplayName()}!</Text>
         
         {role === ROLES.PATIENT && (
           <>

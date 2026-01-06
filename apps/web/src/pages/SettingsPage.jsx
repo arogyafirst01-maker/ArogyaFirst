@@ -13,7 +13,7 @@ import {
   Tabs,
   LoadingOverlay,
 } from '@mantine/core';
-import { IconBell, IconLanguage, IconShield, IconEye } from '@tabler/icons-react';
+import { IconBell, IconShield, IconEye } from '@tabler/icons-react';
 import { useAuth } from '../contexts/AuthContext';
 import useAuthFetch from '../hooks/useAuthFetch';
 import { usePageTitle } from '../hooks/usePageTitle.js';
@@ -140,13 +140,6 @@ const SettingsPage = () => {
     handleUpdateSettings({ notificationPreferences: newSettings.notificationPreferences });
   };
 
-  // Helper to update language
-  const updateLanguage = (value) => {
-    const newSettings = { ...settings, language: value };
-    setSettings(newSettings);
-    handleUpdateSettings({ language: value });
-  };
-
   // Helper to update privacy settings
   const updatePrivacy = (field, value) => {
     const newSettings = {
@@ -256,9 +249,6 @@ const SettingsPage = () => {
             <Tabs.Tab value="notifications" leftSection={<IconBell size={16} />}>
               Notifications
             </Tabs.Tab>
-            <Tabs.Tab value="language" leftSection={<IconLanguage size={16} />}>
-              Language & Region
-            </Tabs.Tab>
             <Tabs.Tab value="privacy" leftSection={<IconShield size={16} />}>
               Privacy & Security
             </Tabs.Tab>
@@ -285,33 +275,6 @@ const SettingsPage = () => {
               <Divider />
               
               <NotificationSection title="Push Notifications" channel="pushNotifications" />
-            </Stack>
-          </Tabs.Panel>
-
-          <Tabs.Panel value="language">
-            <Stack gap="lg">
-              <div>
-                <Title order={4} mb="md">Language & Region</Title>
-                <Text size="sm" c="dimmed" mb="lg">
-                  Select your preferred language for the application interface and notifications.
-                </Text>
-              </div>
-
-              <Select
-                label="Language"
-                description="Choose your preferred language"
-                data={[
-                  { value: 'en', label: 'English' },
-                  { value: 'hi', label: 'हिंदी (Hindi)' }
-                ]}
-                value={settings.language || 'en'}
-                onChange={(value) => updateLanguage(value)}
-                aria-label="Language selection"
-              />
-
-              <Text size="xs" c="dimmed">
-                This setting affects the user interface language and notification messages.
-              </Text>
             </Stack>
           </Tabs.Panel>
 
