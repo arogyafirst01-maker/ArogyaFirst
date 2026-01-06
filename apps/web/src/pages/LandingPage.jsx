@@ -1005,23 +1005,26 @@ export default function LandingPage() {
                 radius="xl"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.5s cubic-bezier(0.4, 0, 0.2, 1)',
+                  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
                   border: '2px solid hsl(var(--border))',
                   animationDelay: `${index * 0.1}s`,
                   position: 'relative',
+                  transformOrigin: 'center bottom',
                 }}
                 onMouseEnter={(e) => {
-                  // Scale up and lift current card with enhanced shadow
-                  e.currentTarget.style.transform = 'scale(1.08) translateY(-12px)';
-                  e.currentTarget.style.boxShadow = '0 30px 60px -15px hsl(var(--primary) / 0.35)';
-                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.7)';
-                  e.currentTarget.style.zIndex = '20';
-                  // Subtle dim other cards (no blur for cleaner look)
+                  // Lift card upward with focus effect
+                  e.currentTarget.style.transform = 'translateY(-16px) scale(1.02)';
+                  e.currentTarget.style.boxShadow = '0 20px 40px -10px hsl(var(--primary) / 0.3), 0 10px 20px -5px rgba(0,0,0,0.1)';
+                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.5)';
+                  e.currentTarget.style.zIndex = '10';
+                  e.currentTarget.style.background = 'hsl(var(--card))';
+                  // Blur and dim other cards for focus effect
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
                     if (card !== e.currentTarget) {
-                      card.style.opacity = '0.4';
-                      card.style.transform = 'scale(0.95)';
+                      card.style.filter = 'blur(1.5px) grayscale(30%)';
+                      card.style.opacity = '0.6';
+                      card.style.transform = 'scale(0.98)';
                     }
                   });
                 }}
@@ -1031,9 +1034,11 @@ export default function LandingPage() {
                   e.currentTarget.style.boxShadow = '';
                   e.currentTarget.style.borderColor = '';
                   e.currentTarget.style.zIndex = '';
+                  e.currentTarget.style.background = '';
                   // Reset all cards
                   const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
                   allCards.forEach(card => {
+                    card.style.filter = '';
                     card.style.opacity = '';
                     card.style.transform = '';
                   });

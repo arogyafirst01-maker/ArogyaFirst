@@ -113,7 +113,11 @@ export default function DashboardPage() {
       <Container size="xl" py="xl">
         <Stack gap="xl">
           <Title order={2}>Admin Dashboard</Title>
-          <Text size="lg">Welcome, {user.email}!</Text>
+          <Group gap="xs">
+            <Text size="lg" c="dimmed">Welcome,</Text>
+            <Text size="lg" fw={600} className="gradient-text">{user.email}</Text>
+            <Text size="lg" c="dimmed">!</Text>
+          </Group>
           <Card shadow="sm" padding="lg" radius="md" withBorder>
             <Text fw={500} size="lg" mb="md">Quick Actions</Text>
             <Button component={Link} to="/admin">View Verification Queue</Button>
@@ -147,7 +151,11 @@ export default function DashboardPage() {
             {role}
           </Badge>
         </Group>
-        <Text size="lg">Welcome back, {getUserDisplayName()}!</Text>
+        <Group gap="xs">
+          <Text size="lg" c="dimmed">Welcome back,</Text>
+          <Text size="lg" fw={600} className="gradient-text">{getUserDisplayName()}</Text>
+          <Text size="lg" c="dimmed">!</Text>
+        </Group>
         
         {role === ROLES.PATIENT && (
           <>
