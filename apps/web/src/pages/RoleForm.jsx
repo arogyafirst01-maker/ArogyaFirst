@@ -12,8 +12,10 @@ import {
   Select,
   Checkbox,
   Anchor,
+  Box,
+  ThemeIcon,
 } from '@mantine/core';
-import { IconAlertCircle, IconCheck } from '@tabler/icons-react';
+import { IconAlertCircle, IconCheck, IconX } from '@tabler/icons-react';
 import { DateInput } from '@mantine/dates';
 import { notifications } from '@mantine/notifications';
 import { ROLES, MACHINE_STATUS } from '@arogyafirst/shared';
@@ -365,6 +367,66 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
           )}
 
           <PasswordInput label="Password" placeholder="Your password" required {...form.getInputProps('password')} />
+          
+          {/* Password Requirements Checklist */}
+          <Box
+            p="sm"
+            style={{
+              background: 'white',
+              borderRadius: '8px',
+              border: '1px solid #e9ecef',
+            }}
+          >
+            {[
+              { 
+                label: 'Must start with a letter', 
+                check: /^[a-zA-Z]/.test(form.values.password) 
+              },
+              { 
+                label: 'At least one number (0-9)', 
+                check: /\d/.test(form.values.password) 
+              },
+              { 
+                label: 'At least one Lowercase alphabetic character (a-z)', 
+                check: /[a-z]/.test(form.values.password) 
+              },
+              { 
+                label: 'At least one Upper Case alphabetic character (A-Z)', 
+                check: /[A-Z]/.test(form.values.password) 
+              },
+              { 
+                label: 'Confirm Password Match', 
+                check: form.values.password && form.values.confirmPassword && form.values.password === form.values.confirmPassword 
+              },
+              { 
+                label: 'MUST BE AT LEAST 8 characters long', 
+                check: form.values.password.length >= 8 
+              },
+            ].map((req, index) => (
+              <Group key={index} gap="xs" mb={4}>
+                <ThemeIcon 
+                  size={18} 
+                  radius="xl" 
+                  color={form.values.password ? (req.check ? 'green' : 'red') : 'gray'}
+                  variant="light"
+                >
+                  {form.values.password ? (
+                    req.check ? <IconCheck size={12} /> : <IconX size={12} />
+                  ) : (
+                    <IconCheck size={12} />
+                  )}
+                </ThemeIcon>
+                <Text 
+                  size="sm" 
+                  c={form.values.password ? (req.check ? 'green' : 'red') : 'dimmed'}
+                  fw={req.label.includes('MUST BE') ? 700 : 400}
+                >
+                  {req.label}
+                </Text>
+              </Group>
+            ))}
+          </Box>
+
           <PasswordInput label="Confirm Password" placeholder="Confirm your password" required {...form.getInputProps('confirmPassword')} />
 
           {role === ROLES.PATIENT && (

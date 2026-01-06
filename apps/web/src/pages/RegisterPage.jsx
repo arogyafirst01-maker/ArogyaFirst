@@ -140,7 +140,32 @@ function RegisterPage() {
   return (
     <Container size={600} my={40}>
       <Paper withBorder shadow="md" p={30} radius="md">
-        <Stepper active={active} allowNextStepsSelect={false}>
+        <Stepper 
+          active={active} 
+          allowNextStepsSelect={false}
+          styles={{
+            separator: {
+              marginLeft: 0,
+              marginRight: 0,
+              minWidth: 20,
+              '@media (max-width: 768px)': {
+                minWidth: 10,
+              },
+            },
+            stepIcon: {
+              '@media (max-width: 768px)': {
+                width: 32,
+                height: 32,
+                minWidth: 32,
+              },
+            },
+            stepBody: {
+              '@media (max-width: 768px)': {
+                display: 'none',
+              },
+            },
+          }}
+        >
           <Stepper.Step label="Select Role" description="Choose your role">
             {renderRoleSelection()}
           </Stepper.Step>

@@ -24,6 +24,21 @@ export default function Navbar({ opened, toggle }) {
 
   const displayRole = role ? role.charAt(0).toUpperCase() + role.slice(1).toLowerCase() : '';
 
+  // Get user's display name based on role
+  const getUserDisplayName = () => {
+    if (!user) return 'User';
+    // Check role-specific data objects for name
+    if (user.patientData?.name) return user.patientData.name;
+    if (user.doctorData?.name) return user.doctorData.name;
+    if (user.hospitalData?.name) return user.hospitalData.name;
+    if (user.labData?.name) return user.labData.name;
+    if (user.pharmacyData?.name) return user.pharmacyData.name;
+    // Fallback to email if no name found
+    return user.email || 'User';
+  };
+
+  const displayName = getUserDisplayName();
+
   return (
     <Group justify="space-between" h="100%" px="md">
       <Group>
@@ -76,10 +91,10 @@ export default function Navbar({ opened, toggle }) {
           <UnstyledButton aria-label="User account menu">
             <Group gap="sm">
               <Avatar color="brand" radius="xl" aria-hidden="true">
-                {user?.email?.charAt(0).toUpperCase()}
+                {displayName.charAt(0).toUpperCase()}
               </Avatar>
               <Text size="sm" fw={500}>
-                {user?.email}
+                {displayName}
               </Text>
               <IconChevronDown style={{ width: rem(12), height: rem(12) }} aria-hidden="true" />
             </Group>

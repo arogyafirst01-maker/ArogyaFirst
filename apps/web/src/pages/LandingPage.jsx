@@ -101,6 +101,7 @@ export default function LandingPage() {
       description: 'Book appointments, access records, and manage your health journey.',
       features: ['OPD Bookings', 'Lab Tests', 'Digital Records', 'Health Tracking'],
       gradient: 'var(--gradient-primary)',
+      role: 'patient',
     },
     {
       icon: IconActivity,
@@ -108,6 +109,7 @@ export default function LandingPage() {
       description: 'View patient history, prescribe digitally, and provide remote consultations.',
       features: ['Patient History', 'Digital Prescriptions', 'Telemedicine', 'Referrals'],
       gradient: 'var(--gradient-secondary)',
+      role: 'doctor',
     },
     {
       icon: IconBuilding,
@@ -115,6 +117,7 @@ export default function LandingPage() {
       description: 'Manage beds, OPD slots, staff scheduling, and comprehensive dashboards.',
       features: ['Bed Management', 'Staff Scheduling', 'Revenue Analytics', 'Report Upload'],
       gradient: 'var(--gradient-accent)',
+      role: 'hospital',
     },
     {
       icon: IconMicroscope,
@@ -122,6 +125,7 @@ export default function LandingPage() {
       description: 'Handle test bookings, billing, and digital report submissions.',
       features: ['Test Slot Booking', 'Billing System', 'Report Submission', 'Analytics'],
       gradient: 'var(--gradient-primary)',
+      role: 'lab',
     },
     {
       icon: IconPill,
@@ -129,8 +133,15 @@ export default function LandingPage() {
       description: 'Access prescriptions and manage stock with integrated billing.',
       features: ['Prescription Access', 'Stock Management', 'Billing', 'Order Tracking'],
       gradient: 'var(--gradient-secondary)',
+      role: 'pharmacy',
     },
   ];
+
+  // Helper to check if user is logged in with a specific role
+  const isUserRole = (role) => {
+    if (!isAuthenticated || !user) return false;
+    return user.role?.toLowerCase() === role.toLowerCase();
+  };
 
   return (
     <Box component="main">
@@ -1101,9 +1112,9 @@ export default function LandingPage() {
                 <Button
                   variant="subtle"
                   rightSection={<IconArrowRight size={16} />}
-                  onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
+                  onClick={() => navigate(isUserRole(portal.role) ? '/dashboard' : '/login')}
                 >
-                  {isAuthenticated ? 'Go to Dashboard' : 'Learn More'}
+                  {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
                 </Button>
               </Card>
             ))}
