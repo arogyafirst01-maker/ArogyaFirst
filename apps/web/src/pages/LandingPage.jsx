@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router';
+import { useNavigate, Link } from 'react-router';
 import {
   Container,
   Title,
@@ -1156,7 +1156,7 @@ export default function LandingPage() {
                 <Button
                   variant="subtle"
                   rightSection={<IconArrowRight size={16} />}
-                  onClick={() => navigate(isUserRole(portal.role) ? '/dashboard' : '/login')}
+                  component={Link} to={isUserRole(portal.role) ? '/dashboard' : '/login'}
                 >
                   {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
                 </Button>
