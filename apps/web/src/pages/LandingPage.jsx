@@ -1153,13 +1153,14 @@ export default function LandingPage() {
                     </Group>
                   ))}
                 </Stack>
-                <Button
-                  variant="subtle"
-                  rightSection={<IconArrowRight size={16} />}
-                  component={Link} to={isUserRole(portal.role) ? '/dashboard' : '/login'}
-                >
-                  {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
-                </Button>
+                <Link to={isUserRole(portal.role) ? '/dashboard' : '/login'} style={{ textDecoration: 'none' }}>
+                  <Button
+                    variant="subtle"
+                    rightSection={<IconArrowRight size={16} />}
+                  >
+                    {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
+                  </Button>
+                </Link>
               </Card>
             ))}
           </SimpleGrid>
