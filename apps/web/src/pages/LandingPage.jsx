@@ -1153,12 +1153,12 @@ export default function LandingPage() {
                     </Group>
                   ))}
                 </Stack>
-                <Link to={isUserRole(portal.role) ? '/dashboard' : '/login'} style={{ textDecoration: 'none' }}>
+                <Link to="/login" style={{ textDecoration: 'none' }}>
                   <Button
                     variant="subtle"
                     rightSection={<IconArrowRight size={16} />}
                   >
-                    {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
+                    Sign In
                   </Button>
                 </Link>
               </Card>
