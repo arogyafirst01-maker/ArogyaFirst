@@ -61,42 +61,36 @@ export default function LandingPage() {
       title: 'Real-Time Booking',
       description: 'Book OPD appointments, hospital beds, and lab tests with live availability updates.',
       gradient: 'var(--gradient-primary)',
-      details: ['OPD slot booking', 'Hospital bed reservations', 'Lab test scheduling', 'Live availability status'],
     },
     {
       icon: IconShield,
       title: 'Secure Records',
       description: 'OCR-enabled document storage with encrypted access and quick retrieval.',
       gradient: 'var(--gradient-secondary)',
-      details: ['End-to-end encryption', 'OCR document scanning', 'Quick search & retrieval', 'HIPAA compliant storage'],
     },
     {
       icon: IconClock,
       title: '24/7 Access',
       description: 'Access your health records, prescriptions, and test reports anytime, anywhere.',
       gradient: 'var(--gradient-accent)',
-      details: ['Mobile-friendly interface', 'Cloud-based storage', 'Offline access support', 'Multi-device sync'],
     },
     {
       icon: IconFileText,
       title: 'Digital Prescriptions',
       description: 'Doctors can prescribe digitally, and pharmacies receive them instantly.',
       gradient: 'var(--gradient-primary)',
-      details: ['E-prescription generation', 'Direct pharmacy sharing', 'Dosage reminders', 'Refill requests'],
     },
     {
       icon: IconUsers,
       title: 'Unified Platform',
       description: 'Connects patients, doctors, hospitals, labs, and pharmacies in one ecosystem.',
       gradient: 'var(--gradient-secondary)',
-      details: ['5 user portals', 'Seamless referrals', 'Integrated billing', 'Cross-platform sync'],
     },
     {
       icon: IconBolt,
       title: 'Instant Updates',
       description: 'Real-time notifications for appointments, reports, and prescriptions.',
       gradient: 'var(--gradient-accent)',
-      details: ['Email notifications', 'Appointment reminders', 'Report ready alerts', 'Prescription updates'],
     },
   ];
 
@@ -107,7 +101,6 @@ export default function LandingPage() {
       description: 'Book appointments, access records, and manage your health journey.',
       features: ['OPD Bookings', 'Lab Tests', 'Digital Records', 'Health Tracking'],
       gradient: 'var(--gradient-primary)',
-      role: 'patient',
     },
     {
       icon: IconActivity,
@@ -115,7 +108,6 @@ export default function LandingPage() {
       description: 'View patient history, prescribe digitally, and provide remote consultations.',
       features: ['Patient History', 'Digital Prescriptions', 'Telemedicine', 'Referrals'],
       gradient: 'var(--gradient-secondary)',
-      role: 'doctor',
     },
     {
       icon: IconBuilding,
@@ -123,7 +115,6 @@ export default function LandingPage() {
       description: 'Manage beds, OPD slots, staff scheduling, and comprehensive dashboards.',
       features: ['Bed Management', 'Staff Scheduling', 'Revenue Analytics', 'Report Upload'],
       gradient: 'var(--gradient-accent)',
-      role: 'hospital',
     },
     {
       icon: IconMicroscope,
@@ -131,7 +122,6 @@ export default function LandingPage() {
       description: 'Handle test bookings, billing, and digital report submissions.',
       features: ['Test Slot Booking', 'Billing System', 'Report Submission', 'Analytics'],
       gradient: 'var(--gradient-primary)',
-      role: 'lab',
     },
     {
       icon: IconPill,
@@ -139,15 +129,8 @@ export default function LandingPage() {
       description: 'Access prescriptions and manage stock with integrated billing.',
       features: ['Prescription Access', 'Stock Management', 'Billing', 'Order Tracking'],
       gradient: 'var(--gradient-secondary)',
-      role: 'pharmacy',
     },
   ];
-
-  // Helper to check if user is logged in with a specific role
-  const isUserRole = (role) => {
-    if (!isAuthenticated || !user) return false;
-    return user.role?.toLowerCase() === role.toLowerCase();
-  };
 
   return (
     <Box component="main">
@@ -178,14 +161,12 @@ export default function LandingPage() {
                   height: 44,
                   borderRadius: '10px',
                   overflow: 'hidden',
-                  filter: 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))',
-                  background: 'rgba(255, 255, 255, 0.25)',
-                  backdropFilter: 'blur(8px)',
+                  filter: scrolled ? 'none' : 'drop-shadow(0 2px 8px rgba(0, 0, 0, 0.15))',
+                  background: scrolled ? 'transparent' : 'rgba(255, 255, 255, 0.25)',
+                  backdropFilter: scrolled ? 'none' : 'blur(8px)',
                   display: 'flex',
                   alignItems: 'center',
                   justifyContent: 'center',
-                  transition: 'all 0.3s ease',
-                  transition: 'all 0.3s ease',
                 }}
               >
                 <img 
@@ -202,8 +183,14 @@ export default function LandingPage() {
               <Text
                 size="1.5rem"
                 fw={800}
-                c={scrolled ? 'brand' : 'white'}
                 style={{
+                  background: scrolled
+                    ? 'linear-gradient(135deg, hsl(197 100% 36%), hsl(162 72% 36%))'
+                    : 'linear-gradient(135deg, rgba(255,255,255,1), rgba(255,255,255,0.9))',
+                  WebkitBackgroundClip: 'text',
+                  backgroundClip: 'text',
+                  WebkitTextFillColor: 'transparent',
+                  color: scrolled ? 'hsl(197 100% 36%)' : 'white',
                   letterSpacing: '-0.5px',
                 }}
               >
@@ -223,7 +210,7 @@ export default function LandingPage() {
                   variant="subtle"
                   leftSection={<item.icon size={16} />}
                   style={{
-                    color: scrolled ? 'hsl(210 15% 25%)' : 'white',
+                    color: scrolled ? 'hsl(210 15% 15%)' : 'hsl(210 15% 25%)',
                     fontWeight: 500,
                   }}
                   styles={{
@@ -231,7 +218,7 @@ export default function LandingPage() {
                       '&:hover': {
                         background: scrolled
                           ? 'rgba(0, 119, 182, 0.08)'
-                          : 'rgba(255, 255, 255, 0.15)',
+                          : 'rgba(0, 119, 182, 0.12)',
                       },
                     },
                   }}
@@ -548,18 +535,13 @@ export default function LandingPage() {
                       <br />
                       <Text
                         component="span"
+                        inherit
                         style={{
-                          fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                          fontWeight: 900,
-                          background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
+                          background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
                           WebkitBackgroundClip: 'text',
                           backgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
-                          color: 'transparent',
                           position: 'relative',
-                          display: 'inline-block',
-                          textShadow: '0 0 40px rgba(255, 165, 0, 0.3)',
-                          letterSpacing: '-2px',
                         }}
                       >
                         {user?.patientData?.name || user?.hospitalData?.name || user?.doctorData?.name || user?.labData?.name || user?.pharmacyData?.name || 'User'}!
@@ -567,11 +549,11 @@ export default function LandingPage() {
                           component="span"
                           style={{
                             position: 'absolute',
-                            bottom: 0,
+                            bottom: -2,
                             left: 0,
-                            width: '60%',
-                            height: 4,
-                            background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
+                            right: 0,
+                            height: 3,
+                            background: 'linear-gradient(90deg, #00ff88, #00b894)',
                             borderRadius: 2,
                           }}
                         />
@@ -589,7 +571,6 @@ export default function LandingPage() {
                           WebkitBackgroundClip: 'text',
                           backgroundClip: 'text',
                           WebkitTextFillColor: 'transparent',
-                          color: 'transparent',
                           position: 'relative',
                         }}
                       >
@@ -992,60 +973,27 @@ export default function LandingPage() {
             </Text>
           </Stack>
 
-          <SimpleGrid 
-            cols={{ base: 1, md: 2, lg: 3 }} 
-            spacing="lg"
-            className="features-grid"
-            style={{
-              '--card-blur': '0px',
-              '--card-opacity': '1',
-            }}
-          >
+          <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
             {features.map((feature, index) => (
               <Card
                 key={index}
-                className="glass-card animate-slide-up feature-card"
+                className="glass-card animate-slide-up"
                 p="xl"
                 radius="xl"
                 style={{
                   cursor: 'pointer',
-                  transition: 'all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94)',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   border: '2px solid hsl(var(--border))',
                   animationDelay: `${index * 0.1}s`,
-                  position: 'relative',
-                  transformOrigin: 'center bottom',
                 }}
-                onMouseEnter={(e) => {
-                  // Lift card upward with focus effect
-                  e.currentTarget.style.transform = 'translateY(-16px) scale(1.02)';
-                  e.currentTarget.style.boxShadow = '0 20px 40px -10px hsl(var(--primary) / 0.3), 0 10px 20px -5px rgba(0,0,0,0.1)';
-                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.5)';
-                  e.currentTarget.style.zIndex = '10';
-                  e.currentTarget.style.background = 'hsl(var(--card))';
-                  // Blur and dim other cards for focus effect
-                  const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
-                  allCards.forEach(card => {
-                    if (card !== e.currentTarget) {
-                      card.style.filter = 'blur(1.5px) grayscale(30%)';
-                      card.style.opacity = '0.6';
-                      card.style.transform = 'scale(0.98)';
-                    }
-                  });
-                }}
-                onMouseLeave={(e) => {
-                  // Reset current card
-                  e.currentTarget.style.transform = '';
-                  e.currentTarget.style.boxShadow = '';
-                  e.currentTarget.style.borderColor = '';
-                  e.currentTarget.style.zIndex = '';
-                  e.currentTarget.style.background = '';
-                  // Reset all cards
-                  const allCards = e.currentTarget.parentElement.querySelectorAll('.feature-card');
-                  allCards.forEach(card => {
-                    card.style.filter = '';
-                    card.style.opacity = '';
-                    card.style.transform = '';
-                  });
+                styles={{
+                  root: {
+                    '&:hover': {
+                      transform: 'translateY(-8px)',
+                      boxShadow: 'var(--shadow-elevated)',
+                      borderColor: 'hsl(var(--primary) / 0.5)',
+                    },
+                  },
                 }}
               >
                 <Box
@@ -1058,7 +1006,6 @@ export default function LandingPage() {
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    transition: 'transform 0.3s ease',
                   }}
                 >
                   <feature.icon size={28} color="white" />
@@ -1156,9 +1103,9 @@ export default function LandingPage() {
                 <Button
                   variant="subtle"
                   rightSection={<IconArrowRight size={16} />}
-                  onClick={() => navigate(isUserRole(portal.role) ? '/dashboard' : '/login')}
+                  onClick={() => navigate(isAuthenticated ? '/dashboard' : '/register')}
                 >
-                  {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
+                  {isAuthenticated ? 'Go to Dashboard' : 'Learn More'}
                 </Button>
               </Card>
             ))}
@@ -1301,33 +1248,11 @@ export default function LandingPage() {
                 Product
               </Text>
               <Stack gap="xs">
-                <Anchor 
-                  size="sm" 
-                  c="dimmed" 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => document.getElementById('features')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Features
-                </Anchor>
-                <Anchor 
-                  size="sm" 
-                  c="dimmed" 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => document.getElementById('portals')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  Portals
-                </Anchor>
-                <Anchor size="sm" c="dimmed" href="mailto:support@arogyafirst.com">
-                  Contact Sales
-                </Anchor>
-                <Anchor 
-                  size="sm" 
-                  c="dimmed" 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Home
-                </Anchor>
+                {['Features', 'Pricing', 'Security', 'Updates'].map((item) => (
+                  <Anchor key={item} size="sm" c="dimmed">
+                    {item}
+                  </Anchor>
+                ))}
               </Stack>
             </Box>
 
@@ -1337,11 +1262,11 @@ export default function LandingPage() {
                 Portals
               </Text>
               <Stack gap="xs">
-                <Anchor size="sm" c="dimmed" href="/login?role=patient">Patients</Anchor>
-                <Anchor size="sm" c="dimmed" href="/login?role=doctor">Doctors</Anchor>
-                <Anchor size="sm" c="dimmed" href="/login?role=hospital">Hospitals</Anchor>
-                <Anchor size="sm" c="dimmed" href="/login?role=lab">Labs</Anchor>
-                <Anchor size="sm" c="dimmed" href="/login?role=pharmacy">Pharmacies</Anchor>
+                {['Patients', 'Doctors', 'Hospitals', 'Labs', 'Pharmacies'].map((item) => (
+                  <Anchor key={item} size="sm" c="dimmed">
+                    {item}
+                  </Anchor>
+                ))}
               </Stack>
             </Box>
 
@@ -1351,24 +1276,11 @@ export default function LandingPage() {
                 Company
               </Text>
               <Stack gap="xs">
-                <Anchor 
-                  size="sm" 
-                  c="dimmed" 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => document.getElementById('footer')?.scrollIntoView({ behavior: 'smooth' })}
-                >
-                  About Us
-                </Anchor>
-                <Anchor size="sm" c="dimmed" href="mailto:careers@arogyafirst.com">Careers</Anchor>
-                <Anchor size="sm" c="dimmed" href="mailto:support@arogyafirst.com">Contact</Anchor>
-                <Anchor 
-                  size="sm" 
-                  c="dimmed" 
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  Home
-                </Anchor>
+                {['About Us', 'Careers', 'Contact', 'Blog'].map((item) => (
+                  <Anchor key={item} size="sm" c="dimmed">
+                    {item}
+                  </Anchor>
+                ))}
               </Stack>
             </Box>
 
@@ -1378,10 +1290,11 @@ export default function LandingPage() {
                 Legal
               </Text>
               <Stack gap="xs">
-                <Anchor size="sm" c="dimmed" href="/privacy">Privacy Policy</Anchor>
-                <Anchor size="sm" c="dimmed" href="/terms">Terms of Service</Anchor>
-                <Anchor size="sm" c="dimmed" href="mailto:hipaa@arogyafirst.com">HIPAA Compliance</Anchor>
-                <Anchor size="sm" c="dimmed" href="/privacy">Cookie Policy</Anchor>
+                {['Privacy Policy', 'Terms of Service', 'HIPAA Compliance', 'Cookie Policy'].map((item) => (
+                  <Anchor key={item} size="sm" c="dimmed">
+                    {item}
+                  </Anchor>
+                ))}
               </Stack>
             </Box>
           </SimpleGrid>
