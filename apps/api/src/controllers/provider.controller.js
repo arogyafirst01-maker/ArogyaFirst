@@ -91,9 +91,19 @@ const searchProviders = async (req, res) => {
 
     if (specialization && entityType === BOOKING_TYPES.OPD) {
       const specLower = specialization.toLowerCase();
-      filteredUsers = filteredUsers.filter(user =>
-        user.role === ROLES.DOCTOR && user.doctorData?.specialization?.toLowerCase().includes(specLower)
-      );
+      filteredUsers = filteredUsers.filter(user => {
+        // Match individual doctors by their specialization
+        if (user.role === ROLES.DOCTOR && user.doctorData?.specialization?.toLowerCase().includes(specLower)) {
+          return true;
+        }
+        // Match hospitals that have doctors with the matching specialization
+        if (user.role === ROLES.HOSPITAL && user.hospitalData?.doctors?.length > 0) {
+          return user.hospitalData.doctors.some(
+            doc => doc.specialization?.toLowerCase().includes(specLower) && doc.isActive !== false
+          );
+        }
+        return false;
+      });
     }
 
     if (testType && entityType === BOOKING_TYPES.LAB) {
