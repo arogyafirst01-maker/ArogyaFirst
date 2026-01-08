@@ -558,7 +558,6 @@ export default function LandingPage() {
                           color: 'transparent',
                           position: 'relative',
                           display: 'inline-block',
-                          textShadow: '0 0 40px rgba(255, 165, 0, 0.3)',
                           letterSpacing: '-2px',
                         }}
                       >
