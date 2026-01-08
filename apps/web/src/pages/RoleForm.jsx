@@ -167,15 +167,7 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
   const [phoneOtpError, setPhoneOtpError] = useState(null);
   const [phoneVerifyLoading, setPhoneVerifyLoading] = useState(false);
   const [phoneCountdown, setPhoneCountdown] = useState(0);
-  
-  // Phone verification state
-  const [phoneVerified, setPhoneVerified] = useState(false);
-  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
-  const [phoneOtp, setPhoneOtp] = useState('');
-  const [phoneOtpLoading, setPhoneOtpLoading] = useState(false);
-  const [phoneOtpError, setPhoneOtpError] = useState(null);
-  const [phoneVerifyLoading, setPhoneVerifyLoading] = useState(false);
-  const [phoneCountdown, setPhoneCountdown] = useState(0);
+
 
   // Countdown timer for OTP resend
   useEffect(() => {
