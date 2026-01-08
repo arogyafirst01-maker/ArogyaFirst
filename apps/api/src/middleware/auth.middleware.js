@@ -53,6 +53,51 @@ const authenticate = async (req, res, next) => {
   }
 };
 
+/**
+ * Optional authentication middleware - sets req.user if valid token present, but doesn't fail if no token
+ * Useful for endpoints that behave differently for authenticated vs unauthenticated users
+ */
+const authenticateOptional = async (req, res, next) => {
+  try {
+    const authHeader = req.headers.authorization;
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+      // No token - continue without user
+      return next();
+    }
+    
+    const token = authHeader.substring(7);
+    const payload = verifyAccessToken(token);
+    
+    const user = await User.findById(payload.userId);
+    if (!user || !user.isActive) {
+      // Invalid user - continue without user
+      return next();
+    }
+    
+    const roleDataKey = `${user.role.toLowerCase()}Data`;
+    const safeRoleData = user[roleDataKey] ? 
+      (user[roleDataKey].toObject ? user[roleDataKey].toObject() : user[roleDataKey]) 
+      : {};
+
+    req.user = {
+      _id: user._id,
+      email: user.email,
+      role: user.role,
+      uniqueId: user.uniqueId,
+      verificationStatus: user.verificationStatus,
+      isVerified: user.isVerified,
+      isActive: user.isActive,
+      [roleDataKey]: safeRoleData
+    };
+    
+    next();
+  } catch (error) {
+    // Token invalid - continue without user (don't fail)
+    next();
+  }
+};
+
 export {
-  authenticate
+  authenticate,
+  authenticateOptional
 };
