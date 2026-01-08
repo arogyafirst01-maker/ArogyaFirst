@@ -149,12 +149,15 @@ export const getSlots = async (req, res) => {
     
     const query = {};
     
+    // Debug logging
+    console.log("[getSlots] Request:", { providerId, entityType, user: req.user ? { id: req.user._id, role: req.user.role } : "none" });
+    
     // If providerId provided, use it; otherwise default to current user's slots only when the
     // requester is a provider (hospital/doctor/lab) AND authenticated. 
     // For unauthenticated requests, allow querying all slots.
     if (providerId) {
       query.providerId = providerId;
-    } else if (req.user && req.user.role !== ROLES.PATIENT) {
+    } else if (req.user && req.user.role !== ROLES.PATIENT && req.user.role !== ROLES.ADMIN) {
       query.providerId = req.user._id;
     }
     

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import * as controller from '../controllers/slot.controller.js';
-import { authenticate } from '../middleware/auth.middleware.js';
+import { authenticate, authenticateOptional } from '../middleware/auth.middleware.js';
 import { authorize } from '../middleware/rbac.middleware.js';
 import { validateRequest, createSlotSchema, updateSlotSchema } from '../middleware/validation.middleware.js';
 import { ROLES } from '@arogyafirst/shared';
@@ -11,7 +11,7 @@ const router = Router();
 router.post('/', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), validateRequest(createSlotSchema), controller.createSlot);
 
 // Public slot viewing for patients browsing (no auth required)
-router.get('/', controller.getSlots);
+router.get('/', authenticateOptional, controller.getSlots);
 
 // Availability Routes - keep specific paths before parameterized routes
 router.get('/availability', controller.checkAvailability);
