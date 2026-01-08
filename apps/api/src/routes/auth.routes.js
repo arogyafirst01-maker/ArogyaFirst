@@ -10,6 +10,10 @@ import { ROLES } from '@arogyafirst/shared';
 router.post('/send-email-otp', validateRequest(sendEmailOTPSchema), authController.sendEmailOTP);
 router.post('/verify-email-otp', validateRequest(verifyEmailOTPSchema), authController.verifyEmailOTP);
 
+// Phone OTP verification routes for registration (public)
+router.post('/send-phone-otp', authController.sendPhoneOTP);
+router.post('/verify-phone-otp-registration', authController.verifyPhoneOTPRegistration);
+
 // Phone OTP password reset routes (public, patient-only)
 router.post('/forgot-password', validateRequest(forgotPasswordSchema), authController.forgotPassword);
 router.post('/verify-phone-otp', validateRequest(verifyPhoneOTPSchema), authController.verifyPhoneOTP);

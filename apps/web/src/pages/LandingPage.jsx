@@ -551,11 +551,7 @@ export default function LandingPage() {
                         style={{
                           fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                           fontWeight: 900,
-                          background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          color: 'transparent',
+                          color: '#FFA500',
                           position: 'relative',
                           display: 'inline-block',
                           letterSpacing: '-2px',
@@ -1152,14 +1148,30 @@ export default function LandingPage() {
                     </Group>
                   ))}
                 </Stack>
-                <Link to="/login" style={{ textDecoration: 'none' }}>
+                {isUserRole(portal.role) ? (
+                  <Link to="/dashboard" style={{ textDecoration: 'none' }}>
+                    <Button
+                      variant="subtle"
+                      rightSection={<IconArrowRight size={16} />}
+                    >
+                      Go to Dashboard
+                    </Button>
+                  </Link>
+                ) : (
                   <Button
                     variant="subtle"
                     rightSection={<IconArrowRight size={16} />}
+                    onClick={() => {
+                      if (!isAuthenticated) {
+                        window.location.href = '/login';
+                      } else {
+                        alert(`You are not logged in as ${portal.title}. Please login with a ${portal.title} account to access this portal.`);
+                      }
+                    }}
                   >
                     Sign In
                   </Button>
-                </Link>
+                )}
               </Card>
             ))}
           </SimpleGrid>

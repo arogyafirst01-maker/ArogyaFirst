@@ -141,24 +141,48 @@ const register = async (req, res) => {
         return errorResponse(res, 'Invalid role', 400);
     }
 
-    // Check for existing email or uniqueId
-    const existingUser = await User.findOne({
-      $or: [
-        { emailNormalized: normalizeEmail(email) },
-        { uniqueId }
-      ]
-    });
+    // Check for existing uniqueId or email (if provided)
+    const queryConditions = [{ uniqueId }];
+    if (email) {
+      queryConditions.push({ emailNormalized: normalizeEmail(email) });
+    }
+    // Also check for phone uniqueness for patient role
+    if (role === ROLES.PATIENT && phone) {
+      queryConditions.push({ 'patientData.phone': phone });
+    }
+    
+    const existingUser = await User.findOne({ $or: queryConditions });
     if (existingUser) {
-      return errorResponse(res, 'Email or unique ID already exists', 400);
+      if (existingUser.uniqueId === uniqueId) {
+        return errorResponse(res, 'Unique ID already exists', 400);
+      }
+      if (email && existingUser.emailNormalized === normalizeEmail(email)) {
+        return errorResponse(res, 'Email already exists', 400);
+      }
+      if (role === ROLES.PATIENT && phone && existingUser.patientData?.phone === phone) {
+        return errorResponse(res, 'Phone number already registered', 400);
+      }
     }
 
-    // Server-side enforcement: Verify email was verified via OTP before allowing registration
-    const verifiedOTP = await OTP.findOne({
-      email: normalizeEmail(email),
-      isUsed: true
-    });
-    if (!verifiedOTP) {
-      return errorResponse(res, 'Email verification required. Please verify your email with OTP before registering.', 400);
+    // Server-side enforcement: Verify phone was verified via OTP before allowing registration (for patients)
+    if (role === ROLES.PATIENT) {
+      const verifiedPhoneOTP = await OTP.findOne({
+        phone: phone,
+        purpose: OTP_PURPOSES.EMAIL_VERIFICATION,
+        isUsed: true
+      });
+      if (!verifiedPhoneOTP) {
+        return errorResponse(res, 'Phone verification required. Please verify your phone number with OTP before registering.', 400);
+      }
+    } else if (email) {
+      // For non-patient roles, verify email if provided
+      const verifiedEmailOTP = await OTP.findOne({
+        email: normalizeEmail(email),
+        isUsed: true
+      });
+      if (!verifiedEmailOTP) {
+        return errorResponse(res, 'Email verification required. Please verify your email with OTP before registering.', 400);
+      }
     }
 
     // Handle document uploads for hospitals and doctors
@@ -574,6 +598,93 @@ const normalizePhone = (phone) => {
   return phone.replace(/\D/g, '').trim();
 };
 
+
+/**
+ * Send OTP to phone for registration verification
+ */
+const sendPhoneOTP = async (req, res) => {
+  try {
+    const { phone } = req.body;
+
+    // Validate phone format
+    if (!validatePhone(phone)) {
+      return errorResponse(res, 'Valid 10-digit phone number is required', 400);
+    }
+
+    const cleanedPhone = normalizePhone(phone);
+
+    // Check if phone is already registered
+    const existingUser = await User.findByPhone(cleanedPhone);
+    if (existingUser) {
+      return errorResponse(res, 'This phone number is already registered', 400);
+    }
+
+    // Generate 6-digit OTP
+    const otp = generateOTP();
+
+    // Delete any existing unused OTPs for this phone with EMAIL_VERIFICATION purpose
+    await OTP.deleteMany({ 
+      phone: cleanedPhone, 
+      purpose: OTP_PURPOSES.EMAIL_VERIFICATION, 
+      isUsed: false 
+    });
+
+    // Create new OTP
+    await OTP.createOTP(null, otp, OTP_PURPOSES.EMAIL_VERIFICATION, 10, cleanedPhone);
+
+    // Send OTP via SMS
+    const smsResult = await sendOTPSMS(cleanedPhone, otp, 'PHONE_VERIFICATION');
+
+    if (!smsResult.success && !smsResult.placeholder) {
+      console.error('Failed to send phone OTP SMS:', smsResult.error);
+    }
+
+    return successResponse(res, { sent: true }, 'OTP sent to your phone number');
+
+  } catch (error) {
+    console.error('Send phone OTP error:', error);
+    return errorResponse(res, 'Failed to send OTP', 500);
+  }
+};
+
+/**
+ * Verify Phone OTP for registration
+ */
+const verifyPhoneOTPRegistration = async (req, res) => {
+  try {
+    const { phone, otp } = req.body;
+
+    // Validate OTP format
+    if (!validateOTPFormat(otp)) {
+      return errorResponse(res, 'OTP must be exactly 6 digits', 400);
+    }
+
+    const cleanedPhone = normalizePhone(phone);
+
+    // Find valid OTP by phone
+    const otpDoc = await OTP.findValidOTP(null, OTP_PURPOSES.EMAIL_VERIFICATION, cleanedPhone);
+
+    if (!otpDoc) {
+      return errorResponse(res, 'Invalid or expired OTP. Please request a new one.', 400);
+    }
+
+    // Verify OTP
+    const isValid = await otpDoc.verifyOTP(otp);
+    if (!isValid) {
+      return errorResponse(res, 'Incorrect OTP. Please try again.', 400);
+    }
+
+    // Mark OTP as used
+    await otpDoc.markAsUsed();
+
+    return successResponse(res, { verified: true }, 'Phone number verified successfully');
+
+  } catch (error) {
+    console.error('Verify phone OTP error:', error);
+    return errorResponse(res, 'Failed to verify OTP', 500);
+  }
+};
+
 /**
  * Forgot Password - Send OTP to patient's phone
  * Only available for patient accounts using phone-based authentication
@@ -733,6 +844,8 @@ export {
   logoutAll,
   sendEmailOTP,
   verifyEmailOTP,
+  sendPhoneOTP,
+  verifyPhoneOTPRegistration,
   forgotPassword,
   verifyPhoneOTP,
   resetPassword

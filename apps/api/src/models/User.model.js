@@ -296,14 +296,14 @@ const settingsSchema = new mongoose.Schema({
 const userSchema = new mongoose.Schema({
   email: {
     type: String,
-    required: true,
+    required: false,
     lowercase: true,
     trim: true
   },
   emailNormalized: {
     type: String,
-    required: true,
-    unique: true,
+    required: false,
+    sparse: true,
     index: true
   },
   password: {
@@ -426,7 +426,7 @@ userSchema.pre('save', async function(next) {
     const salt = await bcrypt.genSalt(10);
     this.password = await bcrypt.hash(this.password, salt);
   }
-  this.emailNormalized = this.email.toLowerCase().trim();
+  this.emailNormalized = this.email ? this.email.toLowerCase().trim() : null;
   
   // Validate chain hierarchy for branch hospitals
   if (this.role === ROLES.HOSPITAL && this.hospitalData?.parentHospitalId && this.isModified('hospitalData.parentHospitalId')) {

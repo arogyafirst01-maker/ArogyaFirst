@@ -195,7 +195,7 @@ const validateRequest = (schema) => {
 const registerPatientSchema = {
   name: { required: true, type: 'string', message: 'Name must be a valid string' },
   phone: { required: true, type: 'string', validate: validatePhone, message: 'Phone must be a valid 10-digit number' },
-  email: { required: true, type: 'string', validate: validateEmail, message: 'Email must be a valid email address' },
+  email: { required: false, type: 'string', validate: (value) => !value || validateEmail(value), message: 'Email must be a valid email address if provided' },
   password: { required: true, type: 'string', validate: validatePassword, message: 'Password must be at least 8 characters with uppercase, lowercase, and number' },
   location: { required: false, type: 'string', message: 'Location must be a valid string' },
   dateOfBirth: { required: true, type: 'string', validate: validateDateFormat, message: 'Date of birth must be in YYYY-MM-DD format' },

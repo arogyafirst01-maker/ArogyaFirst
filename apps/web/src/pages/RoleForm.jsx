@@ -38,7 +38,7 @@ const getFormConfig = (selectedRole) => {
       termsAccepted: false,
     },
     validate: {
-      email: (value) => (validateEmail(value) ? null : 'Invalid email address'),
+      email: (value) => (!value || validateEmail(value) ? null : 'Invalid email address'),
       password: (value) => (validatePassword(value) ? null : 'Password must be at least 8 characters with uppercase, lowercase, and number'),
       confirmPassword: (value, values) => (value === values.password ? null : 'Passwords do not match'),
       termsAccepted: (value) => (value === true ? null : 'You must accept the terms and conditions'),
@@ -158,6 +158,24 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
   const [otpError, setOtpError] = useState(null);
   const [verifyLoading, setVerifyLoading] = useState(false);
   const [countdown, setCountdown] = useState(0);
+  
+  // Phone verification state
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState('');
+  const [phoneOtpLoading, setPhoneOtpLoading] = useState(false);
+  const [phoneOtpError, setPhoneOtpError] = useState(null);
+  const [phoneVerifyLoading, setPhoneVerifyLoading] = useState(false);
+  const [phoneCountdown, setPhoneCountdown] = useState(0);
+  
+  // Phone verification state
+  const [phoneVerified, setPhoneVerified] = useState(false);
+  const [phoneOtpSent, setPhoneOtpSent] = useState(false);
+  const [phoneOtp, setPhoneOtp] = useState('');
+  const [phoneOtpLoading, setPhoneOtpLoading] = useState(false);
+  const [phoneOtpError, setPhoneOtpError] = useState(null);
+  const [phoneVerifyLoading, setPhoneVerifyLoading] = useState(false);
+  const [phoneCountdown, setPhoneCountdown] = useState(0);
 
   // Countdown timer for OTP resend
   useEffect(() => {
@@ -166,6 +184,131 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
       return () => clearTimeout(timer);
     }
   }, [countdown]);
+  
+  // Phone countdown timer
+  useEffect(() => {
+    if (phoneCountdown > 0) {
+      const timer = setTimeout(() => setPhoneCountdown(phoneCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [phoneCountdown]);
+  
+  // Send OTP to phone
+  const handleSendPhoneOTP = async () => {
+    const phone = form.values.phone;
+    if (!phone || !validatePhone(phone)) {
+      setPhoneOtpError('Please enter a valid 10-digit phone number');
+      return;
+    }
+    setPhoneOtpLoading(true);
+    setPhoneOtpError(null);
+    try {
+      await api.post('/api/auth/send-phone-otp', { phone });
+      setPhoneOtpSent(true);
+      setPhoneCountdown(60);
+      notifications.show({ title: 'OTP Sent', message: 'Verification code sent to your phone', color: 'green' });
+    } catch (err) {
+      setPhoneOtpError(err.message || 'Failed to send OTP');
+      notifications.show({ title: 'Error', message: err.message || 'Failed to send OTP', color: 'red' });
+    } finally {
+      setPhoneOtpLoading(false);
+    }
+  };
+
+  // Verify phone OTP
+  const handleVerifyPhoneOTP = async () => {
+    if (phoneOtp.length !== 6) {
+      setPhoneOtpError('Please enter a 6-digit OTP');
+      return;
+    }
+    setPhoneVerifyLoading(true);
+    setPhoneOtpError(null);
+    try {
+      await api.post('/api/auth/verify-phone-otp-registration', { phone: form.values.phone, otp: phoneOtp });
+      setPhoneVerified(true);
+      notifications.show({ title: 'Success', message: 'Phone number verified successfully!', color: 'green' });
+    } catch (err) {
+      setPhoneOtpError(err.message || 'Invalid OTP');
+      notifications.show({ title: 'Error', message: err.message || 'Invalid OTP', color: 'red' });
+    } finally {
+      setPhoneVerifyLoading(false);
+    }
+  };
+  
+  // Phone countdown timer
+  useEffect(() => {
+    if (phoneCountdown > 0) {
+      const timer = setTimeout(() => setPhoneCountdown(phoneCountdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [phoneCountdown]);
+  
+  // Send OTP to phone
+  const handleSendPhoneOTP = async () => {
+    const phone = form.values.phone;
+    if (!phone || !validatePhone(phone)) {
+      setPhoneOtpError('Please enter a valid 10-digit phone number');
+      return;
+    }
+
+    setPhoneOtpLoading(true);
+    setPhoneOtpError(null);
+
+    try {
+      await api.post('/api/auth/send-phone-otp', { phone });
+      setPhoneOtpSent(true);
+      setPhoneCountdown(60);
+      notifications.show({
+        title: 'OTP Sent',
+        message: 'Verification code sent to your phone',
+        color: 'green',
+      });
+    } catch (err) {
+      const errorMessage = err.message || 'Failed to send OTP';
+      setPhoneOtpError(errorMessage);
+      notifications.show({
+        title: 'Error',
+        message: errorMessage,
+        color: 'red',
+      });
+    } finally {
+      setPhoneOtpLoading(false);
+    }
+  };
+
+  // Verify phone OTP
+  const handleVerifyPhoneOTP = async () => {
+    if (phoneOtp.length !== 6) {
+      setPhoneOtpError('Please enter a 6-digit OTP');
+      return;
+    }
+
+    setPhoneVerifyLoading(true);
+    setPhoneOtpError(null);
+
+    try {
+      await api.post('/api/auth/verify-phone-otp-registration', { 
+        phone: form.values.phone, 
+        otp: phoneOtp 
+      });
+      setPhoneVerified(true);
+      notifications.show({
+        title: 'Success',
+        message: 'Phone number verified successfully!',
+        color: 'green',
+      });
+    } catch (err) {
+      const errorMessage = err.message || 'Invalid OTP';
+      setPhoneOtpError(errorMessage);
+      notifications.show({
+        title: 'Error',
+        message: errorMessage,
+        color: 'red',
+      });
+    } finally {
+      setPhoneVerifyLoading(false);
+    }
+  };
 
   // Send OTP to email
   const handleSendOTP = async () => {
@@ -308,9 +451,8 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Stack gap="md">
           <TextInput 
-            label="Email" 
+            label="Email (Optional)" 
             placeholder="your@email.com" 
-            required 
             disabled={emailVerified}
             rightSection={emailVerified ? <IconCheck color="green" size={20} /> : null}
             {...form.getInputProps('email')} 
@@ -432,7 +574,64 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
           {role === ROLES.PATIENT && (
             <>
               <TextInput label="Full Name" placeholder="Enter your full name" required {...form.getInputProps('name')} />
-              <TextInput label="Phone" placeholder="10-digit phone number" required {...form.getInputProps('phone')} />
+              <TextInput 
+                label="Phone Number" 
+                placeholder="10-digit phone number" 
+                required 
+                disabled={phoneVerified}
+                rightSection={phoneVerified ? <IconCheck color="green" size={20} /> : null}
+                {...form.getInputProps('phone')} 
+              />
+              
+              {/* Phone Verification Section */}
+              {!phoneVerified && (
+                <Stack gap="sm">
+                  {!phoneOtpSent ? (
+                    <Button 
+                      variant="light" 
+                      onClick={handleSendPhoneOTP} 
+                      loading={phoneOtpLoading}
+                      disabled={!form.values.phone || !validatePhone(form.values.phone)}
+                    >
+                      Send Phone OTP
+                    </Button>
+                  ) : (
+                    <>
+                      <TextInput
+                        label="Enter 6-digit OTP"
+                        placeholder="123456"
+                        value={phoneOtp}
+                        onChange={(e) => setPhoneOtp(e.target.value.replace(/\D/g, '').slice(0, 6))}
+                        maxLength={6}
+                        error={phoneOtpError}
+                      />
+                      <Group>
+                        <Button 
+                          onClick={handleVerifyPhoneOTP} 
+                          loading={phoneVerifyLoading}
+                          disabled={phoneOtp.length !== 6}
+                        >
+                          Verify Phone
+                        </Button>
+                        <Button 
+                          variant="subtle" 
+                          onClick={handleSendPhoneOTP} 
+                          loading={phoneOtpLoading}
+                          disabled={phoneCountdown > 0}
+                        >
+                          {phoneCountdown > 0 ? `Resend in ${phoneCountdown}s` : 'Resend OTP'}
+                        </Button>
+                      </Group>
+                    </>
+                  )}
+                </Stack>
+              )}
+
+              {phoneVerified && (
+                <Alert color="green" icon={<IconCheck size={16} />}>
+                  Phone number verified successfully!
+                </Alert>
+              )}
               <TextInput label="Location" placeholder="City, State" {...form.getInputProps('location')} />
               <DateInput label="Date of Birth" placeholder="Select your date of birth" required maxDate={new Date()} {...form.getInputProps('dateOfBirth')} />
               <TextInput label="Aadhaar Last 4 Digits" placeholder="1234" {...form.getInputProps('aadhaarLast4')} />

@@ -19,6 +19,7 @@ import {
 } from '@mantine/core';
 import { IconAlertCircle, IconCheck, IconActivity } from '@tabler/icons-react';
 import { validatePhone } from '@arogyafirst/shared';
+import logo from '@/assets/logo.png';
 import { api } from '../utils/api.js';
 import { usePageTitle } from '../hooks/usePageTitle';
 
@@ -189,7 +190,15 @@ export default function ForgotPasswordPage() {
         {/* Logo and Title */}
         <Box ta="center" mb="xl">
           <Group justify="center" mb="xs">
-            <IconActivity size={32} stroke={2} color="var(--mantine-color-blue-6)" />
+            <img 
+              src={logo} 
+              alt="ArogyaFirst Logo" 
+              style={{ 
+                width: 48, 
+                height: 48, 
+                objectFit: 'contain',
+              }} 
+            />
             <Title order={2} fw={700}>
               ArogyaFirst
             </Title>
