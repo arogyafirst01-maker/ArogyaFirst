@@ -33,11 +33,8 @@ importers:
   apps/api:
     dependencies:
       '@arogyafirst/shared':
-        specifier: file:../../packages/shared
+        specifier: workspace:*
         version: link:../../packages/shared
-      '@vendia/serverless-express':
-        specifier: ^4.10.1
-        version: 4.10.1
       agora-access-token:
         specifier: ^2.0.4
         version: 2.0.4
@@ -57,7 +54,7 @@ importers:
         specifier: ^5.5.0
         version: 5.5.0
       dayjs:
-        specifier: ^1.11.10
+        specifier: ^1.11.15
         version: 1.11.15
       dotenv:
         specifier: ^16.0.0
@@ -744,10 +741,6 @@ packages:
 
   '@types/whatwg-url@8.2.2':
     resolution: {integrity: sha512-FtQu10RWgn3D9U4aazdwIE2yzphmTJREDqNdODHrbrZmmMqI0vMheC/6NE/J1Yveaj8H+ela+YwWTjq5PGmuhA==}
-
-  '@vendia/serverless-express@4.10.1':
-    resolution: {integrity: sha512-8FM/GnQ8bbp1fynAWLGzNIy3Hyhoevixwh2Aj8qBPpw7rkbWZ1I7RC2XhZZaTZo/1JTDlff4cDDmkgY0CzUV7g==}
-    engines: {node: '>=12'}
 
   '@vitejs/plugin-react-swc@3.5.0':
     resolution: {integrity: sha512-1PrOvAaDpqlCV+Up8RkAh9qaiUjoDUcjtttyhXDKw53XA6Ve16SOp6cCOpRs8Dj8DqUQs6eTW5YkLcLJjrXAig==}
@@ -3387,8 +3380,6 @@ snapshots:
     dependencies:
       '@types/node': 22.14.1
       '@types/webidl-conversions': 7.0.3
-
-  '@vendia/serverless-express@4.10.1': {}
 
   '@vitejs/plugin-react-swc@3.5.0(vite@6.0.0(@types/node@22.14.1)(sugarss@4.0.1(postcss@8.5.3))(terser@5.44.1))':
     dependencies:
