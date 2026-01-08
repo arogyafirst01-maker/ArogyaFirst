@@ -1,15 +1,5 @@
-const { getCloudinary } = require('../config/cloudinary.js');
-
-// file-type is ESM-only, so we handle it dynamically
-let fileTypeFromBuffer;
-(async () => {
-  try {
-    const fileType = await import('file-type');
-    fileTypeFromBuffer = fileType.fileTypeFromBuffer;
-  } catch (e) {
-    console.warn('file-type module not available:', e.message);
-  }
-})();
+import { getCloudinary } from '../config/cloudinary.js';
+import { fileTypeFromBuffer } from 'file-type';
 
 /**
  * Uploads a file buffer to Cloudinary with validation.
@@ -21,7 +11,7 @@ let fileTypeFromBuffer;
  * @returns {Promise<Object>} Upload result with { url, publicId, format, size, uploadedAt }.
  * @throws {Error} If file type is invalid or upload fails.
  */
-async function uploadToCloudinary(buffer, options = {}) {
+export async function uploadToCloudinary(buffer, options = {}) {
   const { folder = 'documents', resourceType = 'auto', allowedFormats } = options;
   const rootFolder = process.env.CLOUDINARY_FOLDER || 'arogyafirst';
 
@@ -75,7 +65,7 @@ async function uploadToCloudinary(buffer, options = {}) {
  * @returns {Promise<Object>} Deletion result from Cloudinary.
  * @throws {Error} If deletion fails.
  */
-async function deleteFromCloudinary(publicId) {
+export async function deleteFromCloudinary(publicId) {
   try {
     const cloudinary = getCloudinary();
     return new Promise((resolve, reject) => {
@@ -100,7 +90,7 @@ async function deleteFromCloudinary(publicId) {
  * @param {Array<string>} allowedTypes - Allowed MIME types (e.g., ['image/jpeg', 'application/pdf']).
  * @returns {Promise<Object>} { valid: boolean, detectedType: string }.
  */
-async function validateFileType(buffer, allowedTypes) {
+export async function validateFileType(buffer, allowedTypes) {
   try {
     const fileType = await fileTypeFromBuffer(buffer);
     if (!fileType) {
@@ -116,5 +106,3 @@ async function validateFileType(buffer, allowedTypes) {
     return { valid: false, detectedType: null };
   }
 }
-
-module.exports = { uploadToCloudinary, deleteFromCloudinary, validateFileType };

@@ -1,16 +1,16 @@
-const Consultation = require('../models/Consultation.model.js');
-const Booking = require('../models/Booking.model.js');
-const ConsentRequest = require('../models/ConsentRequest.model.js');
-const User = require('../models/User.model.js');
-const Prescription = require('../models/Prescription.model.js');
-const Document = require('../models/Document.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { withTransaction } = require('../utils/transaction.util.js');
-const { generateAgoraToken, generateChannelName, validateAgoraConfig } = require('../utils/agora.util.js');
-const { ROLES, CONSULTATION_STATUS, CONSULTATION_MODE, CONSENT_STATUS, BOOKING_STATUS, generateConsultationId } = require('@arogyafirst/shared');
+import Consultation from '../models/Consultation.model.js';
+import Booking from '../models/Booking.model.js';
+import ConsentRequest from '../models/ConsentRequest.model.js';
+import User from '../models/User.model.js';
+import Prescription from '../models/Prescription.model.js';
+import Document from '../models/Document.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { withTransaction } from '../utils/transaction.util.js';
+import { generateAgoraToken, generateChannelName, validateAgoraConfig } from '../utils/agora.util.js';
+import { ROLES, CONSULTATION_STATUS, CONSULTATION_MODE, CONSENT_STATUS, BOOKING_STATUS, generateConsultationId } from '@arogyafirst/shared';
 
 // Get doctor's patient list (patients with bookings or active consent)
-const getDoctorPatients = async (req, res) => {
+export const getDoctorPatients = async (req, res) => {
   try {
     const doctorId = req.params.id;
     
@@ -150,7 +150,7 @@ const getDoctorPatients = async (req, res) => {
 };
 
 // Get patient history for doctor (consent-based access)
-const getPatientHistoryForDoctor = async (req, res) => {
+export const getPatientHistoryForDoctor = async (req, res) => {
   try {
     const patientId = req.params.id;
     const doctorId = req.user._id;
@@ -320,7 +320,7 @@ const getPatientHistoryForDoctor = async (req, res) => {
 };
 
 // Create new consultation
-const createConsultation = async (req, res) => {
+export const createConsultation = async (req, res) => {
   try {
     const { patientId, bookingId, mode, scheduledAt, notes } = req.body;
     const doctorId = req.user._id;
@@ -408,7 +408,7 @@ const createConsultation = async (req, res) => {
 };
 
 // Get consultations (role-aware)
-const getConsultations = async (req, res) => {
+export const getConsultations = async (req, res) => {
   try {
     const { status, mode, startDate, endDate, page = 1, limit = 20 } = req.query;
     const userId = req.user._id;
@@ -463,7 +463,7 @@ const getConsultations = async (req, res) => {
 };
 
 // Get consultation by ID
-const getConsultationById = async (req, res) => {
+export const getConsultationById = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const userId = req.user._id;
@@ -491,7 +491,7 @@ const getConsultationById = async (req, res) => {
 };
 
 // Update consultation status
-const updateConsultationStatus = async (req, res) => {
+export const updateConsultationStatus = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const { status, notes, diagnosis, followUpRequired, followUpDate } = req.body;
@@ -544,7 +544,7 @@ const updateConsultationStatus = async (req, res) => {
 };
 
 // Add consultation note
-const addConsultationNote = async (req, res) => {
+export const addConsultationNote = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const { content } = req.body;
@@ -571,7 +571,7 @@ const addConsultationNote = async (req, res) => {
 };
 
 // Generate Agora token for consultation
-const generateConsultationAgoraToken = async (req, res) => {
+export const generateConsultationAgoraToken = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const userId = req.user._id;
@@ -612,7 +612,7 @@ const generateConsultationAgoraToken = async (req, res) => {
 };
 
 // Save chat message to consultation
-const saveChatMessage = async (req, res) => {
+export const saveChatMessage = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const { message } = req.body;
@@ -654,7 +654,7 @@ const saveChatMessage = async (req, res) => {
 };
 
 // Get chat history for consultation
-const getChatHistory = async (req, res) => {
+export const getChatHistory = async (req, res) => {
   try {
     const consultationId = req.params.id;
     const userId = req.user._id;
@@ -684,7 +684,7 @@ const getChatHistory = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   getDoctorPatients,
   getPatientHistoryForDoctor,
   createConsultation,

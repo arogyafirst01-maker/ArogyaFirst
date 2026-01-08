@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { DOCUMENT_TYPES, DOCUMENT_UPLOAD_SOURCE } = require('@arogyafirst/shared');
-const { generateDocumentId } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { DOCUMENT_TYPES, DOCUMENT_UPLOAD_SOURCE } from '@arogyafirst/shared';
+import { generateDocumentId } from '@arogyafirst/shared';
 
 /**
  * Document Schema
@@ -150,4 +150,4 @@ documentSchema.methods.softDelete = function() {
 
 const Document = mongoose.model('Document', documentSchema);
 
-module.exports = Document;;
+export default Document;

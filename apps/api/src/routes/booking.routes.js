@@ -2,24 +2,28 @@
 // GET /provider/:providerId - Get provider's bookings
 // POST /manual - Create manual booking (walk-in)
 // PUT /:id/status - Update booking status
-const express = require('express');
-const { createBooking,
+import express from 'express';
+import {
+  createBooking,
   getPatientBookings,
   getBookingById,
   cancelBooking,
   rescheduleBooking,
   getProviderBookings,
   createManualBooking,
-  updateBookingStatus } = require('../controllers/booking.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest,
+  updateBookingStatus
+} from '../controllers/booking.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import {
+  validateRequest,
   createBookingSchema,
   cancelBookingSchema,
   rescheduleBookingSchema,
   manualBookingSchema,
-  updateBookingStatusSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+  updateBookingStatusSchema
+} from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -96,4 +100,4 @@ router.put(
   rescheduleBooking
 );
 
-module.exports = router;
+export default router;

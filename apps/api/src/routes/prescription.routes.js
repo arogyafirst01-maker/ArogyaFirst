@@ -1,20 +1,24 @@
-const express = require('express');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
-const { createPrescription,
+import express from 'express';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
+import {
+  createPrescription,
   getPatientPrescriptions,
   getDoctorPrescriptions,
   getPharmacyPrescriptions,
   prebookPrescription,
   fulfillPrescription,
   cancelPrescription,
-  searchMedicines } = require('../controllers/prescription.controller.js');
-const { createPrescriptionSchema,
+  searchMedicines
+} from '../controllers/prescription.controller.js';
+import {
+  createPrescriptionSchema,
   prebookPrescriptionSchema,
   cancelPrescriptionSchema,
-  searchMedicinesSchema } = require('../middleware/validation.middleware.js');
+  searchMedicinesSchema
+} from '../middleware/validation.middleware.js';
 
 const router = express.Router();
 
@@ -37,4 +41,4 @@ router.put('/:prescriptionId/fulfill', authorize([ROLES.PHARMACY]), fulfillPresc
 // Shared routes (doctor or patient can cancel)
 router.put('/:prescriptionId/cancel', authorize([ROLES.DOCTOR, ROLES.PATIENT]), validateRequest(cancelPrescriptionSchema), cancelPrescription);
 
-module.exports = router;
+export default router;

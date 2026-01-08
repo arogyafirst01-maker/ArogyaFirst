@@ -1,5 +1,5 @@
-const { ROLES, VERIFICATION_STATUS } = require('@arogyafirst/shared');
-const { forbiddenResponse, unauthorizedResponse } = require('../utils/response.util.js');
+import { ROLES, VERIFICATION_STATUS } from '@arogyafirst/shared';
+import { forbiddenResponse, unauthorizedResponse } from '../utils/response.util.js';
 
 /**
  * Higher-order function that returns middleware for role-based authorization
@@ -73,4 +73,8 @@ const requireVerification = (req, res, next) => {
   return forbiddenResponse(res, 'Account verification required');
 };
 
-module.exports = { authorize, authorizeOwnership, requireVerification };
+export {
+  authorize,
+  authorizeOwnership,
+  requireVerification
+};

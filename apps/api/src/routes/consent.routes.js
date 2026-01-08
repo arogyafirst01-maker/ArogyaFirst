@@ -1,21 +1,25 @@
-const express = require('express');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest,
+import express from 'express';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import {
+  validateRequest,
   requestConsentSchema,
   approveConsentSchema,
   rejectConsentSchema,
   checkConsentSchema,
   getPatientConsentsSchema,
-  getProviderConsentsSchema, } = require('../middleware/validation.middleware.js');
-const { requestConsent,
+  getProviderConsentsSchema,
+} from '../middleware/validation.middleware.js';
+import {
+  requestConsent,
   getPatientConsentRequests,
   getProviderConsentRequests,
   approveConsent,
   rejectConsent,
   revokeConsent,
-  checkConsentStatus, } = require('../controllers/consent.controller.js');
-const { ROLES } = require('@arogyafirst/shared');
+  checkConsentStatus,
+} from '../controllers/consent.controller.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -109,4 +113,4 @@ router.get(
   checkConsentStatus
 );
 
-module.exports = router;
+export default router;

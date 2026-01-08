@@ -1,6 +1,6 @@
-const express = require('express');
-const { handleWebhook } = require('../controllers/payment.controller.js');
-const { webhookMiddleware } = require('../middleware/rawBody.middleware.js');
+import express from 'express';
+import { handleWebhook } from '../controllers/payment.controller.js';
+import { webhookMiddleware } from '../middleware/rawBody.middleware.js';
 
 const router = express.Router();
 
@@ -44,4 +44,4 @@ const router = express.Router();
  */
 router.post('/', webhookMiddleware, handleWebhook);
 
-module.exports = router;
+export default router;

@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const authController = require('../controllers/auth.controller.js');
-const { validateRequest, registerPatientSchema, registerHospitalSchema, registerDoctorSchema, registerLabSchema, registerPharmacySchema, loginSchema, sendEmailOTPSchema, verifyEmailOTPSchema, forgotPasswordSchema, verifyPhoneOTPSchema, resetPasswordSchema } = require('../middleware/validation.middleware.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import * as authController from '../controllers/auth.controller.js';
+import { validateRequest, registerPatientSchema, registerHospitalSchema, registerDoctorSchema, registerLabSchema, registerPharmacySchema, loginSchema, sendEmailOTPSchema, verifyEmailOTPSchema, forgotPasswordSchema, verifyPhoneOTPSchema, resetPasswordSchema } from '../middleware/validation.middleware.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 // Email OTP verification routes (public, no authentication required)
 router.post('/send-email-otp', validateRequest(sendEmailOTPSchema), authController.sendEmailOTP);
@@ -49,4 +49,4 @@ router.post('/logout', authController.logout);
 router.get('/me', authenticate, authController.me);
 router.post('/logout-all', authenticate, authController.logoutAll);
 
-module.exports = router;
+export default router;

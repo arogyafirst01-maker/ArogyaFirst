@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { REFERRAL_STATUS, REFERRAL_TYPES, ROLES } = require('@arogyafirst/shared');
-const { generateReferralId } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { REFERRAL_STATUS, REFERRAL_TYPES, ROLES } from '@arogyafirst/shared';
+import { generateReferralId } from '@arogyafirst/shared';
 
 /**
  * Referral Schema
@@ -315,4 +315,4 @@ referralSchema.post('init', function() {
 
 const Referral = mongoose.model('Referral', referralSchema);
 
-module.exports = Referral;;
+export default Referral;

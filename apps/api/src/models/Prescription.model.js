@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { PRESCRIPTION_STATUS } = require('@arogyafirst/shared');
-const { generatePrescriptionId } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { PRESCRIPTION_STATUS } from '@arogyafirst/shared';
+import { generatePrescriptionId } from '@arogyafirst/shared';
 
 /**
  * Prescription Schema
@@ -329,4 +329,4 @@ prescriptionSchema.methods.toJSON = function() {
 
 const Prescription = mongoose.model('Prescription', prescriptionSchema);
 
-module.exports = Prescription;;
+export default Prescription;

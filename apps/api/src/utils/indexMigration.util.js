@@ -1,10 +1,10 @@
-const Slot = require('../models/Slot.model.js');
+import Slot from '../models/Slot.model.js';
 
 /**
  * Migrate database indexes to fix duplicate key errors
  * Drops old indexes and recreates them with updated partialFilterExpression
  */
-async function migrateIndexes() {
+export async function migrateIndexes() {
   try {
     console.log('🔄 Starting index migration...');
     
@@ -32,5 +32,3 @@ async function migrateIndexes() {
     // The indexes will be created on first document save if needed
   }
 }
-
-module.exports = { migrateIndexes };

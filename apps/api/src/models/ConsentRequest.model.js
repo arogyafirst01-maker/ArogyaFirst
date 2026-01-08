@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { CONSENT_STATUS, ROLES } = require('@arogyafirst/shared');
-const { generateConsentId, isConsentExpired } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { CONSENT_STATUS, ROLES } from '@arogyafirst/shared';
+import { generateConsentId, isConsentExpired } from '@arogyafirst/shared';
 
 /**
  * ConsentRequest Schema
@@ -196,4 +196,4 @@ consentRequestSchema.pre('save', function(next) {
 
 const ConsentRequest = mongoose.model('ConsentRequest', consentRequestSchema);
 
-module.exports = ConsentRequest;;
+export default ConsentRequest;

@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { PAYMENT_STATUS, REFUND_STATUS } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { PAYMENT_STATUS, REFUND_STATUS } from '@arogyafirst/shared';
 
 /**
  * Payment Schema
@@ -305,4 +305,4 @@ paymentSchema.pre('save', async function(next) {
 
 const Payment = mongoose.model('Payment', paymentSchema);
 
-module.exports = Payment;;
+export default Payment;

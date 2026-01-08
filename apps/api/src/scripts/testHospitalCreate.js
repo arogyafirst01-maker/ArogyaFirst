@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const User = require('../models/User.model.js');
-const { ROLES, VERIFICATION_STATUS } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import User from '../models/User.model.js';
+import { ROLES, VERIFICATION_STATUS } from '@arogyafirst/shared';
 
 const MONGODB_URI = 'mongodb+srv://arogyafirst01_db_user:jQi8mcB9eYP8FL2r@cluster0.kgrwhjd.mongodb.net/arogyafirst';
 

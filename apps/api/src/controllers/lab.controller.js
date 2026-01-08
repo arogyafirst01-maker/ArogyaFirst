@@ -1,16 +1,16 @@
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const Document = require('../models/Document.model.js');
-const Slot = require('../models/Slot.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { updateUserSettings } = require('../utils/settings.util.js');
-const { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } = require('../utils/export.util.js');
-const { sendLabReportNotificationEmail } = require('../utils/email.util.js');
-const { withTransaction } = require('../utils/transaction.util.js');
-const { ROLES, BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, DOCUMENT_UPLOAD_SOURCE, DOCUMENT_TYPES } = require('@arogyafirst/shared');
-const { parse } = require('csv-parse/sync');
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import Document from '../models/Document.model.js';
+import Slot from '../models/Slot.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { updateUserSettings } from '../utils/settings.util.js';
+import { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } from '../utils/export.util.js';
+import { sendLabReportNotificationEmail } from '../utils/email.util.js';
+import { withTransaction } from '../utils/transaction.util.js';
+import { ROLES, BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, DOCUMENT_UPLOAD_SOURCE, DOCUMENT_TYPES } from '@arogyafirst/shared';
+import { parse } from 'csv-parse/sync';
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     if (req.user.role !== ROLES.LAB) {
       return errorResponse(res, 'Access denied: Lab role required', 403);
@@ -31,7 +31,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const { name, location } = req.body;
@@ -111,7 +111,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const getMachines = async (req, res) => {
+export const getMachines = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.LAB) {
@@ -136,7 +136,7 @@ const getMachines = async (req, res) => {
   }
 };
 
-const addMachine = async (req, res) => {
+export const addMachine = async (req, res) => {
   try {
     const { name, model, manufacturer, purchaseDate, lastMaintenanceDate, nextMaintenanceDate, status } = req.body;
     const user = await User.findById(req.user._id);
@@ -169,7 +169,7 @@ const addMachine = async (req, res) => {
   }
 };
 
-const updateMachine = async (req, res) => {
+export const updateMachine = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
@@ -207,7 +207,7 @@ const updateMachine = async (req, res) => {
   }
 };
 
-const deleteMachine = async (req, res) => {
+export const deleteMachine = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
@@ -227,7 +227,7 @@ const deleteMachine = async (req, res) => {
   }
 };
 
-const addQCRecord = async (req, res) => {
+export const addQCRecord = async (req, res) => {
   try {
     const { machineId } = req.params;
     const { date, testType, result, parameters, performedBy, notes } = req.body;
@@ -265,7 +265,7 @@ const addQCRecord = async (req, res) => {
   }
 };
 
-const getQCRecords = async (req, res) => {
+export const getQCRecords = async (req, res) => {
   try {
     const { machineId } = req.params;
     const { limit = 50 } = req.query;
@@ -294,7 +294,7 @@ const getQCRecords = async (req, res) => {
   }
 };
 
-const updateQCRecord = async (req, res) => {
+export const updateQCRecord = async (req, res) => {
   try {
     const { machineId, qcId } = req.params;
     const updates = req.body;
@@ -334,7 +334,7 @@ const updateQCRecord = async (req, res) => {
   }
 };
 
-const deleteQCRecord = async (req, res) => {
+export const deleteQCRecord = async (req, res) => {
   try {
     const { machineId, qcId } = req.params;
 
@@ -363,7 +363,7 @@ const deleteQCRecord = async (req, res) => {
   }
 };
 
-const getQCTrends = async (req, res) => {
+export const getQCTrends = async (req, res) => {
   try {
     const { machineId } = req.params;
     const { startDate, endDate, testType } = req.query;
@@ -439,7 +439,7 @@ const getQCTrends = async (req, res) => {
   }
 };
 
-const getFacilities = async (req, res) => {
+export const getFacilities = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.LAB) {
@@ -451,7 +451,7 @@ const getFacilities = async (req, res) => {
   }
 };
 
-const addFacility = async (req, res) => {
+export const addFacility = async (req, res) => {
   try {
     const { facility } = req.body;
     const user = await User.findById(req.user._id);
@@ -472,7 +472,7 @@ const addFacility = async (req, res) => {
   }
 };
 
-const deleteFacility = async (req, res) => {
+export const deleteFacility = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -495,7 +495,7 @@ const deleteFacility = async (req, res) => {
   }
 };
 
-const getDashboard = async (req, res) => {
+export const getDashboard = async (req, res) => {
   try {
     const labId = req.params.id;
     const userId = req.user._id;
@@ -700,7 +700,7 @@ const getDashboard = async (req, res) => {
   }
 };
 
-const exportReport = async (req, res) => {
+export const exportReport = async (req, res) => {
   try {
     // Authorization: Allow LAB owner or ADMIN
     const { id } = req.params;
@@ -912,7 +912,8 @@ const exportReport = async (req, res) => {
       }
     }
     
-    // Generate const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
+    // Generate export
+    const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
     const filename = sanitizeFilename(`lab_${reportType}_${Date.now()}`);
     
     if (format === 'csv') {
@@ -932,7 +933,7 @@ const exportReport = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
+export const getSettings = async (req, res) => {
   try {
     if (req.user.role !== ROLES.LAB) {
       return errorResponse(res, 'Access denied: Lab role required', 403);
@@ -943,7 +944,7 @@ const getSettings = async (req, res) => {
   }
 };
 
-const updateSettings = async (req, res) => {
+export const updateSettings = async (req, res) => {
   try {
     const settings = await updateUserSettings({
       userId: req.user._id,
@@ -966,7 +967,7 @@ const updateSettings = async (req, res) => {
  * Bulk upload lab reports via CSV file
  * CSV columns: bookingId, reportTitle, reportDescription, reportUrl (Cloudinary URL)
  */
-const bulkUploadReports = async (req, res) => {
+export const bulkUploadReports = async (req, res) => {
   try {
     // Validate that CSV file is provided
     if (!req.file) {
@@ -1145,26 +1146,4 @@ const bulkUploadReports = async (req, res) => {
     console.error('Bulk upload error:', error);
     return errorResponse(res, 'Failed to process bulk upload', 500);
   }
-};
-
-module.exports = {
-  getProfile,
-  updateProfile,
-  getMachines,
-  addMachine,
-  updateMachine,
-  deleteMachine,
-  addQCRecord,
-  getQCRecords,
-  updateQCRecord,
-  deleteQCRecord,
-  getQCTrends,
-  getFacilities,
-  addFacility,
-  deleteFacility,
-  getDashboard,
-  exportReport,
-  getSettings,
-  updateSettings,
-  bulkUploadReports,
 };

@@ -1,20 +1,24 @@
-const express = require('express');
-const { createReferral,
+import express from 'express';
+import {
+  createReferral,
   getSourceReferrals,
   getTargetReferrals,
   getReferralById,
   acceptReferral,
   completeReferral,
   rejectReferral,
-  cancelReferral } = require('../controllers/referral.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest,
+  cancelReferral
+} from '../controllers/referral.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import {
+  validateRequest,
   createReferralSchema,
   acceptReferralSchema,
   rejectReferralSchema,
-  cancelReferralSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+  cancelReferralSchema
+} from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -117,4 +121,4 @@ router.put(
   cancelReferral
 );
 
-module.exports = router;
+export default router;

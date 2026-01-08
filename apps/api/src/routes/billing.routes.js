@@ -1,14 +1,16 @@
-const express = require('express');
-const { generateInvoice,
+import express from 'express';
+import {
+  generateInvoice,
   getInvoicesByProvider,
   getInvoiceById,
   updateInvoiceStatus,
   markInvoiceAsPaid,
-  cancelInvoice } = require('../controllers/billing.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validate } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+  cancelInvoice
+} from '../controllers/billing.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validate } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -125,4 +127,4 @@ router.patch(
   cancelInvoice
 );
 
-module.exports = router;
+export default router;

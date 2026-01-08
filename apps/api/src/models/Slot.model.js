@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const { ROLES, BOOKING_TYPES } = require('@arogyafirst/shared');
-const { timeToMinutes } = require('@arogyafirst/shared/utils');
+import mongoose from 'mongoose';
+import { ROLES, BOOKING_TYPES } from '@arogyafirst/shared';
+import { timeToMinutes } from '@arogyafirst/shared/utils';
 
 const normalizeDateToStartOfDayUTC = (date) => {
   const d = new Date(date);
@@ -428,4 +428,4 @@ slotSchema.index({
 
 const Slot = mongoose.model('Slot', slotSchema);
 
-module.exports = Slot;;
+export default Slot;

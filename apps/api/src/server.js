@@ -1,37 +1,37 @@
-require('dotenv/config');
-const express = require('express');
-const cors = require('cors');
-const helmet = require('helmet');
-const morgan = require('morgan');
-const cookieParser = require('cookie-parser');
-const connectDB = require('./config/database.js');
-const healthRoutes = require('./routes/health.routes.js');
-const authRoutes = require('./routes/auth.routes.js');
-const patientRoutes = require('./routes/patient.routes.js');
-const hospitalRoutes = require('./routes/hospital.routes.js');
-const doctorRoutes = require('./routes/doctor.routes.js');
-const labRoutes = require('./routes/lab.routes.js');
-const pharmacyRoutes = require('./routes/pharmacy.routes.js');
-const adminRoutes = require('./routes/admin.routes.js');
-const slotRoutes = require('./routes/slot.routes.js');
-const bookingRoutes = require('./routes/booking.routes.js');
-const providerRoutes = require('./routes/provider.routes.js');
-const paymentRoutes = require('./routes/payment.routes.js');
-const webhookRoutes = require('./routes/webhook.routes.js');
-const documentRoutes = require('./routes/document.routes.js');
-const consentRoutes = require('./routes/consent.routes.js');
-const prescriptionRoutes = require('./routes/prescription.routes.js');
-const referralRoutes = require('./routes/referral.routes.js');
-const healthAwarenessRoutes = require('./routes/healthAwareness.routes.js');
-const consultationRoutes = require('./routes/consultation.routes.js');
-const billingRoutes = require('./routes/billing.routes.js');
-const contactRoutes = require('./routes/contact.routes.js');
-const { getTokenExpiryInSeconds } = require('./utils/jwt.util.js');
-const { getRazorpayInstance } = require('./config/razorpay.js');
-const { checkTransactionSupport } = require('./utils/transaction.util.js');
-const { verifyEmailTransporter } = require('./utils/email.util.js');
-const { verifySMSTransporter } = require('./utils/sms.util.js');
-const { migrateIndexes } = require('./utils/indexMigration.util.js');
+import 'dotenv/config';
+import express from 'express';
+import cors from 'cors';
+import helmet from 'helmet';
+import morgan from 'morgan';
+import cookieParser from 'cookie-parser';
+import connectDB from './config/database.js';
+import healthRoutes from './routes/health.routes.js';
+import authRoutes from './routes/auth.routes.js';
+import patientRoutes from './routes/patient.routes.js';
+import hospitalRoutes from './routes/hospital.routes.js';
+import doctorRoutes from './routes/doctor.routes.js';
+import labRoutes from './routes/lab.routes.js';
+import pharmacyRoutes from './routes/pharmacy.routes.js';
+import adminRoutes from './routes/admin.routes.js';
+import slotRoutes from './routes/slot.routes.js';
+import bookingRoutes from './routes/booking.routes.js';
+import providerRoutes from './routes/provider.routes.js';
+import paymentRoutes from './routes/payment.routes.js';
+import webhookRoutes from './routes/webhook.routes.js';
+import documentRoutes from './routes/document.routes.js';
+import consentRoutes from './routes/consent.routes.js';
+import prescriptionRoutes from './routes/prescription.routes.js';
+import referralRoutes from './routes/referral.routes.js';
+import healthAwarenessRoutes from './routes/healthAwareness.routes.js';
+import consultationRoutes from './routes/consultation.routes.js';
+import billingRoutes from './routes/billing.routes.js';
+import contactRoutes from './routes/contact.routes.js';
+import { getTokenExpiryInSeconds } from './utils/jwt.util.js';
+import { getRazorpayInstance } from './config/razorpay.js';
+import { checkTransactionSupport } from './utils/transaction.util.js';
+import { verifyEmailTransporter } from './utils/email.util.js';
+import { verifySMSTransporter } from './utils/sms.util.js';
+import { migrateIndexes } from './utils/indexMigration.util.js';
 
 // Validate JWT configuration
 if (!process.env.JWT_SECRET) {
@@ -69,33 +69,27 @@ if (process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET) {
 
 const app = express();
 
-// Start database connection in background - don't block server startup
-connectDB()
-  .then(async () => {
-    console.log('✓ Database connected');
-    // Migrate database indexes
-    await migrateIndexes();
+connectDB().then(async () => {
+  // Migrate database indexes
+  await migrateIndexes();
 
-    // Check transaction support after database connection
-    const transactionsEnabled = await checkTransactionSupport();
-    if (transactionsEnabled) {
-      console.log('MongoDB transactions: ENABLED (replica set detected)');
-    } else {
-      console.error('WARNING: MongoDB transactions: DISABLED');
-      console.error('Multi-document operations will NOT be atomic. Data consistency is NOT guaranteed.');
-      console.error('For production: Set up MongoDB replica set and set ENABLE_TRANSACTIONS=true');
-      console.error('See docs/DEPLOYMENT.md for setup instructions.');
-    }
+  // Check transaction support after database connection
+  const transactionsEnabled = await checkTransactionSupport();
+  if (transactionsEnabled) {
+    console.log('MongoDB transactions: ENABLED (replica set detected)');
+  } else {
+    console.error('WARNING: MongoDB transactions: DISABLED');
+    console.error('Multi-document operations will NOT be atomic. Data consistency is NOT guaranteed.');
+    console.error('For production: Set up MongoDB replica set and set ENABLE_TRANSACTIONS=true');
+    console.error('See docs/DEPLOYMENT.md for setup instructions.');
+  }
 
-    // Verify email transporter configuration
-    await verifyEmailTransporter();
+  // Verify email transporter configuration
+  //await verifyEmailTransporter();
 
-    // Verify SMS transporter configuration
-    await verifySMSTransporter();
-  })
-  .catch((err) => {
-    console.error('⚠ Database connection failed (will retry):', err.message);
-  });
+  // Verify SMS transporter configuration
+  await verifySMSTransporter();
+});
 
 const corsOptions = {
   origin: function (origin, callback) {
@@ -120,8 +114,8 @@ const corsOptions = {
   credentials: true
 };
 
-app.use(helmet());
 app.use(cors(corsOptions));
+app.use(helmet());
 app.use(morgan('dev'));
 
 // CRITICAL: Mount webhook routes BEFORE express.json() to capture raw body
@@ -172,14 +166,9 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: 'Internal server error' });
 });
 
-// Only start server if not in Lambda
-if (require.main === module && !process.env.AWS_LAMBDA_FUNCTION_NAME) {
-  const PORT = process.env.PORT || 3000;
-  const HOST = process.env.HOST || '0.0.0.0';
-  app.listen(PORT, HOST, (err) => {
-    if (err) throw err;
-    console.log(`Server running on http://${HOST}:${PORT}`);
-  });
-}
-
-module.exports = app;
+const PORT = process.env.PORT || 3000;
+const HOST = process.env.HOST || '0.0.0.0';
+app.listen(PORT, HOST, (err) => {
+  if (err) throw err;
+  console.log(`Server running on http://${HOST}:${PORT}`);
+});

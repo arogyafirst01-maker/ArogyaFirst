@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { SHIFT_TYPES, SCHEDULE_STATUS } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { SHIFT_TYPES, SCHEDULE_STATUS } from '@arogyafirst/shared';
 
 const staffScheduleSchema = new mongoose.Schema(
   {
@@ -161,4 +161,4 @@ staffScheduleSchema.statics.findByStaff = function(hospitalId, staffId, filters 
 
 const StaffSchedule = mongoose.model('StaffSchedule', staffScheduleSchema);
 
-module.exports = StaffSchedule;;
+export default StaffSchedule;

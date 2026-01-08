@@ -1,4 +1,4 @@
-const express = require('express');
+import express from 'express';
 
 /**
  * Raw Body Parser Middleware
@@ -49,7 +49,7 @@ const express = require('express');
  * 
  * @returns {Function} Express middleware
  */
-const rawBodyParser = () => {
+export const rawBodyParser = () => {
   return express.raw({ type: 'application/json' });
 };
 
@@ -66,7 +66,7 @@ const rawBodyParser = () => {
  * @param {Object} res - Express response object
  * @param {Function} next - Express next middleware function
  */
-const attachRawBody = (req, res, next) => {
+export const attachRawBody = (req, res, next) => {
   // Store raw body for signature verification
   req.rawBody = req.body;
   
@@ -101,6 +101,4 @@ const attachRawBody = (req, res, next) => {
  * 
  * @returns {Array} Array of middleware functions
  */
-const webhookMiddleware = [rawBodyParser(), attachRawBody];
-
-module.exports = { webhookMiddleware, rawBodyParser, attachRawBody };
+export const webhookMiddleware = [rawBodyParser(), attachRawBody];

@@ -1,12 +1,12 @@
-const { Router } = require('express');
-const controller = require('../controllers/pharmacy.controller.js');
-const { register } = require('../controllers/auth.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, createPharmacyLinkSchema, bulkUploadMedicinesSchema, addSupplierSchema, updateSupplierSchema, createPurchaseOrderSchema, updatePurchaseOrderSchema, approvePurchaseOrderSchema, receivePurchaseOrderSchema, stockAdjustmentSchema, physicalVerificationSchema } = require('../middleware/validation.middleware.js');
-const { uploadSingle, handleUploadError } = require('../middleware/upload.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
-const { createPharmacyLink, getPharmacyLinks, deletePharmacyLink, getPendingRequests, acceptRequest, rejectRequest } = require('../controllers/pharmacyLink.controller.js');
+import { Router } from 'express';
+import * as controller from '../controllers/pharmacy.controller.js';
+import { register } from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, createPharmacyLinkSchema, bulkUploadMedicinesSchema, addSupplierSchema, updateSupplierSchema, createPurchaseOrderSchema, updatePurchaseOrderSchema, approvePurchaseOrderSchema, receivePurchaseOrderSchema, stockAdjustmentSchema, physicalVerificationSchema } from '../middleware/validation.middleware.js';
+import { uploadSingle, handleUploadError } from '../middleware/upload.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
+import { createPharmacyLink, getPharmacyLinks, deletePharmacyLink, getPendingRequests, acceptRequest, rejectRequest } from '../controllers/pharmacyLink.controller.js';
 
 const router = Router();
 
@@ -67,4 +67,4 @@ router.put('/purchase-orders/:id/approve', authenticate, authorize([ROLES.PHARMA
 router.put('/purchase-orders/:id/receive', authenticate, authorize([ROLES.PHARMACY]), validateRequest(receivePurchaseOrderSchema), controller.receivePurchaseOrder);
 router.put('/purchase-orders/:id/cancel', authenticate, authorize([ROLES.PHARMACY]), controller.cancelPurchaseOrder);
 
-module.exports = router;;
+export default router;

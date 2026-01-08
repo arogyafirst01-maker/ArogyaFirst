@@ -1,9 +1,9 @@
-const express = require('express');
-const { createOrder, verifyPayment } = require('../controllers/payment.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, createOrderSchema, verifyPaymentSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import express from 'express';
+import { createOrder, verifyPayment } from '../controllers/payment.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, createOrderSchema, verifyPaymentSchema } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -58,4 +58,4 @@ router.post(
   verifyPayment
 );
 
-module.exports = router;
+export default router;

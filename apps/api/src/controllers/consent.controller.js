@@ -1,8 +1,8 @@
-const mongoose = require('mongoose');
-const ConsentRequest = require('../models/ConsentRequest.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { CONSENT_STATUS, ROLES } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import ConsentRequest from '../models/ConsentRequest.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { CONSENT_STATUS, ROLES } from '@arogyafirst/shared';
 
 /**
  * Request Consent
@@ -13,7 +13,7 @@ const { CONSENT_STATUS, ROLES } = require('@arogyafirst/shared');
  * @route POST /api/consent/request
  * @access Private (Hospital, Doctor, Lab)
  */
-const requestConsent = async (req, res) => {
+export const requestConsent = async (req, res) => {
   try {
     const { patientId, purpose } = req.body;
     const requesterId = req.user._id;
@@ -67,7 +67,7 @@ const requestConsent = async (req, res) => {
  * @route GET /api/consent/patient/:patientId
  * @access Private (Patient only)
  */
-const getPatientConsentRequests = async (req, res) => {
+export const getPatientConsentRequests = async (req, res) => {
   try {
     const { patientId } = req.params;
     const requesterId = req.user._id;
@@ -105,7 +105,7 @@ const getPatientConsentRequests = async (req, res) => {
  * @route GET /api/consent/provider/:providerId
  * @access Private (Hospital, Doctor, Lab)
  */
-const getProviderConsentRequests = async (req, res) => {
+export const getProviderConsentRequests = async (req, res) => {
   try {
     const { providerId } = req.params;
     const requesterId = req.user._id;
@@ -143,7 +143,7 @@ const getProviderConsentRequests = async (req, res) => {
  * @route PUT /api/consent/:consentId/approve
  * @access Private (Patient only)
  */
-const approveConsent = async (req, res) => {
+export const approveConsent = async (req, res) => {
   try {
     const { consentId } = req.params;
     const { expiresAt, notes } = req.body;
@@ -190,7 +190,7 @@ const approveConsent = async (req, res) => {
  * @route PUT /api/consent/:consentId/reject
  * @access Private (Patient only)
  */
-const rejectConsent = async (req, res) => {
+export const rejectConsent = async (req, res) => {
   try {
     const { consentId } = req.params;
     const { notes } = req.body;
@@ -237,7 +237,7 @@ const rejectConsent = async (req, res) => {
  * @route PUT /api/consent/:consentId/revoke
  * @access Private (Patient only)
  */
-const revokeConsent = async (req, res) => {
+export const revokeConsent = async (req, res) => {
   try {
     const { consentId } = req.params;
     const requesterId = req.user._id;
@@ -284,7 +284,7 @@ const revokeConsent = async (req, res) => {
  * @route GET /api/consent/check?patientId=xxx&requesterId=xxx
  * @access Private (Hospital, Doctor, Lab)
  */
-const checkConsentStatus = async (req, res) => {
+export const checkConsentStatus = async (req, res) => {
   try {
     const { patientId, requesterId } = req.query;
     const authenticatedUserId = req.user._id;
@@ -319,14 +319,4 @@ const checkConsentStatus = async (req, res) => {
     console.error('Error checking consent status:', error);
     return errorResponse(res, 'Failed to check consent status', 500);
   }
-};
-
-module.exports = {
-  requestConsent,
-  getPatientConsentRequests,
-  getProviderConsentRequests,
-  approveConsent,
-  rejectConsent,
-  revokeConsent,
-  checkConsentStatus,
 };

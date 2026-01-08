@@ -1,7 +1,7 @@
-const User = require('../models/User.model.js');
-const Slot = require('../models/Slot.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { ROLES, BOOKING_TYPES } = require('@arogyafirst/shared');
+import User from '../models/User.model.js';
+import Slot from '../models/Slot.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { ROLES, BOOKING_TYPES } from '@arogyafirst/shared';
 
 /**
  * Search providers by entity type and filters
@@ -295,4 +295,4 @@ const searchProvidersByRole = async (req, res) => {
   }
 };
 
-module.exports = { searchProviders, getProviderDetails, searchProvidersByRole };
+export { searchProviders, getProviderDetails, searchProvidersByRole };

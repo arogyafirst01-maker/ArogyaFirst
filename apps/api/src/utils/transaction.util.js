@@ -1,7 +1,8 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
 let transactionSupportCache = null;
 
-async function checkTransactionSupport() {
+export async function checkTransactionSupport() {
   if (transactionSupportCache !== null) {
     return transactionSupportCache;
   }
@@ -52,7 +53,7 @@ async function checkTransactionSupport() {
  * @param {Function} callback - Async function to execute, receives session parameter (or null)
  * @returns {Promise<any>} Result from callback
  */
-async function withTransaction(callback) {
+export async function withTransaction(callback) {
   const supportsTransactions = await checkTransactionSupport();
   
   if (supportsTransactions) {
@@ -81,7 +82,7 @@ async function withTransaction(callback) {
   }
 }
 
-async function atomicSlotBooking(slotId, increment = 1, timeSlot = null, session = null) {
+export async function atomicSlotBooking(slotId, increment = 1, timeSlot = null, session = null) {
   try {
     const Slot = mongoose.model('Slot');
     const inc = Number(increment) || 0;
@@ -136,5 +137,3 @@ async function atomicSlotBooking(slotId, increment = 1, timeSlot = null, session
     return null;
   }
 }
-
-module.exports = { checkTransactionSupport, withTransaction, atomicSlotBooking };

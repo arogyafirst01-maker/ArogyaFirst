@@ -1,8 +1,8 @@
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse, forbiddenResponse } = require('../utils/response.util.js');
-const { ROLES, VERIFICATION_STATUS } = require('@arogyafirst/shared');
+import User from '../models/User.model.js';
+import { successResponse, errorResponse, forbiddenResponse } from '../utils/response.util.js';
+import { ROLES, VERIFICATION_STATUS } from '@arogyafirst/shared';
 
-const getPendingVerifications = async (req, res) => {
+export const getPendingVerifications = async (req, res) => {
   try {
     const { role, sortBy = 'createdAt', order = 'asc', page = 1, limit = 10 } = req.query;
     const pageNum = parseInt(page);
@@ -69,7 +69,7 @@ const getPendingVerifications = async (req, res) => {
   }
 };
 
-const verifyEntity = async (req, res) => {
+export const verifyEntity = async (req, res) => {
   try {
     const { entityType, id } = req.params;
     const { status, note } = req.body;
@@ -146,7 +146,7 @@ const verifyEntity = async (req, res) => {
   }
 };
 
-const getVerificationHistory = async (req, res) => {
+export const getVerificationHistory = async (req, res) => {
   try {
     const { userId } = req.params;
 
@@ -162,5 +162,3 @@ const getVerificationHistory = async (req, res) => {
     return errorResponse(res, 'Failed to retrieve verification history', 500);
   }
 };
-
-module.exports = { getPendingVerifications, verifyEntity, getVerificationHistory };

@@ -1,15 +1,15 @@
-const User = require('../models/User.model.js');
-const Prescription = require('../models/Prescription.model.js');
-const Invoice = require('../models/Invoice.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { updateUserSettings } = require('../utils/settings.util.js');
-const { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } = require('../utils/export.util.js');
-const { ROLES, PRESCRIPTION_STATUS, INVOICE_STATUS, PO_STATUS } = require('@arogyafirst/shared');
-const { parse } = require('csv-parse/sync');
-const { withTransaction } = require('../utils/transaction.util.js');
-const { sendPOApprovalEmail, sendPOReceivedEmail, sendPOCancelledEmail } = require('../utils/email.util.js');
+import User from '../models/User.model.js';
+import Prescription from '../models/Prescription.model.js';
+import Invoice from '../models/Invoice.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { updateUserSettings } from '../utils/settings.util.js';
+import { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } from '../utils/export.util.js';
+import { ROLES, PRESCRIPTION_STATUS, INVOICE_STATUS, PO_STATUS } from '@arogyafirst/shared';
+import { parse } from 'csv-parse/sync';
+import { withTransaction } from '../utils/transaction.util.js';
+import { sendPOApprovalEmail, sendPOReceivedEmail, sendPOCancelledEmail } from '../utils/email.util.js';
 
-const getAllPharmacies = async (req, res) => {
+export const getAllPharmacies = async (req, res) => {
   try {
     const limit = parseInt(req.query.limit) || 100;
     const skip = parseInt(req.query.skip) || 0;
@@ -31,7 +31,7 @@ const getAllPharmacies = async (req, res) => {
   }
 };
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PHARMACY) {
       return errorResponse(res, 'Access denied: Pharmacy role required', 403);
@@ -52,7 +52,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const { name, location, licenseNumber } = req.body;
@@ -83,7 +83,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const getMedicines = async (req, res) => {
+export const getMedicines = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -117,7 +117,7 @@ const getMedicines = async (req, res) => {
   }
 };
 
-const addMedicine = async (req, res) => {
+export const addMedicine = async (req, res) => {
   try {
     const { name, genericName, manufacturer, stock, reorderLevel, price, batchNumber, expiryDate } = req.body;
     const user = await User.findById(req.user._id);
@@ -163,7 +163,7 @@ const addMedicine = async (req, res) => {
   }
 };
 
-const updateMedicine = async (req, res) => {
+export const updateMedicine = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
@@ -207,7 +207,7 @@ const updateMedicine = async (req, res) => {
   }
 };
 
-const deleteMedicine = async (req, res) => {
+export const deleteMedicine = async (req, res) => {
   try {
     const { id } = req.params;
     const user = await User.findById(req.user._id);
@@ -227,7 +227,7 @@ const deleteMedicine = async (req, res) => {
   }
 };
 
-const bulkUploadMedicines = async (req, res) => {
+export const bulkUploadMedicines = async (req, res) => {
   try {
     // Validate that CSV file is provided
     if (!req.file) {
@@ -427,7 +427,7 @@ const bulkUploadMedicines = async (req, res) => {
   }
 };
 
-const getLowStockMedicines = async (req, res) => {
+export const getLowStockMedicines = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -448,7 +448,7 @@ const getLowStockMedicines = async (req, res) => {
   }
 };
 
-const getExpiringMedicines = async (req, res) => {
+export const getExpiringMedicines = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -471,7 +471,7 @@ const getExpiringMedicines = async (req, res) => {
   }
 };
 
-const getDashboard = async (req, res) => {
+export const getDashboard = async (req, res) => {
   try {
     const pharmacyId = req.params.id;
     const userId = req.user._id;
@@ -683,7 +683,7 @@ const getDashboard = async (req, res) => {
   }
 };
 
-const exportReport = async (req, res) => {
+export const exportReport = async (req, res) => {
   try {
     // Authorization: Allow PHARMACY owner or ADMIN
     const { id } = req.params;
@@ -878,7 +878,8 @@ const exportReport = async (req, res) => {
       }
     }
     
-    // Generate const dateRangeStr = start && end ? `${formatDateForExport(start)} to ${formatDateForExport(end)}` : 'Current Inventory';
+    // Generate export
+    const dateRangeStr = start && end ? `${formatDateForExport(start)} to ${formatDateForExport(end)}` : 'Current Inventory';
     const filename = sanitizeFilename(`pharmacy_${reportType}_${Date.now()}`);
     
     if (format === 'csv') {
@@ -898,7 +899,7 @@ const exportReport = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
+export const getSettings = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PHARMACY) {
       return errorResponse(res, 'Access denied: Pharmacy role required', 403);
@@ -909,7 +910,7 @@ const getSettings = async (req, res) => {
   }
 };
 
-const updateSettings = async (req, res) => {
+export const updateSettings = async (req, res) => {
   try {
     const settings = await updateUserSettings({
       userId: req.user._id,
@@ -930,7 +931,7 @@ const updateSettings = async (req, res) => {
 
 // ==================== SUPPLIER MANAGEMENT ====================
 
-const getSuppliers = async (req, res) => {
+export const getSuppliers = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -949,7 +950,7 @@ const getSuppliers = async (req, res) => {
   }
 };
 
-const addSupplier = async (req, res) => {
+export const addSupplier = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -977,7 +978,7 @@ const addSupplier = async (req, res) => {
   }
 };
 
-const updateSupplier = async (req, res) => {
+export const updateSupplier = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1005,7 +1006,7 @@ const updateSupplier = async (req, res) => {
   }
 };
 
-const deleteSupplier = async (req, res) => {
+export const deleteSupplier = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1029,7 +1030,7 @@ const deleteSupplier = async (req, res) => {
 
 // ==================== PURCHASE ORDER MANAGEMENT ====================
 
-const getPurchaseOrders = async (req, res) => {
+export const getPurchaseOrders = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1065,7 +1066,7 @@ const getPurchaseOrders = async (req, res) => {
   }
 };
 
-const createPurchaseOrder = async (req, res) => {
+export const createPurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1125,7 +1126,7 @@ const createPurchaseOrder = async (req, res) => {
   }
 };
 
-const updatePurchaseOrder = async (req, res) => {
+export const updatePurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1172,7 +1173,7 @@ const updatePurchaseOrder = async (req, res) => {
   }
 };
 
-const approvePurchaseOrder = async (req, res) => {
+export const approvePurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1212,7 +1213,7 @@ const approvePurchaseOrder = async (req, res) => {
   }
 };
 
-const receivePurchaseOrder = async (req, res) => {
+export const receivePurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1316,7 +1317,7 @@ const receivePurchaseOrder = async (req, res) => {
   }
 };
 
-const cancelPurchaseOrder = async (req, res) => {
+export const cancelPurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1354,7 +1355,7 @@ const cancelPurchaseOrder = async (req, res) => {
   }
 };
 
-const deletePurchaseOrder = async (req, res) => {
+export const deletePurchaseOrder = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.PHARMACY) {
@@ -1380,7 +1381,7 @@ const deletePurchaseOrder = async (req, res) => {
   }
 };
 
-const adjustStock = async (req, res) => {
+export const adjustStock = async (req, res) => {
   try {
     const { medicineId, adjustmentType, quantity, reason, performedBy } = req.body;
 
@@ -1425,7 +1426,7 @@ const adjustStock = async (req, res) => {
   }
 };
 
-const physicalVerification = async (req, res) => {
+export const physicalVerification = async (req, res) => {
   try {
     const { verifications, verifiedBy, autoAdjust } = req.body;
 
@@ -1492,34 +1493,4 @@ const physicalVerification = async (req, res) => {
   } catch (error) {
     return errorResponse(res, 'Failed to complete physical verification', 500);
   }
-};
-
-module.exports = {
-  getAllPharmacies,
-  getProfile,
-  updateProfile,
-  getMedicines,
-  addMedicine,
-  updateMedicine,
-  deleteMedicine,
-  bulkUploadMedicines,
-  getLowStockMedicines,
-  getExpiringMedicines,
-  getDashboard,
-  exportReport,
-  getSettings,
-  updateSettings,
-  getSuppliers,
-  addSupplier,
-  updateSupplier,
-  deleteSupplier,
-  getPurchaseOrders,
-  createPurchaseOrder,
-  updatePurchaseOrder,
-  approvePurchaseOrder,
-  receivePurchaseOrder,
-  cancelPurchaseOrder,
-  deletePurchaseOrder,
-  adjustStock,
-  physicalVerification,
 };

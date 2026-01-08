@@ -1,10 +1,10 @@
-const Referral = require('../models/Referral.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { withTransaction } = require('../utils/transaction.util.js');
-const { sendReferralStatusEmail } = require('../utils/email.util.js');
-const { ROLES, REFERRAL_STATUS, REFERRAL_TYPES } = require('@arogyafirst/shared');
-const mongoose = require('mongoose');
+import Referral from '../models/Referral.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { withTransaction } from '../utils/transaction.util.js';
+import { sendReferralStatusEmail } from '../utils/email.util.js';
+import { ROLES, REFERRAL_STATUS, REFERRAL_TYPES } from '@arogyafirst/shared';
+import mongoose from 'mongoose';
 
 /**
  * Helper function to build source snapshot
@@ -106,7 +106,7 @@ const validateReferralType = (sourceRole, referralType, targetRole) => {
  * @route POST /api/referrals/create
  * @access Private (HOSPITAL, DOCTOR, LAB)
  */
-const createReferral = async (req, res) => {
+export const createReferral = async (req, res) => {
   try {
     const { targetId, patientId, referralType, reason, notes, priority, metadata } = req.body;
     
@@ -174,7 +174,7 @@ const createReferral = async (req, res) => {
  * @route GET /api/referrals/source/:sourceId
  * @access Private
  */
-const getSourceReferrals = async (req, res) => {
+export const getSourceReferrals = async (req, res) => {
   try {
     const { sourceId } = req.params;
     
@@ -213,7 +213,7 @@ const getSourceReferrals = async (req, res) => {
  * @route GET /api/referrals/target/:targetId
  * @access Private
  */
-const getTargetReferrals = async (req, res) => {
+export const getTargetReferrals = async (req, res) => {
   try {
     const { targetId } = req.params;
     
@@ -252,7 +252,7 @@ const getTargetReferrals = async (req, res) => {
  * @route GET /api/referrals/:id
  * @access Private
  */
-const getReferralById = async (req, res) => {
+export const getReferralById = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -291,7 +291,7 @@ const getReferralById = async (req, res) => {
  * @route PUT /api/referrals/:id/accept
  * @access Private
  */
-const acceptReferral = async (req, res) => {
+export const acceptReferral = async (req, res) => {
   try {
     const { id } = req.params;
     const { notes } = req.body;
@@ -350,7 +350,7 @@ const acceptReferral = async (req, res) => {
  * @route PUT /api/referrals/:id/complete
  * @access Private
  */
-const completeReferral = async (req, res) => {
+export const completeReferral = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -418,7 +418,7 @@ const completeReferral = async (req, res) => {
  * @route PUT /api/referrals/:id/reject
  * @access Private
  */
-const rejectReferral = async (req, res) => {
+export const rejectReferral = async (req, res) => {
   try {
     const { id } = req.params;
     const { rejectionReason } = req.body;
@@ -476,7 +476,7 @@ const rejectReferral = async (req, res) => {
  * @route PUT /api/referrals/:id/cancel
  * @access Private
  */
-const cancelReferral = async (req, res) => {
+export const cancelReferral = async (req, res) => {
   try {
     const { id } = req.params;
     const { cancellationReason } = req.body;
@@ -524,15 +524,4 @@ const cancelReferral = async (req, res) => {
     console.error('Error cancelling referral:', error);
     return errorResponse(res, error.message || 'Failed to cancel referral', 500);
   }
-};
-
-module.exports = {
-  createReferral,
-  getSourceReferrals,
-  getTargetReferrals,
-  getReferralById,
-  acceptReferral,
-  completeReferral,
-  rejectReferral,
-  cancelReferral,
 };

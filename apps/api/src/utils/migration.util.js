@@ -1,5 +1,7 @@
-const User = require('../models/User.model.js');const Slot = require('../models/Slot.model.js');const { ROLES, BOOKING_TYPES } = require('@arogyafirst/shared');
-async function migrateDoctorSlots() {
+import User from '../models/User.model.js';
+import Slot from '../models/Slot.model.js';
+import { ROLES, BOOKING_TYPES } from '@arogyafirst/shared';
+export async function migrateDoctorSlots() {
   const doctors = await User.find({ role: ROLES.DOCTOR, 'doctorData.slots': { $exists: true, $ne: [] } });
   let totalDoctors = 0;
   let totalSlots = 0;
@@ -50,7 +52,7 @@ async function migrateDoctorSlots() {
   return { totalDoctors, totalSlots, errors };
 }
 
-async function verifyMigration() {
+export async function verifyMigration() {
   const doctorsWithSlots = await User.countDocuments({ role: ROLES.DOCTOR, 'doctorData.slots': { $exists: true, $ne: [] } });
   const slotCount = await Slot.countDocuments({ providerRole: ROLES.DOCTOR });
   return {
@@ -60,9 +62,7 @@ async function verifyMigration() {
   };
 }
 
-async function rollbackMigration() {
+export async function rollbackMigration() {
   await Slot.deleteMany({ providerRole: ROLES.DOCTOR });
   console.log('Rolled back migration by deleting all doctor slots');
 }
-
-module.exports = { migrateDoctorSlots, verifyMigration, rollbackMigration };

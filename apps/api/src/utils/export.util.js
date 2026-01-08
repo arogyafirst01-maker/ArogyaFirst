@@ -1,12 +1,12 @@
-const { Parser } = require('json2csv');
-const PDFDocument = require('pdfkit');
+import { Parser } from 'json2csv';
+import PDFDocument from 'pdfkit';
 
 /**
  * Formats a Date object to DD-MMM-YYYY string for readability in exports.
  * @param {Date|string} date - The date to format
  * @returns {string} Formatted date string
  */
-const formatDateForExport = (date) => {
+export const formatDateForExport = (date) => {
   if (!date) return 'N/A';
   const d = new Date(date);
   if (isNaN(d.getTime())) return 'N/A';
@@ -24,7 +24,7 @@ const formatDateForExport = (date) => {
  * @param {number} amount - The amount to format
  * @returns {string} Formatted currency string
  */
-const formatCurrency = (amount) => {
+export const formatCurrency = (amount) => {
   if (amount === null || amount === undefined || isNaN(amount)) return '₹0';
   return `₹${Number(amount).toLocaleString('en-IN')}`;
 };
@@ -34,7 +34,7 @@ const formatCurrency = (amount) => {
  * @param {string} name - The filename to sanitize
  * @returns {string} Sanitized filename
  */
-const sanitizeFilename = (name) => {
+export const sanitizeFilename = (name) => {
   if (!name) return 'export';
   return name
     .replace(/[^a-zA-Z0-9\s-_]/g, '')
@@ -48,7 +48,7 @@ const sanitizeFilename = (name) => {
  * @param {Array} fields - Field configuration with label and value mappings
  * @returns {string} CSV string
  */
-const generateCSV = (data, fields) => {
+export const generateCSV = (data, fields) => {
   try {
     if (!Array.isArray(data) || data.length === 0) {
       // Return CSV with headers only if no data
@@ -71,7 +71,7 @@ const generateCSV = (data, fields) => {
  * @param {Object} metadata - Optional metadata (dateRange, generatedAt)
  * @returns {Promise<Buffer>} PDF as Buffer
  */
-const generatePDF = (title, data, columns, metadata = {}) => {
+export const generatePDF = (title, data, columns, metadata = {}) => {
   return new Promise((resolve, reject) => {
     try {
       const doc = new PDFDocument({ margin: 50, size: 'A4' });
@@ -189,5 +189,3 @@ const generatePDF = (title, data, columns, metadata = {}) => {
     }
   });
 };
-
-module.exports = PDFDocument;

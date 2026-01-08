@@ -1,30 +1,30 @@
-const { Router } = require('express');
-const slotController = require('../controllers/slot.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, createSlotSchema, updateSlotSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import { Router } from 'express';
+import * as controller from '../controllers/slot.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, createSlotSchema, updateSlotSchema } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = Router();
 
 // Slot CRUD Routes
-router.post('/', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), validateRequest(createSlotSchema), slotController.createSlot);
+router.post('/', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), validateRequest(createSlotSchema), controller.createSlot);
 
 // Public slot viewing for patients browsing (no auth required)
-router.get('/', slotController.getSlots);
+router.get('/', controller.getSlots);
 
 // Availability Routes - keep specific paths before parameterized routes
-router.get('/availability', slotController.checkAvailability);
+router.get('/availability', controller.checkAvailability);
 
-router.get('/:id', slotController.getSlotById);
+router.get('/:id', controller.getSlotById);
 
-router.put('/:id', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), validateRequest(updateSlotSchema), slotController.updateSlot);
+router.put('/:id', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), validateRequest(updateSlotSchema), controller.updateSlot);
 
-router.delete('/:id', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), slotController.deleteSlot);
+router.delete('/:id', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), controller.deleteSlot);
 
 // Availability Routes
 
 // Bulk Operations (Optional)
-router.post('/bulk', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), slotController.bulkCreateSlots);
+router.post('/bulk', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), controller.bulkCreateSlots);
 
-module.exports = router;
+export default router;

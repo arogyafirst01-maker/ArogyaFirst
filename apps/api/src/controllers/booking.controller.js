@@ -1,14 +1,14 @@
-const Booking = require('../models/Booking.model.js');
-const Slot = require('../models/Slot.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { withTransaction, atomicSlotBooking } = require('../utils/transaction.util.js');
-const { ROLES, BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, PAYMENT_METHODS, BED_ASSIGNMENT_STATUS } = require('@arogyafirst/shared');
-const { generateBookingId } = require('@arogyafirst/shared');
-const { processRefund, processPartialRefund } = require('./payment.controller.js');
-const { sendReschedulingNotificationEmail } = require('../utils/email.util.js');
+import Booking from '../models/Booking.model.js';
+import Slot from '../models/Slot.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { withTransaction, atomicSlotBooking } from '../utils/transaction.util.js';
+import { ROLES, BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, PAYMENT_METHODS, BED_ASSIGNMENT_STATUS } from '@arogyafirst/shared';
+import { generateBookingId } from '@arogyafirst/shared';
+import { processRefund, processPartialRefund } from './payment.controller.js';
+import { sendReschedulingNotificationEmail } from '../utils/email.util.js';
 
-const getProviderBookings = async (req, res) => {
+export const getProviderBookings = async (req, res) => {
   try {
     const { providerId } = req.params;
     const { status, startDate, endDate, entityType, locationId } = req.query;
@@ -61,7 +61,7 @@ const getProviderBookings = async (req, res) => {
 };
 
 // Create manual booking for walk-in patients
-const createManualBooking = async (req, res) => {
+export const createManualBooking = async (req, res) => {
   try {
     const { slotId, timeSlot, patientName, patientPhone, patientEmail, paymentMethod, paymentAmount, metadata } = req.body;
     
@@ -206,7 +206,7 @@ const createManualBooking = async (req, res) => {
 };
 
 // Provider-facing: Update booking status (Complete, No-show, Cancel)
-const updateBookingStatus = async (req, res) => {
+export const updateBookingStatus = async (req, res) => {
   try {
     const { id } = req.params;
     const { status, note } = req.body;
@@ -301,7 +301,7 @@ const validateStatusTransition = (currentStatus, newStatus) => {
   return false;
 };
 // Patient-facing: Create booking
-const createBooking = async (req, res) => {
+export const createBooking = async (req, res) => {
   try {
     const { slotId, timeSlot, metadata, paymentAmount, paymentMethod: incomingPaymentMethod } = req.body;
 
@@ -447,7 +447,7 @@ const createBooking = async (req, res) => {
   }
 };
 
-const getPatientBookings = async (req, res) => {
+export const getPatientBookings = async (req, res) => {
   try {
     const { patientId } = req.params;
     const { status, startDate, endDate, entityType } = req.query;
@@ -469,7 +469,7 @@ const getPatientBookings = async (req, res) => {
   }
 };
 
-const getBookingById = async (req, res) => {
+export const getBookingById = async (req, res) => {
   try {
     const { id } = req.params;
 
@@ -496,7 +496,7 @@ const getBookingById = async (req, res) => {
   }
 };
 
-const cancelBooking = async (req, res) => {
+export const cancelBooking = async (req, res) => {
   try {
     const { id } = req.params;
     const { cancellationReason } = req.body;
@@ -595,7 +595,7 @@ const cancelBooking = async (req, res) => {
 };
 
 // Patient-facing: Reschedule booking
-const rescheduleBooking = async (req, res) => {
+export const rescheduleBooking = async (req, res) => {
   try {
     const { id } = req.params;
     const { newSlotId, newTimeSlot, rescheduleReason } = req.body;
@@ -968,5 +968,3 @@ const buildSlotSnapshot = (slot, timeSlot) => {
 };
 
 // Provider-facing: Get provider's bookings
-
-module.exports = { createBooking, getPatientBookings, getBookingById, cancelBooking, rescheduleBooking, getProviderBookings, createManualBooking, updateBookingStatus };

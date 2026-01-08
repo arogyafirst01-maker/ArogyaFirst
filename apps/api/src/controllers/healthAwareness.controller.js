@@ -1,4 +1,4 @@
-const { successResponse, errorResponse } = require('../utils/response.util.js');
+import { successResponse, errorResponse } from '../utils/response.util.js';
 
 // Phase 1: Static health articles data
 // Future: Replace with database/CMS integration
@@ -225,7 +225,7 @@ const healthArticles = [
   }
 ];
 
-const getArticles = async (req, res) => {
+export const getArticles = async (req, res) => {
   try {
     const { category, search, page = 1, limit = 10 } = req.query;
 
@@ -271,8 +271,4 @@ const getArticles = async (req, res) => {
     console.error('Get articles error:', error);
     return errorResponse(res, error.message || 'Failed to retrieve articles', 500);
   }
-};
-
-module.exports = {
-  getArticles,
 };

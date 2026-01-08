@@ -1,14 +1,14 @@
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { uploadToCloudinary, deleteFromCloudinary, validateFileType } = require('../utils/fileUpload.util.js');
-const { updateUserSettings } = require('../utils/settings.util.js');
-const { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } = require('../utils/export.util.js');
-const { ROLES, BOOKING_STATUS, PAYMENT_STATUS } = require('@arogyafirst/shared');
-const { generateDoctorId } = require('@arogyafirst/shared');
-const crypto = require('crypto');
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { uploadToCloudinary, deleteFromCloudinary, validateFileType } from '../utils/fileUpload.util.js';
+import { updateUserSettings } from '../utils/settings.util.js';
+import { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } from '../utils/export.util.js';
+import { ROLES, BOOKING_STATUS, PAYMENT_STATUS } from '@arogyafirst/shared';
+import { generateDoctorId } from '@arogyafirst/shared';
+import crypto from 'crypto';
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     const user = req.user;
     if (user.role !== ROLES.DOCTOR) {
@@ -20,7 +20,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const { name, qualification, experience, location, dateOfBirth, aadhaarLast4, specialization, hospitalId } = req.body;
@@ -86,7 +86,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const uploadDocument = async (req, res) => {
+export const uploadDocument = async (req, res) => {
   try {
     if (!req.file) {
       return errorResponse(res, 'No file uploaded', 400);
@@ -135,7 +135,7 @@ const uploadDocument = async (req, res) => {
   }
 };
 
-const deleteDocument = async (req, res) => {
+export const deleteDocument = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -160,7 +160,7 @@ const deleteDocument = async (req, res) => {
   }
 };
 
-const getSlots = async (req, res) => {
+export const getSlots = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     if (!user || user.role !== ROLES.DOCTOR) {
@@ -218,7 +218,7 @@ const checkOverlap = (newSlot, existingSlots, excludeIndex = -1) => {
   return false;
 };
 
-const addSlot = async (req, res) => {
+export const addSlot = async (req, res) => {
   try {
     const { date, startTime, endTime, capacity, consultationType } = req.body;
     const user = await User.findById(req.user._id);
@@ -262,7 +262,7 @@ const addSlot = async (req, res) => {
   }
 };
 
-const updateSlot = async (req, res) => {
+export const updateSlot = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -319,7 +319,7 @@ const updateSlot = async (req, res) => {
   }
 };
 
-const deleteSlot = async (req, res) => {
+export const deleteSlot = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -348,7 +348,7 @@ const deleteSlot = async (req, res) => {
 };
 
 // Prescription Template CRUD Operations
-const getPrescriptionTemplates = async (req, res) => {
+export const getPrescriptionTemplates = async (req, res) => {
   try {
     const { activeOnly, category } = req.query;
     const user = await User.findById(req.user._id);
@@ -385,7 +385,7 @@ const getPrescriptionTemplates = async (req, res) => {
   }
 };
 
-const addPrescriptionTemplate = async (req, res) => {
+export const addPrescriptionTemplate = async (req, res) => {
   try {
     const { name, category, medicines, notes } = req.body;
 
@@ -421,7 +421,7 @@ const addPrescriptionTemplate = async (req, res) => {
   }
 };
 
-const updatePrescriptionTemplate = async (req, res) => {
+export const updatePrescriptionTemplate = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -462,7 +462,7 @@ const updatePrescriptionTemplate = async (req, res) => {
   }
 };
 
-const deletePrescriptionTemplate = async (req, res) => {
+export const deletePrescriptionTemplate = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -491,7 +491,7 @@ const deletePrescriptionTemplate = async (req, res) => {
   }
 };
 
-const exportReport = async (req, res) => {
+export const exportReport = async (req, res) => {
   try {
     // Authorization
     const { id } = req.params;
@@ -667,7 +667,8 @@ const exportReport = async (req, res) => {
       }
     }
     
-    // Generate const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
+    // Generate export
+    const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
     const filename = sanitizeFilename(`doctor_${reportType}_${Date.now()}`);
     
     if (format === 'csv') {
@@ -687,7 +688,7 @@ const exportReport = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
+export const getSettings = async (req, res) => {
   try {
     if (req.user.role !== ROLES.DOCTOR) {
       return errorResponse(res, 'Access denied: Doctor role required', 403);
@@ -698,7 +699,7 @@ const getSettings = async (req, res) => {
   }
 };
 
-const updateSettings = async (req, res) => {
+export const updateSettings = async (req, res) => {
   try {
     const settings = await updateUserSettings({
       userId: req.user._id,
@@ -715,22 +716,4 @@ const updateSettings = async (req, res) => {
     }
     return errorResponse(res, 'Failed to update settings', 500);
   }
-};
-
-module.exports = {
-  getProfile,
-  updateProfile,
-  uploadDocument,
-  deleteDocument,
-  getSlots,
-  addSlot,
-  updateSlot,
-  deleteSlot,
-  getPrescriptionTemplates,
-  addPrescriptionTemplate,
-  updatePrescriptionTemplate,
-  deletePrescriptionTemplate,
-  exportReport,
-  getSettings,
-  updateSettings,
 };

@@ -82,4 +82,11 @@ const notFoundResponse = (res, message = 'Resource not found') => {
   });
 };
 
-module.exports = { successResponse, errorResponse, validationErrorResponse, unauthorizedResponse, forbiddenResponse, notFoundResponse,  };
+export {
+  successResponse,
+  errorResponse,
+  validationErrorResponse,
+  unauthorizedResponse,
+  forbiddenResponse,
+  notFoundResponse,
+};

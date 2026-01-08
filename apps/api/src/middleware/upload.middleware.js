@@ -1,5 +1,5 @@
-const multer = require('multer');
-const { errorResponse } = require('../utils/response.util.js');
+import multer from 'multer';
+import { errorResponse } from '../utils/response.util.js';
 
 const storage = multer.memoryStorage();
 
@@ -34,11 +34,11 @@ const multerConfig = {
   fileFilter
 };
 
-const uploadSingle = (fieldName) => multer(multerConfig).single(fieldName);
-const uploadMultiple = (fieldName, maxCount) => multer(multerConfig).array(fieldName, maxCount);
-const uploadFields = (fields) => multer(multerConfig).fields(fields);
+export const uploadSingle = (fieldName) => multer(multerConfig).single(fieldName);
+export const uploadMultiple = (fieldName, maxCount) => multer(multerConfig).array(fieldName, maxCount);
+export const uploadFields = (fields) => multer(multerConfig).fields(fields);
 
-const handleUploadError = (error, req, res, next) => {
+export const handleUploadError = (error, req, res, next) => {
   if (error instanceof multer.MulterError) {
     // Handle multer errors with specific messages
     switch (error.code) {
@@ -56,11 +56,4 @@ const handleUploadError = (error, req, res, next) => {
   }
   // Pass other errors through
   next(error);
-};
-
-module.exports = {
-  uploadSingle,
-  uploadMultiple,
-  uploadFields,
-  handleUploadError
 };

@@ -1,14 +1,13 @@
-const crypto = require('crypto');
-const User = require('../models/User.model.js');
-const OTP = require('../models/OTP.model.js');
-const { OTP_PURPOSES } = require('../models/OTP.model.js');
-const { generateAccessToken, generateRefreshToken, verifyRefreshToken, getTokenExpiryInSeconds } = require('../utils/jwt.util.js');
-const { successResponse, errorResponse, unauthorizedResponse, forbiddenResponse } = require('../utils/response.util.js');
-const { uploadToCloudinary, deleteFromCloudinary } = require('../utils/fileUpload.util.js');
-const { generateOTP, sendOTPEmail, validateOTPFormat } = require('../utils/email.util.js');
-const { sendOTPSMS } = require('../utils/sms.util.js');
-const { generatePatientId, generateHospitalId, generateDoctorId, generateLabId, generatePharmacyId, normalizeEmail, validatePhone, validateEmail } = require('@arogyafirst/shared');
-const { ROLES, VERIFICATION_STATUS } = require('@arogyafirst/shared');
+import crypto from 'crypto';
+import User from '../models/User.model.js';
+import OTP, { OTP_PURPOSES } from '../models/OTP.model.js';
+import { generateAccessToken, generateRefreshToken, verifyRefreshToken, getTokenExpiryInSeconds } from '../utils/jwt.util.js';
+import { successResponse, errorResponse, unauthorizedResponse, forbiddenResponse } from '../utils/response.util.js';
+import { uploadToCloudinary, deleteFromCloudinary } from '../utils/fileUpload.util.js';
+import { generateOTP, sendOTPEmail, validateOTPFormat } from '../utils/email.util.js';
+import { sendOTPSMS } from '../utils/sms.util.js';
+import { generatePatientId, generateHospitalId, generateDoctorId, generateLabId, generatePharmacyId, normalizeEmail, validatePhone, validateEmail } from '@arogyafirst/shared';
+import { ROLES, VERIFICATION_STATUS } from '@arogyafirst/shared';
 
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '15m';
 const JWT_REFRESH_EXPIRES_IN = process.env.JWT_REFRESH_EXPIRES_IN || '7d';
@@ -725,4 +724,16 @@ const resetPassword = async (req, res) => {
   }
 };
 
-module.exports = { register, login, refresh, logout, me, logoutAll, sendEmailOTP, verifyEmailOTP, forgotPassword, verifyPhoneOTP, resetPassword };
+export {
+  register,
+  login,
+  refresh,
+  logout,
+  me,
+  logoutAll,
+  sendEmailOTP,
+  verifyEmailOTP,
+  forgotPassword,
+  verifyPhoneOTP,
+  resetPassword
+};

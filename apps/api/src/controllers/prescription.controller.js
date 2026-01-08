@@ -1,8 +1,8 @@
-const Prescription = require('../models/Prescription.model.js');
-const PharmacyLink = require('../models/PharmacyLink.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { ROLES, PRESCRIPTION_STATUS } = require('@arogyafirst/shared');
+import Prescription from '../models/Prescription.model.js';
+import PharmacyLink from '../models/PharmacyLink.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { ROLES, PRESCRIPTION_STATUS } from '@arogyafirst/shared';
 
 /**
  * Create Prescription
@@ -13,7 +13,7 @@ const { ROLES, PRESCRIPTION_STATUS } = require('@arogyafirst/shared');
  * @route POST /api/prescriptions/create
  * @access Private (Doctor)
  */
-const createPrescription = async (req, res) => {
+export const createPrescription = async (req, res) => {
   try {
     // Validate doctor role
     if (req.user.role !== ROLES.DOCTOR) {
@@ -146,7 +146,7 @@ const createPrescription = async (req, res) => {
  * @route GET /api/prescriptions/patient/:patientId
  * @access Private (Patient, Doctor)
  */
-const getPatientPrescriptions = async (req, res) => {
+export const getPatientPrescriptions = async (req, res) => {
   try {
     const { patientId } = req.params;
 
@@ -189,7 +189,7 @@ const getPatientPrescriptions = async (req, res) => {
  * @route GET /api/prescriptions/doctor
  * @access Private (Doctor)
  */
-const getDoctorPrescriptions = async (req, res) => {
+export const getDoctorPrescriptions = async (req, res) => {
   try {
     // Validate doctor role
     if (req.user.role !== ROLES.DOCTOR) {
@@ -232,7 +232,7 @@ const getDoctorPrescriptions = async (req, res) => {
  * @route GET /api/prescriptions/pharmacy
  * @access Private (Pharmacy)
  */
-const getPharmacyPrescriptions = async (req, res) => {
+export const getPharmacyPrescriptions = async (req, res) => {
   try {
     // Validate pharmacy role
     if (req.user.role !== ROLES.PHARMACY) {
@@ -272,7 +272,7 @@ const getPharmacyPrescriptions = async (req, res) => {
  * @route POST /api/prescriptions/:prescriptionId/prebook
  * @access Private (Patient)
  */
-const prebookPrescription = async (req, res) => {
+export const prebookPrescription = async (req, res) => {
   try {
     // Validate patient role
     if (req.user.role !== ROLES.PATIENT) {
@@ -331,7 +331,7 @@ const prebookPrescription = async (req, res) => {
  * @route PUT /api/prescriptions/:prescriptionId/fulfill
  * @access Private (Pharmacy)
  */
-const fulfillPrescription = async (req, res) => {
+export const fulfillPrescription = async (req, res) => {
   try {
     // Validate pharmacy role
     if (req.user.role !== ROLES.PHARMACY) {
@@ -398,7 +398,7 @@ const fulfillPrescription = async (req, res) => {
  * @route PUT /api/prescriptions/:prescriptionId/cancel
  * @access Private (Doctor, Patient)
  */
-const cancelPrescription = async (req, res) => {
+export const cancelPrescription = async (req, res) => {
   try {
     const { prescriptionId } = req.params;
     const { cancellationReason } = req.body;
@@ -446,7 +446,7 @@ const cancelPrescription = async (req, res) => {
  * @route GET /api/prescriptions/medicines/search
  * @access Private (Doctor)
  */
-const searchMedicines = async (req, res) => {
+export const searchMedicines = async (req, res) => {
   try {
     // Validate doctor role
     if (req.user.role !== ROLES.DOCTOR) {
@@ -519,15 +519,4 @@ const searchMedicines = async (req, res) => {
     console.error('Error searching medicines:', error);
     return errorResponse(res, error.message || 'Failed to search medicines', 500);
   }
-};
-
-module.exports = {
-  createPrescription,
-  getPatientPrescriptions,
-  getDoctorPrescriptions,
-  getPharmacyPrescriptions,
-  prebookPrescription,
-  fulfillPrescription,
-  cancelPrescription,
-  searchMedicines,
 };

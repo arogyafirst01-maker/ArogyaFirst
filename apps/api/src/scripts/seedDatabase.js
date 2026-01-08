@@ -1,14 +1,14 @@
-const mongoose = require('mongoose');
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const Consultation = require('../models/Consultation.model.js');
-const Document = require('../models/Document.model.js');
-const ConsentRequest = require('../models/ConsentRequest.model.js');
-const Prescription = require('../models/Prescription.model.js');
-const Referral = require('../models/Referral.model.js');
-const Slot = require('../models/Slot.model.js');
-const Payment = require('../models/Payment.model.js');
-const { ROLES, CONSULTATION_TYPES, BOOKING_STATUS, CONSENT_STATUS, VERIFICATION_STATUS, DOCUMENT_TYPES, DOCUMENT_UPLOAD_SOURCE, BOOKING_TYPES, PAYMENT_STATUS, PAYMENT_METHODS, CONSULTATION_STATUS, CONSULTATION_MODE, PRESCRIPTION_STATUS, REFERRAL_STATUS, REFERRAL_TYPES } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import Consultation from '../models/Consultation.model.js';
+import Document from '../models/Document.model.js';
+import ConsentRequest from '../models/ConsentRequest.model.js';
+import Prescription from '../models/Prescription.model.js';
+import Referral from '../models/Referral.model.js';
+import Slot from '../models/Slot.model.js';
+import Payment from '../models/Payment.model.js';
+import { ROLES, CONSULTATION_TYPES, BOOKING_STATUS, CONSENT_STATUS, VERIFICATION_STATUS, DOCUMENT_TYPES, DOCUMENT_UPLOAD_SOURCE, BOOKING_TYPES, PAYMENT_STATUS, PAYMENT_METHODS, CONSULTATION_STATUS, CONSULTATION_MODE, PRESCRIPTION_STATUS, REFERRAL_STATUS, REFERRAL_TYPES } from '@arogyafirst/shared';
 
 // MongoDB connection
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/arogyafirst';
@@ -1377,5 +1377,3 @@ const seedDatabase = async () => {
 
 // Run the seeder
 seedDatabase();
-
-module.exports = mongoose;

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const User = require('../models/User.model.js');
-const { ROLES } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import User from '../models/User.model.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const MONGODB_URI = process.env.MONGODB_URI || 'mongodb+srv://arogyafirst01_db_user:jQi8mcB9eYP8FL2r@cluster0.kgrwhjd.mongodb.net/arogyafirst';
 
@@ -356,5 +356,3 @@ async function updatePharmacyData() {
 }
 
 updatePharmacyData();
-
-module.exports = mongoose;

@@ -1,16 +1,16 @@
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const StaffSchedule = require('../models/StaffSchedule.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { uploadToCloudinary, deleteFromCloudinary, validateFileType } = require('../utils/fileUpload.util.js');
-const { updateUserSettings } = require('../utils/settings.util.js');
-const { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } = require('../utils/export.util.js');
-const { ROLES, SCHEDULE_STATUS, PAYMENT_STATUS, BOOKING_TYPES, BOOKING_STATUS, BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS } = require('@arogyafirst/shared');
-const { calculatePriorityScore, findAvailableBeds, matchBedToPatient, updateQueuePositions, estimateWaitTime, isBedTypeCompatible } = require('../utils/bedAllocation.util.js');
-const { sendBedAvailabilityNotificationEmail, sendQueuePositionUpdateEmail } = require('../utils/email.util.js');
-const { withTransaction } = require('../utils/transaction.util.js');
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import StaffSchedule from '../models/StaffSchedule.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { uploadToCloudinary, deleteFromCloudinary, validateFileType } from '../utils/fileUpload.util.js';
+import { updateUserSettings } from '../utils/settings.util.js';
+import { generateCSV, generatePDF, formatDateForExport, sanitizeFilename, formatCurrency } from '../utils/export.util.js';
+import { ROLES, SCHEDULE_STATUS, PAYMENT_STATUS, BOOKING_TYPES, BOOKING_STATUS, BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS } from '@arogyafirst/shared';
+import { calculatePriorityScore, findAvailableBeds, matchBedToPatient, updateQueuePositions, estimateWaitTime, isBedTypeCompatible } from '../utils/bedAllocation.util.js';
+import { sendBedAvailabilityNotificationEmail, sendQueuePositionUpdateEmail } from '../utils/email.util.js';
+import { withTransaction } from '../utils/transaction.util.js';
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -22,7 +22,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const { name, location } = req.body;
@@ -52,7 +52,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const uploadDocument = async (req, res) => {
+export const uploadDocument = async (req, res) => {
   try {
     if (!req.file) {
       return errorResponse(res, 'No file uploaded', 400);
@@ -102,7 +102,7 @@ const uploadDocument = async (req, res) => {
   }
 };
 
-const deleteDocument = async (req, res) => {
+export const deleteDocument = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -127,7 +127,7 @@ const deleteDocument = async (req, res) => {
   }
 };
 
-const addDoctor = async (req, res) => {
+export const addDoctor = async (req, res) => {
   try {
     const { name, specialization, qualification, experience, contactPhone, email, schedule } = req.body;
     const user = await User.findById(req.user._id);
@@ -161,7 +161,7 @@ const addDoctor = async (req, res) => {
   }
 };
 
-const updateDoctor = async (req, res) => {
+export const updateDoctor = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -200,7 +200,7 @@ const updateDoctor = async (req, res) => {
   }
 };
 
-const deleteDoctor = async (req, res) => {
+export const deleteDoctor = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -230,7 +230,7 @@ const deleteDoctor = async (req, res) => {
   }
 };
 
-const addLab = async (req, res) => {
+export const addLab = async (req, res) => {
   try {
     const { name, type, location, contactPhone, availableTests } = req.body;
     const user = await User.findById(req.user._id);
@@ -256,7 +256,7 @@ const addLab = async (req, res) => {
   }
 };
 
-const updateLab = async (req, res) => {
+export const updateLab = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -288,7 +288,7 @@ const updateLab = async (req, res) => {
   }
 };
 
-const deleteLab = async (req, res) => {
+export const deleteLab = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -311,7 +311,7 @@ const deleteLab = async (req, res) => {
   }
 };
 
-const addBed = async (req, res) => {
+export const addBed = async (req, res) => {
   try {
     const { bedNumber, type, floor, ward } = req.body;
     const user = await User.findById(req.user._id);
@@ -343,7 +343,7 @@ const addBed = async (req, res) => {
   }
 };
 
-const updateBed = async (req, res) => {
+export const updateBed = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -385,7 +385,7 @@ const updateBed = async (req, res) => {
   }
 };
 
-const deleteBed = async (req, res) => {
+export const deleteBed = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -408,7 +408,7 @@ const deleteBed = async (req, res) => {
   }
 };
 
-const addPharmacy = async (req, res) => {
+export const addPharmacy = async (req, res) => {
   try {
     const { name, location, contactPhone, operatingHours } = req.body;
     const user = await User.findById(req.user._id);
@@ -433,7 +433,7 @@ const addPharmacy = async (req, res) => {
   }
 };
 
-const updatePharmacy = async (req, res) => {
+export const updatePharmacy = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -465,7 +465,7 @@ const updatePharmacy = async (req, res) => {
   }
 };
 
-const deletePharmacy = async (req, res) => {
+export const deletePharmacy = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -488,7 +488,7 @@ const deletePharmacy = async (req, res) => {
   }
 };
 
-const addStaff = async (req, res) => {
+export const addStaff = async (req, res) => {
   try {
     const { name, role, department, contactPhone, email, shift } = req.body;
     const user = await User.findById(req.user._id);
@@ -515,7 +515,7 @@ const addStaff = async (req, res) => {
   }
 };
 
-const updateStaff = async (req, res) => {
+export const updateStaff = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -547,7 +547,7 @@ const updateStaff = async (req, res) => {
   }
 };
 
-const deleteStaff = async (req, res) => {
+export const deleteStaff = async (req, res) => {
   try {
     const { index } = req.params;
     const idx = parseInt(index, 10);
@@ -572,7 +572,7 @@ const deleteStaff = async (req, res) => {
 
 // Location Management Functions (Multi-location Chain Support)
 
-const addLocation = async (req, res) => {
+export const addLocation = async (req, res) => {
   try {
     const { name, location, branchCode, contactPhone, contactEmail } = req.body;
     const user = await User.findById(req.user._id);
@@ -644,7 +644,7 @@ const addLocation = async (req, res) => {
   }
 };
 
-const getLocations = async (req, res) => {
+export const getLocations = async (req, res) => {
   try {
     const user = await User.findById(req.user._id);
     
@@ -685,7 +685,7 @@ const getLocations = async (req, res) => {
   }
 };
 
-const updateLocation = async (req, res) => {
+export const updateLocation = async (req, res) => {
   try {
     const { locationId } = req.params;
     const { name, location, contactPhone, contactEmail } = req.body;
@@ -729,7 +729,7 @@ const updateLocation = async (req, res) => {
   }
 };
 
-const deleteLocation = async (req, res) => {
+export const deleteLocation = async (req, res) => {
   try {
     const { locationId } = req.params;
     const user = await User.findById(req.user._id);
@@ -784,7 +784,7 @@ const deleteLocation = async (req, res) => {
 
 // Dashboard & Analytics Functions
 
-const getDashboard = async (req, res) => {
+export const getDashboard = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -934,7 +934,7 @@ const getDashboard = async (req, res) => {
   }
 };
 
-const getAnalytics = async (req, res) => {
+export const getAnalytics = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -1051,7 +1051,7 @@ const getAnalytics = async (req, res) => {
   }
 };
 
-const exportReport = async (req, res) => {
+export const exportReport = async (req, res) => {
   try {
     // Authorization
     const { id } = req.params;
@@ -1319,7 +1319,8 @@ const exportReport = async (req, res) => {
       }
     }
     
-    // Generate const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
+    // Generate export
+    const dateRangeStr = `${formatDateForExport(start)} to ${formatDateForExport(end)}`;
     const filename = sanitizeFilename(`hospital_${reportType}_${Date.now()}`);
     
     if (format === 'csv') {
@@ -1341,7 +1342,7 @@ const exportReport = async (req, res) => {
 
 // Staff Schedule Functions
 
-const createStaffSchedule = async (req, res) => {
+export const createStaffSchedule = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -1417,7 +1418,7 @@ const createStaffSchedule = async (req, res) => {
   }
 };
 
-const getStaffSchedules = async (req, res) => {
+export const getStaffSchedules = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -1447,7 +1448,7 @@ const getStaffSchedules = async (req, res) => {
   }
 };
 
-const updateStaffSchedule = async (req, res) => {
+export const updateStaffSchedule = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -1519,7 +1520,7 @@ const updateStaffSchedule = async (req, res) => {
   }
 };
 
-const deleteStaffSchedule = async (req, res) => {
+export const deleteStaffSchedule = async (req, res) => {
   try {
     // Validate :id param matches authenticated user
     const { id } = req.params;
@@ -1550,7 +1551,7 @@ const deleteStaffSchedule = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
+export const getSettings = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1561,7 +1562,7 @@ const getSettings = async (req, res) => {
   }
 };
 
-const updateSettings = async (req, res) => {
+export const updateSettings = async (req, res) => {
   try {
     const settings = await updateUserSettings({
       userId: req.user._id,
@@ -1582,7 +1583,7 @@ const updateSettings = async (req, res) => {
 
 // ==================== Bed Allocation & Queue Management ====================
 
-const getQueue = async (req, res) => {
+export const getQueue = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1625,7 +1626,7 @@ const getQueue = async (req, res) => {
   }
 };
 
-const addToQueue = async (req, res) => {
+export const addToQueue = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1695,7 +1696,7 @@ const addToQueue = async (req, res) => {
   }
 };
 
-const allocateBed = async (req, res) => {
+export const allocateBed = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1815,7 +1816,7 @@ const allocateBed = async (req, res) => {
   }
 };
 
-const autoAllocateBeds = async (req, res) => {
+export const autoAllocateBeds = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1917,7 +1918,7 @@ const autoAllocateBeds = async (req, res) => {
   }
 };
 
-const releaseBed = async (req, res) => {
+export const releaseBed = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -1974,7 +1975,7 @@ const releaseBed = async (req, res) => {
   }
 };
 
-const removeFromQueue = async (req, res) => {
+export const removeFromQueue = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -2069,7 +2070,7 @@ async function sendQueuePositionNotifications(hospitalId, locationId = null) {
   }
 }
 
-const getAvailableBeds = async (req, res) => {
+export const getAvailableBeds = async (req, res) => {
   try {
     if (req.user.role !== ROLES.HOSPITAL) {
       return errorResponse(res, 'Access denied: Hospital role required', 403);
@@ -2148,45 +2149,3 @@ async function autoAllocateBedsAsync(hospitalId, locationId) {
     console.error('Error in async auto-allocation:', err);
   }
 }
-
-module.exports = {
-  getProfile,
-  updateProfile,
-  uploadDocument,
-  deleteDocument,
-  addDoctor,
-  updateDoctor,
-  deleteDoctor,
-  addLab,
-  updateLab,
-  deleteLab,
-  addBed,
-  updateBed,
-  deleteBed,
-  addPharmacy,
-  updatePharmacy,
-  deletePharmacy,
-  addStaff,
-  updateStaff,
-  deleteStaff,
-  addLocation,
-  getLocations,
-  updateLocation,
-  deleteLocation,
-  getDashboard,
-  getAnalytics,
-  exportReport,
-  createStaffSchedule,
-  getStaffSchedules,
-  updateStaffSchedule,
-  deleteStaffSchedule,
-  getSettings,
-  updateSettings,
-  getQueue,
-  addToQueue,
-  allocateBed,
-  autoAllocateBeds,
-  releaseBed,
-  removeFromQueue,
-  getAvailableBeds,
-};

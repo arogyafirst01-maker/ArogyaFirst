@@ -1,7 +1,7 @@
-const express = require('express');
-const { searchProviders, getProviderDetails, searchProvidersByRole } = require('../controllers/provider.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import express from 'express';
+import { searchProviders, getProviderDetails, searchProvidersByRole } from '../controllers/provider.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -14,4 +14,4 @@ router.get('/by-role', authenticate, searchProvidersByRole);
 // GET /:providerId - Get provider details (public access for browsing)
 router.get('/:providerId', getProviderDetails);
 
-module.exports = router;
+export default router;

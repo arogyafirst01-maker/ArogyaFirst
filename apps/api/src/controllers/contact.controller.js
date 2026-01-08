@@ -1,5 +1,5 @@
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { sendContactFormEmail } = require('../utils/email.util.js');
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { sendContactFormEmail } from '../utils/email.util.js';
 
 /**
  * Submit contact form
@@ -14,7 +14,7 @@ const { sendContactFormEmail } = require('../utils/email.util.js');
  * @param {Object} res - Express response object
  * @returns {Object} Success or error response
  */
-const submitContactForm = async (req, res) => {
+export const submitContactForm = async (req, res) => {
   try {
     const { name, email, subject, message } = req.body;
 
@@ -47,8 +47,4 @@ const submitContactForm = async (req, res) => {
       500
     );
   }
-};
-
-module.exports = {
-  submitContactForm,
 };

@@ -1,9 +1,9 @@
-const Invoice = require('../models/Invoice.model.js');
-const Booking = require('../models/Booking.model.js');
-const Prescription = require('../models/Prescription.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { ROLES, INVOICE_STATUS, PAYMENT_STATUS } = require('@arogyafirst/shared');
+import Invoice from '../models/Invoice.model.js';
+import Booking from '../models/Booking.model.js';
+import Prescription from '../models/Prescription.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { ROLES, INVOICE_STATUS, PAYMENT_STATUS } from '@arogyafirst/shared';
 
 /**
  * Generate Invoice
@@ -14,7 +14,7 @@ const { ROLES, INVOICE_STATUS, PAYMENT_STATUS } = require('@arogyafirst/shared')
  * @route POST /api/billing/generate-invoice (compatibility alias)
  * @access Private (LAB, PHARMACY, ADMIN)
  */
-const generateInvoice = async (req, res) => {
+export const generateInvoice = async (req, res) => {
   try {
     const { providerId, items, taxDetails, bookingId, prescriptionId, patientId, dueDate, notes } = req.body;
     const userId = req.user._id;
@@ -123,7 +123,7 @@ const generateInvoice = async (req, res) => {
  * @route GET /api/billing/provider/:providerId (compatibility alias)
  * @access Private (LAB, PHARMACY, ADMIN)
  */
-const getInvoicesByProvider = async (req, res) => {
+export const getInvoicesByProvider = async (req, res) => {
   try {
     const { providerId } = req.params;
     const userId = req.user._id;
@@ -170,7 +170,7 @@ const getInvoicesByProvider = async (req, res) => {
 };
 
 // Get invoice by ID
-const getInvoiceById = async (req, res) => {
+export const getInvoiceById = async (req, res) => {
   try {
     const { invoiceId } = req.params;
     const userId = req.user._id;
@@ -201,7 +201,7 @@ const getInvoiceById = async (req, res) => {
 };
 
 // Update invoice status
-const updateInvoiceStatus = async (req, res) => {
+export const updateInvoiceStatus = async (req, res) => {
   try {
     const { invoiceId } = req.params;
     const { status } = req.body;
@@ -240,7 +240,7 @@ const updateInvoiceStatus = async (req, res) => {
 };
 
 // Mark invoice as paid
-const markInvoiceAsPaid = async (req, res) => {
+export const markInvoiceAsPaid = async (req, res) => {
   try {
     const { invoiceId } = req.params;
     const { paymentId, paymentMethod } = req.body;
@@ -278,7 +278,7 @@ const markInvoiceAsPaid = async (req, res) => {
 };
 
 // Cancel invoice
-const cancelInvoice = async (req, res) => {
+export const cancelInvoice = async (req, res) => {
   try {
     const { invoiceId } = req.params;
     const { reason } = req.body;
@@ -309,7 +309,7 @@ const cancelInvoice = async (req, res) => {
   }
 };
 
-module.exports = {
+export default {
   generateInvoice,
   getInvoicesByProvider,
   getInvoiceById,

@@ -1,6 +1,6 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
-const { ROLES, VERIFICATION_STATUS } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
+import { ROLES, VERIFICATION_STATUS } from '@arogyafirst/shared';
 
 // Define role-specific subdocument schemas
 const patientDataSchema = new mongoose.Schema({
@@ -525,4 +525,4 @@ userSchema.statics.findByUniqueId = function(uniqueId) {
 
 const User = mongoose.model('User', userSchema);
 
-module.exports = User;;
+export default User;

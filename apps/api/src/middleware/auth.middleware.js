@@ -1,6 +1,6 @@
-const { verifyAccessToken } = require('../utils/jwt.util.js');
-const User = require('../models/User.model.js');
-const { unauthorizedResponse } = require('../utils/response.util.js');
+import { verifyAccessToken } from '../utils/jwt.util.js';
+import User from '../models/User.model.js';
+import { unauthorizedResponse } from '../utils/response.util.js';
 
 /**
  * Authentication middleware that verifies JWT token and attaches user to req.user
@@ -53,4 +53,6 @@ const authenticate = async (req, res, next) => {
   }
 };
 
-module.exports = { authenticate };
+export {
+  authenticate
+};

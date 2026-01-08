@@ -18,7 +18,7 @@
  * 4. Free trial provides $15 credit (sufficient for development)
  */
 
-const twilio = require('twilio');
+import twilio from 'twilio';
 
 // Track whether Twilio is properly configured
 let smsConfigured = false;
@@ -50,7 +50,7 @@ const getTwilioClient = () => {
  * Logs status and checks if SMS sending will work
  * @returns {Promise<boolean>} True if Twilio is configured and verified
  */
-const verifySMSTransporter = async () => {
+export const verifySMSTransporter = async () => {
   const accountSid = process.env.TWILIO_ACCOUNT_SID;
   const authToken = process.env.TWILIO_AUTH_TOKEN;
   const phoneNumber = process.env.TWILIO_PHONE_NUMBER;
@@ -92,13 +92,13 @@ const verifySMSTransporter = async () => {
  * Check if Twilio SMS is properly configured
  * @returns {boolean} True if Twilio credentials are set
  */
-const isSMSConfigured = () => smsConfigured;
+export const isSMSConfigured = () => smsConfigured;
 
 /**
  * Check if Twilio SMS transporter was verified successfully
  * @returns {boolean} True if transporter verification passed
  */
-const isSMSVerified = () => smsVerified;
+export const isSMSVerified = () => smsVerified;
 
 /**
  * Format phone number with country code
@@ -126,7 +126,7 @@ const formatPhoneNumber = (phone, countryCode = '+91') => {
  * @param {string} purpose - 'PASSWORD_RESET' (default)
  * @returns {Promise<{success: boolean, messageId?: string, error?: string, placeholder?: boolean, otp?: string}>}
  */
-const sendOTPSMS = async (phone, otp, purpose = 'PASSWORD_RESET') => {
+export const sendOTPSMS = async (phone, otp, purpose = 'PASSWORD_RESET') => {
   try {
     if (!phone) {
       console.warn('No phone number provided for OTP SMS');
@@ -181,7 +181,7 @@ const sendOTPSMS = async (phone, otp, purpose = 'PASSWORD_RESET') => {
   }
 };
 
-module.exports = {
+export default {
   verifySMSTransporter,
   isSMSConfigured,
   isSMSVerified,

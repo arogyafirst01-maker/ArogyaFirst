@@ -1,11 +1,11 @@
-const crypto = require('crypto');
-const { getRazorpayInstance } = require('../config/razorpay.js');
-const Payment = require('../models/Payment.model.js');
-const Booking = require('../models/Booking.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { withTransaction } = require('../utils/transaction.util.js');
-const { generateReceiptId } = require('../utils/idempotency.util.js');
-const { PAYMENT_STATUS, REFUND_STATUS } = require('@arogyafirst/shared');
+import crypto from 'crypto';
+import { getRazorpayInstance } from '../config/razorpay.js';
+import Payment from '../models/Payment.model.js';
+import Booking from '../models/Booking.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { withTransaction } from '../utils/transaction.util.js';
+import { generateReceiptId } from '../utils/idempotency.util.js';
+import { PAYMENT_STATUS, REFUND_STATUS } from '@arogyafirst/shared';
 
 /**
  * Create Razorpay Order
@@ -16,7 +16,7 @@ const { PAYMENT_STATUS, REFUND_STATUS } = require('@arogyafirst/shared');
  * @route POST /api/payments/create-order
  * @access Private (Patient only)
  */
-const createOrder = async (req, res) => {
+export const createOrder = async (req, res) => {
   try {
     const { bookingId, prescriptionId, amount } = req.body;
     const userId = req.user._id;
@@ -208,7 +208,7 @@ const createOrder = async (req, res) => {
  * @route POST /api/payments/verify
  * @access Private (Patient only)
  */
-const verifyPayment = async (req, res) => {
+export const verifyPayment = async (req, res) => {
   try {
     const { orderId, paymentId, signature } = req.body;
     const userId = req.user._id;
@@ -351,7 +351,7 @@ const verifyPayment = async (req, res) => {
  * @route POST /api/payments/webhook
  * @access Public (Razorpay only, verified by signature)
  */
-const handleWebhook = async (req, res) => {
+export const handleWebhook = async (req, res) => {
   try {
     // Check for middleware configuration errors
     // Middleware sets this flag instead of returning 400 to ensure 2xx response to Razorpay
@@ -551,7 +551,7 @@ const handleWebhook = async (req, res) => {
  * @returns {Promise<Object>} Refund result with refund ID and amount
  * @throws {Error} If booking not found, payment not successful, or Razorpay refund fails
  */
-const processPartialRefund = async (bookingId, userId, amountInRupees, reason = 'Partial refund') => {
+export const processPartialRefund = async (bookingId, userId, amountInRupees, reason = 'Partial refund') => {
   try {
     // Fetch booking and associated successful payment
     const booking = await Booking.findById(bookingId);
@@ -659,7 +659,7 @@ const processPartialRefund = async (bookingId, userId, amountInRupees, reason = 
  * @returns {Promise<Object>} Refund result with refund ID and amount
  * @throws {Error} If booking not found, payment not successful, or Razorpay refund fails
  */
-const processRefund = async (bookingId, userId) => {
+export const processRefund = async (bookingId, userId) => {
   try {
     // Fetch booking and associated successful payment
     const booking = await Booking.findById(bookingId);
@@ -753,12 +753,4 @@ const processRefund = async (bookingId, userId) => {
     
     throw error;
   }
-};
-
-module.exports = {
-  createOrder,
-  verifyPayment,
-  handleWebhook,
-  processPartialRefund,
-  processRefund,
 };

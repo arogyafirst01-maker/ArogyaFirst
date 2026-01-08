@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { generatePharmacyLinkId } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { generatePharmacyLinkId } from '@arogyafirst/shared';
 
 /**
  * PharmacyLink Schema
@@ -203,4 +203,4 @@ pharmacyLinkSchema.methods.rejectRequest = function(respondedBy) {
 
 const PharmacyLink = mongoose.model('PharmacyLink', pharmacyLinkSchema);
 
-module.exports = PharmacyLink;;
+export default PharmacyLink;

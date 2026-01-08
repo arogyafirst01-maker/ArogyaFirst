@@ -1,4 +1,4 @@
-const User = require('../models/User.model.js');
+import User from '../models/User.model.js';
 
 /**
  * Shared helper for updating user settings across all roles.
@@ -11,7 +11,7 @@ const User = require('../models/User.model.js');
  * @returns {Promise<Object>} - The updated settings object
  * @throws {Object} - Error object with statusCode and message properties
  */
-const updateUserSettings = async ({ userId, expectedRole, settingsPayload }) => {
+export const updateUserSettings = async ({ userId, expectedRole, settingsPayload }) => {
   const { notificationPreferences, language, privacy, accessibility } = settingsPayload;
 
   const user = await User.findById(userId);
@@ -35,5 +35,3 @@ const updateUserSettings = async ({ userId, expectedRole, settingsPayload }) => 
 
   return user.settings;
 };
-
-module.exports = User;

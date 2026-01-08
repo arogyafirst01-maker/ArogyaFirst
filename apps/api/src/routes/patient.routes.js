@@ -1,10 +1,10 @@
-const express = require('express');
-const { getProfile, updateProfile, getMedicalHistory, getHealthProfile, getSettings, updateSettings, exportMedicalHistory, searchPatients } = require('../controllers/patient.controller.js');
-const { register } = require('../controllers/auth.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, getMedicalHistorySchema, exportMedicalHistorySchema, registerPatientSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import express from 'express';
+import { getProfile, updateProfile, getMedicalHistory, getHealthProfile, getSettings, updateSettings, exportMedicalHistory, searchPatients } from '../controllers/patient.controller.js';
+import { register } from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, getMedicalHistorySchema, exportMedicalHistorySchema, registerPatientSchema } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -39,4 +39,4 @@ router.post(
 	register
 );
 
-module.exports = router;
+export default router;

@@ -1,4 +1,4 @@
-const Razorpay = require('razorpay');
+import Razorpay from 'razorpay';
 
 /**
  * Razorpay Configuration
@@ -27,7 +27,7 @@ let razorpayInstance = null;
  * 
  * @returns {boolean} True if both RAZORPAY_KEY_ID and RAZORPAY_KEY_SECRET are set
  */
-const isRazorpayConfigured = () => {
+export const isRazorpayConfigured = () => {
   return Boolean(process.env.RAZORPAY_KEY_ID && process.env.RAZORPAY_KEY_SECRET);
 };
 
@@ -38,7 +38,7 @@ const isRazorpayConfigured = () => {
  * @returns {Razorpay} Razorpay SDK instance
  * @throws {Error} If RAZORPAY_KEY_ID or RAZORPAY_KEY_SECRET not configured
  */
-const getRazorpayInstance = () => {
+export const getRazorpayInstance = () => {
   if (!razorpayInstance) {
     // Validate required environment variables on first access
     if (!isRazorpayConfigured()) {
@@ -58,5 +58,3 @@ const getRazorpayInstance = () => {
   
   return razorpayInstance;
 };
-
-module.exports = Razorpay;

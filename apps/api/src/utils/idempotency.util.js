@@ -36,7 +36,7 @@ const generateRandomString = (length = 6) => {
  * @param {string} identifier - Unique identifier (typically bookingId)
  * @returns {string} Unique receipt ID
  */
-const generateReceiptId = (prefix, identifier) => {
+export const generateReceiptId = (prefix, identifier) => {
   if (!prefix || !identifier) {
     throw new Error('Both prefix and identifier are required for receipt ID generation');
   }
@@ -72,7 +72,7 @@ const generateReceiptId = (prefix, identifier) => {
  * @param {string} receipt - Receipt ID to validate
  * @returns {boolean} True if format is valid, false otherwise
  */
-const validateReceiptFormat = (receipt) => {
+export const validateReceiptFormat = (receipt) => {
   if (!receipt || typeof receipt !== 'string') {
     return false;
   }
@@ -86,5 +86,3 @@ const validateReceiptFormat = (receipt) => {
   
   return receiptPattern.test(receipt);
 };
-
-module.exports = generateRandomString;

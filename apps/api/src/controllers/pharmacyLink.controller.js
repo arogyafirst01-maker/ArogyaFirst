@@ -1,7 +1,7 @@
-const PharmacyLink = require('../models/PharmacyLink.model.js');
-const User = require('../models/User.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { ROLES } = require('@arogyafirst/shared');
+import PharmacyLink from '../models/PharmacyLink.model.js';
+import User from '../models/User.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { ROLES } from '@arogyafirst/shared';
 
 /**
  * Create Pharmacy Link Request
@@ -12,7 +12,7 @@ const { ROLES } = require('@arogyafirst/shared');
  * @route POST /api/pharmacies/link
  * @access Private (Doctor)
  */
-const createPharmacyLink = async (req, res) => {
+export const createPharmacyLink = async (req, res) => {
   try {
     const { doctorId, pharmacyId } = req.body;
 
@@ -75,7 +75,7 @@ const createPharmacyLink = async (req, res) => {
  * @route GET /api/pharmacies/links
  * @access Private (Doctor, Pharmacy)
  */
-const getPharmacyLinks = async (req, res) => {
+export const getPharmacyLinks = async (req, res) => {
   try {
     let links;
 
@@ -105,7 +105,7 @@ const getPharmacyLinks = async (req, res) => {
  * @route DELETE /api/pharmacies/links/:linkId
  * @access Private (Doctor, Pharmacy)
  */
-const deletePharmacyLink = async (req, res) => {
+export const deletePharmacyLink = async (req, res) => {
   try {
     const { linkId } = req.params;
 
@@ -146,7 +146,7 @@ const deletePharmacyLink = async (req, res) => {
  * @route GET /api/pharmacies/links/pending
  * @access Private (Pharmacy)
  */
-const getPendingRequests = async (req, res) => {
+export const getPendingRequests = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PHARMACY) {
       return errorResponse(res, 'Only pharmacies can view pending requests', 403);
@@ -169,7 +169,7 @@ const getPendingRequests = async (req, res) => {
  * @route PUT /api/pharmacies/links/:linkId/accept
  * @access Private (Pharmacy)
  */
-const acceptRequest = async (req, res) => {
+export const acceptRequest = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PHARMACY) {
       return errorResponse(res, 'Only pharmacies can accept link requests', 403);
@@ -211,7 +211,7 @@ const acceptRequest = async (req, res) => {
  * @route PUT /api/pharmacies/links/:linkId/reject
  * @access Private (Pharmacy)
  */
-const rejectRequest = async (req, res) => {
+export const rejectRequest = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PHARMACY) {
       return errorResponse(res, 'Only pharmacies can reject link requests', 403);
@@ -243,13 +243,4 @@ const rejectRequest = async (req, res) => {
     console.error('Error rejecting link request:', error);
     return errorResponse(res, error.message || 'Failed to reject link request', 500);
   }
-};
-
-module.exports = {
-  createPharmacyLink,
-  getPharmacyLinks,
-  deletePharmacyLink,
-  getPendingRequests,
-  acceptRequest,
-  rejectRequest,
 };

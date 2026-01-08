@@ -1,8 +1,8 @@
-const { Router } = require('express');
-const controller = require('../controllers/admin.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import { Router } from 'express';
+import * as controller from '../controllers/admin.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = Router();
 
@@ -11,4 +11,4 @@ router.get('/pending-verifications', authenticate, authorize([ROLES.ADMIN]), con
 router.post('/verify/:entityType/:id', authenticate, authorize([ROLES.ADMIN]), controller.verifyEntity);
 router.get('/verification-history/:userId', authenticate, authorize([ROLES.ADMIN]), controller.getVerificationHistory);
 
-module.exports = router;;
+export default router;

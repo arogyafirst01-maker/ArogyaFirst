@@ -1,7 +1,7 @@
-const Booking = require('../models/Booking.model.js');
-const User = require('../models/User.model.js');
-const { BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS, BED_TYPES, BOOKING_TYPES, BOOKING_STATUS } = require('@arogyafirst/shared');
-const dayjs = require('dayjs');
+import Booking from '../models/Booking.model.js';
+import User from '../models/User.model.js';
+import { BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS, BED_TYPES, BOOKING_TYPES, BOOKING_STATUS } from '@arogyafirst/shared';
+import dayjs from 'dayjs';
 
 /**
  * Calculate priority score for a booking based on medical urgency, waiting time, and age
@@ -10,7 +10,7 @@ const dayjs = require('dayjs');
  * @param {Number} medicalUrgency - Medical urgency score (0-10 scale)
  * @returns {Object} { score, priority, breakdown }
  */
-const calculatePriorityScore = (booking, patientAge = null, medicalUrgency = 0, otherFactorsParam = 0) => {
+export const calculatePriorityScore = (booking, patientAge = null, medicalUrgency = 0, otherFactorsParam = 0) => {
   // Accept otherFactors via controller param to avoid hidden metadata coupling
   let score = 0;
   const breakdown = {};
@@ -71,7 +71,7 @@ const calculatePriorityScore = (booking, patientAge = null, medicalUrgency = 0, 
  * Check if a bed type is compatible with the requested bed type.
  * Allows safe upgrades (e.g., GENERAL -> ICU/PRIVATE, EMERGENCY -> ICU/PRIVATE, ICU -> PRIVATE).
  */
-const isBedTypeCompatible = (requestedType, bedType) => {
+export const isBedTypeCompatible = (requestedType, bedType) => {
   if (!requestedType || !bedType) return true;
   if (requestedType === bedType) return true;
 
@@ -95,7 +95,7 @@ const isBedTypeCompatible = (requestedType, bedType) => {
  * @param {String} ward - Ward name (optional)
  * @returns {Array} Available beds with details
  */
-const findAvailableBeds = async (hospitalId, bedType = null, locationId = null, floor = null, ward = null) => {
+export const findAvailableBeds = async (hospitalId, bedType = null, locationId = null, floor = null, ward = null) => {
   const hospital = await User.findById(hospitalId).select('hospitalData').lean();
   if (!hospital || !hospital.hospitalData) {
     return [];
@@ -155,7 +155,7 @@ const findAvailableBeds = async (hospitalId, bedType = null, locationId = null, 
  * @param {Array} availableBeds - List of available beds
  * @returns {Object} Best match bed with score, or null
  */
-const matchBedToPatient = (bedRequirement, availableBeds) => {
+export const matchBedToPatient = (bedRequirement, availableBeds) => {
   if (!bedRequirement || !availableBeds || availableBeds.length === 0) {
     return null;
   }
@@ -209,7 +209,7 @@ const matchBedToPatient = (bedRequirement, availableBeds) => {
  * @param {String} locationId - Location ID (optional)
  * @returns {Promise<Number>} Number of updated bookings
  */
-const updateQueuePositions = async (hospitalId, locationId = null) => {
+export const updateQueuePositions = async (hospitalId, locationId = null) => {
   const query = {
     providerId: hospitalId,
     entityType: BOOKING_TYPES.IPD,
@@ -250,12 +250,10 @@ const updateQueuePositions = async (hospitalId, locationId = null) => {
  * @param {Number} averageBedTurnoverHours - Average bed turnover hours (default 48)
  * @returns {Object} { hours, readable }
  */
-const estimateWaitTime = (queuePosition, averageBedTurnoverHours = 48) => {
+export const estimateWaitTime = (queuePosition, averageBedTurnoverHours = 48) => {
   const hours = queuePosition * averageBedTurnoverHours;
   const days = Math.ceil(hours / 24);
   const readable = `${Math.floor(days / 7)}-${days} days`;
 
   return { hours, days, readable };
 };
-
-module.exports = Booking;

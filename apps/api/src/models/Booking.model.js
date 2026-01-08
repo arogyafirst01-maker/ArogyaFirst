@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, ROLES, PAYMENT_METHODS, BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS, BED_TYPES } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { BOOKING_STATUS, PAYMENT_STATUS, BOOKING_TYPES, ROLES, PAYMENT_METHODS, BED_ASSIGNMENT_STATUS, PRIORITY_LEVELS, BED_TYPES } from '@arogyafirst/shared';
 
 const bookingSchema = new mongoose.Schema({
   bookingId: {
@@ -368,4 +368,4 @@ bookingSchema.methods.updateQueuePosition = function(position) {
 
 const Booking = mongoose.model('Booking', bookingSchema);
 
-module.exports = Booking;;
+export default Booking;

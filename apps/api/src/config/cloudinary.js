@@ -1,18 +1,17 @@
-const cloudinaryModule = require('cloudinary');
-const cloudinary = cloudinaryModule.v2;
-require('dotenv/config');
+import { v2 as cloudinary } from 'cloudinary';
+import 'dotenv/config';
 
 // Lazy initializer for Cloudinary. Do not throw at import time so the API can boot without Cloudinary configured.
 const requiredEnvVars = ['CLOUDINARY_CLOUD_NAME', 'CLOUDINARY_API_KEY', 'CLOUDINARY_API_SECRET'];
 let _configured = false;
 
-const isCloudinaryConfigured = requiredEnvVars.every((k) => !!process.env[k]);
+export const isCloudinaryConfigured = requiredEnvVars.every((k) => !!process.env[k]);
 
 if (!process.env.CLOUDINARY_FOLDER) {
   console.warn('CLOUDINARY_FOLDER is not set. Defaulting to "arogyafirst" when uploading files.');
 }
 
-function getCloudinary() {
+export function getCloudinary() {
   if (!isCloudinaryConfigured) {
     throw new Error('Cloudinary is not configured. Please set CLOUDINARY_CLOUD_NAME, CLOUDINARY_API_KEY and CLOUDINARY_API_SECRET');
   }
@@ -29,4 +28,4 @@ function getCloudinary() {
   return cloudinary;
 }
 
-module.exports = { getCloudinary, isCloudinaryConfigured };
+export default null; // legacy default export kept for backward compat but not used

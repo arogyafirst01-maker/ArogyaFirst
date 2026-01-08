@@ -1,18 +1,22 @@
-const express = require('express');
-const { uploadSingle, uploadMultiple, handleUploadError } = require('../middleware/upload.middleware.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest,
+import express from 'express';
+import { uploadSingle, uploadMultiple, handleUploadError } from '../middleware/upload.middleware.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import {
+  validateRequest,
   documentUploadSchema,
   getPatientDocumentsSchema,
-  updateDocumentSchema, } = require('../middleware/validation.middleware.js');
-const { uploadDocument,
+  updateDocumentSchema,
+} from '../middleware/validation.middleware.js';
+import {
+  uploadDocument,
   getPatientDocuments,
   getDocumentById,
   updateDocument,
   deleteDocument,
-  getLabDocuments, } = require('../controllers/document.controller.js');
-const { ROLES } = require('@arogyafirst/shared');
+  getLabDocuments,
+} from '../controllers/document.controller.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = express.Router();
 
@@ -92,4 +96,4 @@ router.delete(
   deleteDocument
 );
 
-module.exports = router;
+export default router;

@@ -1,14 +1,14 @@
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const Prescription = require('../models/Prescription.model.js');
-const Document = require('../models/Document.model.js');
-const Consultation = require('../models/Consultation.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { updateUserSettings } = require('../utils/settings.util.js');
-const { generatePatientId, ROLES, BOOKING_STATUS } = require('@arogyafirst/shared');
-const { generatePDF, generateCSV, formatDateForExport, sanitizeFilename } = require('../utils/export.util.js');
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import Prescription from '../models/Prescription.model.js';
+import Document from '../models/Document.model.js';
+import Consultation from '../models/Consultation.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { updateUserSettings } from '../utils/settings.util.js';
+import { generatePatientId, ROLES, BOOKING_STATUS } from '@arogyafirst/shared';
+import { generatePDF, generateCSV, formatDateForExport, sanitizeFilename } from '../utils/export.util.js';
 
-const getProfile = async (req, res) => {
+export const getProfile = async (req, res) => {
   try {
     const user = req.user;
 
@@ -24,7 +24,7 @@ const getProfile = async (req, res) => {
   }
 };
 
-const updateProfile = async (req, res) => {
+export const updateProfile = async (req, res) => {
   try {
     const userId = req.user._id;
     const { name, phone, location, dateOfBirth, aadhaarLast4 } = req.body;
@@ -83,7 +83,7 @@ const updateProfile = async (req, res) => {
   }
 };
 
-const getMedicalHistory = async (req, res) => {
+export const getMedicalHistory = async (req, res) => {
   try {
     const patientId = req.user._id;
     const { type, startDate, endDate, page = 1, limit = 20 } = req.query;
@@ -114,7 +114,7 @@ const getMedicalHistory = async (req, res) => {
   }
 };
 
-const getHealthProfile = async (req, res) => {
+export const getHealthProfile = async (req, res) => {
   try {
     const patientId = req.user._id;
 
@@ -160,7 +160,7 @@ const getHealthProfile = async (req, res) => {
   }
 };
 
-const getSettings = async (req, res) => {
+export const getSettings = async (req, res) => {
   try {
     if (req.user.role !== ROLES.PATIENT) {
       return errorResponse(res, 'Access denied: Patient role required', 403);
@@ -472,7 +472,7 @@ const fetchPatientTimeline = async (patientId, { type, startDate, endDate } = {}
   return timeline;
 };
 
-const exportMedicalHistory = async (req, res) => {
+export const exportMedicalHistory = async (req, res) => {
   try {
     const patientId = req.user._id;
     const { format, type, startDate, endDate } = req.query;
@@ -562,7 +562,7 @@ const exportMedicalHistory = async (req, res) => {
   }
 };
 
-const updateSettings = async (req, res) => {
+export const updateSettings = async (req, res) => {
   try {
     const settings = await updateUserSettings({
       userId: req.user._id,
@@ -585,7 +585,7 @@ const updateSettings = async (req, res) => {
 /**
  * Search patients - for providers to find patients for referrals
  */
-const searchPatients = async (req, res) => {
+export const searchPatients = async (req, res) => {
   try {
     const { search, limit = 50 } = req.query;
 
@@ -622,17 +622,4 @@ const searchPatients = async (req, res) => {
     console.error('Error searching patients:', error);
     return errorResponse(res, 'Failed to search patients', 500);
   }
-};
-
-module.exports = {
-  getProfile,
-  updateProfile,
-  getMedicalHistory,
-  getHealthProfile,
-  getSettings,
-  fetchPatientTimelineWithPagination,
-  fetchPatientTimeline,
-  exportMedicalHistory,
-  updateSettings,
-  searchPatients,
 };

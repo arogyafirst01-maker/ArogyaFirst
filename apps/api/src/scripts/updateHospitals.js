@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const User = require('../models/User.model.js');
+import mongoose from 'mongoose';
+import User from '../models/User.model.js';
 
 const MONGODB_URI = 'mongodb+srv://arogyafirst01_db_user:jQi8mcB9eYP8FL2r@cluster0.kgrwhjd.mongodb.net/arogyafirst';
 
@@ -316,5 +316,3 @@ mongoose.connect(MONGODB_URI).then(async () => {
   console.error('Error:', err);
   process.exit(1);
 });
-
-module.exports = mongoose;

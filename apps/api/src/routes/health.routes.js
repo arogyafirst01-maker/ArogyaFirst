@@ -1,7 +1,7 @@
-const express = require('express');
-const mongoose = require('mongoose');
-const { isRazorpayConfigured } = require('../config/razorpay.js');
-const { isCloudinaryConfigured } = require('../config/cloudinary.js');
+import express from 'express';
+import mongoose from 'mongoose';
+import { isRazorpayConfigured } from '../config/razorpay.js';
+import { isCloudinaryConfigured } from '../config/cloudinary.js';
 
 const router = express.Router();
 
@@ -74,4 +74,4 @@ router.get('/services', (req, res) => {
   });
 });
 
-module.exports = router;
+export default router;

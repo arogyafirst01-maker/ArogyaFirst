@@ -1,11 +1,11 @@
-const { Router } = require('express');
-const controller = require('../controllers/hospital.controller.js');
-const { register } = require('../controllers/auth.controller.js');
-const { authenticate } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, registerHospitalSchema, addDoctorSchema, updateDoctorSchema, addLabSchema, updateLabSchema, addBedSchema, updateBedSchema, addPharmacySchema, updatePharmacySchema, addStaffSchema, updateStaffSchema, createStaffScheduleSchema, updateStaffScheduleSchema, getAnalyticsQuerySchema, addLocationSchema, updateLocationSchema, getQueueQuerySchema, addToQueueSchema, allocateBedSchema, releaseBedSchema, removeFromQueueSchema, getAvailableBedsQuerySchema } = require('../middleware/validation.middleware.js');
-const { uploadSingle, uploadMultiple, handleUploadError } = require('../middleware/upload.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import { Router } from 'express';
+import * as controller from '../controllers/hospital.controller.js';
+import { register } from '../controllers/auth.controller.js';
+import { authenticate } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, registerHospitalSchema, addDoctorSchema, updateDoctorSchema, addLabSchema, updateLabSchema, addBedSchema, updateBedSchema, addPharmacySchema, updatePharmacySchema, addStaffSchema, updateStaffSchema, createStaffScheduleSchema, updateStaffScheduleSchema, getAnalyticsQuerySchema, addLocationSchema, updateLocationSchema, getQueueQuerySchema, addToQueueSchema, allocateBedSchema, releaseBedSchema, removeFromQueueSchema, getAvailableBedsQuerySchema } from '../middleware/validation.middleware.js';
+import { uploadSingle, uploadMultiple, handleUploadError } from '../middleware/upload.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = Router();
 
@@ -84,4 +84,4 @@ router.put('/:id/release-bed/:bookingId', authenticate, authorize([ROLES.HOSPITA
 router.delete('/:id/queue/:bookingId', authenticate, authorize([ROLES.HOSPITAL]), validateRequest(removeFromQueueSchema), controller.removeFromQueue);
 router.get('/:id/available-beds', authenticate, authorize([ROLES.HOSPITAL]), validateRequest(getAvailableBedsQuerySchema), controller.getAvailableBeds);
 
-module.exports = router;;
+export default router;

@@ -1,4 +1,4 @@
-const pkg = require('agora-access-token');
+import pkg from 'agora-access-token';
 const { RtcTokenBuilder, RtcRole } = pkg;
 
 /**
@@ -9,7 +9,7 @@ const { RtcTokenBuilder, RtcRole } = pkg;
  * @param {number} expiryInSeconds - Token expiry time in seconds (default 3600).
  * @returns {Object} Object with token, channelName, uid, appId, and expiryAt.
  */
-function generateAgoraToken(channelName, uid = 0, role = 'publisher', expiryInSeconds = 3600) {
+export function generateAgoraToken(channelName, uid = 0, role = 'publisher', expiryInSeconds = 3600) {
   const appId = process.env.AGORA_APP_ID;
   const appCertificate = process.env.AGORA_APP_CERTIFICATE;
   
@@ -52,7 +52,7 @@ function generateAgoraToken(channelName, uid = 0, role = 'publisher', expiryInSe
  * Validates if Agora configuration is present in environment.
  * @returns {boolean} True if Agora is configured, false otherwise.
  */
-function validateAgoraConfig() {
+export function validateAgoraConfig() {
   const appId = process.env.AGORA_APP_ID;
   const appCertificate = process.env.AGORA_APP_CERTIFICATE;
   
@@ -70,7 +70,7 @@ function validateAgoraConfig() {
  * @param {string} consultationId - The consultation ID.
  * @returns {string} URL-safe channel name.
  */
-function generateChannelName(consultationId) {
+export function generateChannelName(consultationId) {
   // Ensure channel name is URL-safe and follows Agora conventions
   // Max 64 characters, alphanumeric, hyphens, underscores
   const channelName = `consultation-${consultationId}`;
@@ -87,5 +87,3 @@ function generateChannelName(consultationId) {
   
   return channelName;
 }
-
-module.exports = pkg;

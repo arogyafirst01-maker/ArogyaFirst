@@ -1,10 +1,10 @@
-const Document = require('../models/Document.model.js');
-const ConsentRequest = require('../models/ConsentRequest.model.js');
-const User = require('../models/User.model.js');
-const Booking = require('../models/Booking.model.js');
-const { successResponse, errorResponse } = require('../utils/response.util.js');
-const { uploadToCloudinary, deleteFromCloudinary } = require('../utils/fileUpload.util.js');
-const { DOCUMENT_UPLOAD_SOURCE, ROLES } = require('@arogyafirst/shared');
+import Document from '../models/Document.model.js';
+import ConsentRequest from '../models/ConsentRequest.model.js';
+import User from '../models/User.model.js';
+import Booking from '../models/Booking.model.js';
+import { successResponse, errorResponse } from '../utils/response.util.js';
+import { uploadToCloudinary, deleteFromCloudinary } from '../utils/fileUpload.util.js';
+import { DOCUMENT_UPLOAD_SOURCE, ROLES } from '@arogyafirst/shared';
 
 // Maximum document size: 5MB
 const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024;
@@ -18,7 +18,7 @@ const MAX_DOCUMENT_SIZE = 5 * 1024 * 1024;
  * @route POST /api/documents/upload
  * @access Private (Patient, Hospital, Doctor, Lab)
  */
-const uploadDocument = async (req, res) => {
+export const uploadDocument = async (req, res) => {
   try {
     const { patientId, patientEmail, bookingId, documentType, title, description, metadata } = req.body;
     const uploaderId = req.user._id;
@@ -143,7 +143,7 @@ const uploadDocument = async (req, res) => {
  * @route GET /api/documents/patient/:patientId
  * @access Private (Patient, Hospital, Doctor, Lab)
  */
-const getPatientDocuments = async (req, res) => {
+export const getPatientDocuments = async (req, res) => {
   try {
     const { patientId } = req.params;
     const requesterId = req.user._id;
@@ -195,7 +195,7 @@ const getPatientDocuments = async (req, res) => {
  * @route GET /api/documents/:documentId
  * @access Private (Patient, Hospital, Doctor, Lab)
  */
-const getDocumentById = async (req, res) => {
+export const getDocumentById = async (req, res) => {
   try {
     const { documentId } = req.params;
     const requesterId = req.user._id;
@@ -235,7 +235,7 @@ const getDocumentById = async (req, res) => {
  * @route PUT /api/documents/:documentId
  * @access Private (Patient only)
  */
-const updateDocument = async (req, res) => {
+export const updateDocument = async (req, res) => {
   try {
     const { documentId } = req.params;
     const { title, description, documentType, metadata } = req.body;
@@ -278,7 +278,7 @@ const updateDocument = async (req, res) => {
  * @route DELETE /api/documents/:documentId
  * @access Private (Patient, Lab, Doctor, Hospital)
  */
-const deleteDocument = async (req, res) => {
+export const deleteDocument = async (req, res) => {
   try {
     const { documentId } = req.params;
     const requesterId = req.user._id;
@@ -326,7 +326,7 @@ const deleteDocument = async (req, res) => {
  * @route GET /api/documents/lab
  * @access Private (Lab)
  */
-const getLabDocuments = async (req, res) => {
+export const getLabDocuments = async (req, res) => {
   try {
     const labId = req.user._id;
 
@@ -347,12 +347,3 @@ const getLabDocuments = async (req, res) => {
   }
 };
 
-
-module.exports = {
-  uploadDocument,
-  getPatientDocuments,
-  getDocumentById,
-  updateDocument,
-  deleteDocument,
-  getLabDocuments,
-};

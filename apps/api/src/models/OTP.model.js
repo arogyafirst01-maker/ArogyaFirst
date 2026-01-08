@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 /**
  * OTP Model for Email/Phone Verification and Password Reset
@@ -180,5 +180,5 @@ otpSchema.statics.incrementAttempts = function(otpId) {
 
 const OTP = mongoose.model('OTP', otpSchema);
 
-module.exports = OTP;
-module.exports.OTP_PURPOSES = OTP_PURPOSES;
+export default OTP;
+export { OTP_PURPOSES };

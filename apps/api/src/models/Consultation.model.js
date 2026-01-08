@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { generateConsultationId, CONSULTATION_STATUS, CONSULTATION_MODE } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { generateConsultationId, CONSULTATION_STATUS, CONSULTATION_MODE } from '@arogyafirst/shared';
 
 const consultationNoteSchema = new mongoose.Schema({
   content: {
@@ -305,4 +305,4 @@ consultationSchema.post('init', function(doc) {
 
 const Consultation = mongoose.model('Consultation', consultationSchema);
 
-module.exports = Consultation;;
+export default Consultation;

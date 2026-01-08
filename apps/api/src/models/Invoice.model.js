@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const { generateInvoiceId, INVOICE_STATUS, INVOICE_ITEM_TYPE, TAX_TYPES, PAYMENT_STATUS, PAYMENT_METHODS } = require('@arogyafirst/shared');
+import mongoose from 'mongoose';
+import { generateInvoiceId, INVOICE_STATUS, INVOICE_ITEM_TYPE, TAX_TYPES, PAYMENT_STATUS, PAYMENT_METHODS } from '@arogyafirst/shared';
 
 const invoiceItemSchema = new mongoose.Schema({
   itemType: {
@@ -274,4 +274,4 @@ invoiceSchema.pre('save', function(next) {
 
 const Invoice = mongoose.model('Invoice', invoiceSchema);
 
-module.exports = Invoice;;
+export default Invoice;
