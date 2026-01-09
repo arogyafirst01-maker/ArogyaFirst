@@ -1,12 +1,12 @@
-import Slot from '../models/Slot.model.js';
-import User from '../models/User.model.js';
-import { successResponse, errorResponse } from '../utils/response.util.js';
-import mongoose from 'mongoose';
-import { ROLES, BOOKING_TYPES } from '@arogyafirst/shared';
-import { timeToMinutes } from '@arogyafirst/shared/utils';
-import { withTransaction } from '../utils/transaction.util.js';
+const Slot = require('../models/Slot.model.js');
+const User = require('../models/User.model.js');
+const { successResponse, errorResponse } = require('../utils/response.util.js');
+const mongoose = require('mongoose');
+const { ROLES, BOOKING_TYPES } = require('@arogyafirst/shared');
+const { timeToMinutes } = require('@arogyafirst/shared/utils');
+const { withTransaction } = require('../utils/transaction.util.js');
 
-export const createSlot = async (req, res) => {
+const createSlot = async (req, res) => {
   return await withTransaction(async (session) => {
     try {
       const { entityType, date, startTime, endTime, capacity, advanceBookingDays, metadata, timeSlots, locationId } = req.body;
@@ -143,14 +143,15 @@ export const createSlot = async (req, res) => {
   });
 };
 
-export const getSlots = async (req, res) => {
+const getSlots = async (req, res) => {
   try {
   const { providerId, entityType, startDate, endDate, activeOnly, availableOnly, locationId } = req.query;
     
     const query = {};
     
     // Debug logging
-    console.log("[getSlots] Request:", { providerId, entityType, user: req.user ? { id: req.user._id, role: req.user.role } : "none" });
+    console.log('[getSlots] Request params:', { providerId, entityType, startDate, endDate, activeOnly, availableOnly, locationId });
+    console.log('[getSlots] User:', req.user ? { id: req.user._id, role: req.user.role, email: req.user.email } : 'Not authenticated');
     
     // If providerId provided, use it; otherwise default to current user's slots only when the
     // requester is a provider (hospital/doctor/lab) AND authenticated. 
@@ -158,7 +159,9 @@ export const getSlots = async (req, res) => {
     if (providerId) {
       query.providerId = providerId;
     } else if (req.user && req.user.role !== ROLES.PATIENT && req.user.role !== ROLES.ADMIN) {
+      // Provider viewing their own slots - ALWAYS filter by their ID
       query.providerId = req.user._id;
+      console.log('[getSlots] Filtering by provider ID:', req.user._id);
     }
     
     // Add locationId filtering for multi-location support
@@ -223,7 +226,7 @@ export const getSlots = async (req, res) => {
   }
 };
 
-export const getSlotById = async (req, res) => {
+const getSlotById = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -239,7 +242,7 @@ export const getSlotById = async (req, res) => {
   }
 };
 
-export const updateSlot = async (req, res) => {
+const updateSlot = async (req, res) => {
   return withTransaction(async (session) => {
     try {
       const { id } = req.params;
@@ -385,7 +388,7 @@ export const updateSlot = async (req, res) => {
   });
 };
 
-export const deleteSlot = async (req, res) => {
+const deleteSlot = async (req, res) => {
   try {
     const { id } = req.params;
     
@@ -415,7 +418,7 @@ export const deleteSlot = async (req, res) => {
   }
 };
 
-export const checkAvailability = async (req, res) => {
+const checkAvailability = async (req, res) => {
   try {
     const { providerId, entityType, date, startTime, endTime } = req.query;
     
@@ -475,7 +478,7 @@ export const checkAvailability = async (req, res) => {
   }
 };
 
-export const bulkCreateSlots = async (req, res) => {
+const bulkCreateSlots = async (req, res) => {
   try {
     const { slots } = req.body;
     
@@ -620,11 +623,11 @@ export const bulkCreateSlots = async (req, res) => {
 };
 
 // Helper Functions
-export const validateSlotOwnership = (slot, userId) => {
+const validateSlotOwnership = (slot, userId) => {
   return slot.providerId.toString() === userId.toString();
 };
 
-export const validateProviderCanCreateEntityType = (providerRole, entityType) => {
+const validateProviderCanCreateEntityType = (providerRole, entityType) => {
   if (providerRole === ROLES.HOSPITAL) {
     return [BOOKING_TYPES.OPD, BOOKING_TYPES.IPD].includes(entityType);
   }
@@ -637,10 +640,20 @@ export const validateProviderCanCreateEntityType = (providerRole, entityType) =>
   return false;
 };
 
-export const normalizeDate = (date) => {
+const normalizeDate = (date) => {
   const d = new Date(date);
   d.setUTCHours(0, 0, 0, 0);
   return d;
 };
 
 // Use checkSlotOverlap from model instead which uses shared timeToMinutes
+
+module.exports = {
+  createSlot,
+  getSlots,
+  getSlotById,
+  updateSlot,
+  deleteSlot,
+  checkAvailability,
+  bulkCreateSlots,
+};
