@@ -35,7 +35,12 @@ import {
   IconPhone,
   IconMenu2,
   IconMailbox,
+  IconHeart,
+  IconBrain,
+  IconApple,
+  IconRun,
 } from '@tabler/icons-react';
+import { notifications } from '@mantine/notifications';
 import { useAuth } from '../contexts/AuthContext.jsx';
 import { useDisclosure } from '@mantine/hooks';
 
@@ -234,7 +239,7 @@ export default function LandingPage() {
                   variant="subtle"
                   leftSection={<item.icon size={16} />}
                   style={{
-                    color: scrolled ? 'hsl(210 15% 15%)' : 'hsl(210 15% 25%)',
+                    color: scrolled ? 'hsl(210 15% 15%)' : 'white',
                     fontWeight: 500,
                   }}
                   styles={{
@@ -242,7 +247,7 @@ export default function LandingPage() {
                       '&:hover': {
                         background: scrolled
                           ? 'rgba(0, 119, 182, 0.08)'
-                          : 'rgba(0, 119, 182, 0.12)',
+                          : 'rgba(255, 255, 255, 0.15)',
                       },
                     },
                   }}
@@ -850,6 +855,7 @@ export default function LandingPage() {
                   p="md"
                   radius="xl"
                   shadow="xl"
+                  onClick={() => navigate('/bookings/new')}
                   style={{
                     position: 'absolute',
                     top: 30,
@@ -859,6 +865,16 @@ export default function LandingPage() {
                     border: 'none',
                     boxShadow: '0 16px 48px rgba(0, 0, 0, 0.18)',
                     zIndex: 10,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.18)';
                   }}
                 >
                   <Group gap="sm" wrap="nowrap">
@@ -894,6 +910,7 @@ export default function LandingPage() {
                   p="md"
                   radius="xl"
                   shadow="xl"
+                  onClick={() => navigate('/dashboard')}
                   style={{
                     position: 'absolute',
                     top: 180,
@@ -904,6 +921,16 @@ export default function LandingPage() {
                     boxShadow: '0 16px 48px rgba(0, 0, 0, 0.18)',
                     animationDelay: '0.8s',
                     zIndex: 10,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.18)';
                   }}
                 >
                   <Group gap="sm" wrap="nowrap">
@@ -939,6 +966,7 @@ export default function LandingPage() {
                   p="md"
                   radius="xl"
                   shadow="xl"
+                  onClick={() => navigate('/dashboard')}
                   style={{
                     position: 'absolute',
                     bottom: 30,
@@ -949,6 +977,16 @@ export default function LandingPage() {
                     boxShadow: '0 16px 48px rgba(0, 0, 0, 0.18)',
                     animationDelay: '1.6s',
                     zIndex: 10,
+                    cursor: 'pointer',
+                    transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'scale(1.05)';
+                    e.currentTarget.style.boxShadow = '0 20px 60px rgba(0, 0, 0, 0.25)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '0 16px 48px rgba(0, 0, 0, 0.18)';
                   }}
                 >
                   <Group gap="sm" wrap="nowrap">
@@ -1115,14 +1153,15 @@ export default function LandingPage() {
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
                   border: '2px solid hsl(var(--border))',
                 }}
-                styles={{
-                  root: {
-                    '&:hover': {
-                      transform: 'translateY(-8px)',
-                      boxShadow: 'var(--shadow-elevated)',
-                      borderColor: 'hsl(var(--primary) / 0.5)',
-                    },
-                  },
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
+                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = '';
+                  e.currentTarget.style.boxShadow = '';
+                  e.currentTarget.style.borderColor = '';
                 }}
               >
                 <Box
@@ -1153,17 +1192,151 @@ export default function LandingPage() {
                     </Group>
                   ))}
                 </Stack>
-                <Link to={isUserRole(portal.role) ? '/dashboard' : '/login'} style={{ textDecoration: 'none' }}>
-                  <Button
-                    variant="subtle"
-                    rightSection={<IconArrowRight size={16} />}
-                  >
-                    {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
-                  </Button>
-                </Link>
+                <Button
+                  variant="subtle"
+                  rightSection={<IconArrowRight size={16} />}
+                  onClick={() => {
+                    if (!isAuthenticated) {
+                      // Not logged in - go to login
+                      navigate('/login');
+                    } else if (isUserRole(portal.role)) {
+                      // Logged in as this role - go to dashboard
+                      navigate(getDashboardPath(portal.role));
+                    } else {
+                      // Logged in but as different role - show notification
+                      notifications.show({
+                        title: 'Access Restricted',
+                        message: `You are logged in as ${user?.role}. Please log in as ${portal.role} to access this portal.`,
+                        color: 'orange',
+                        position: 'bottom-left',
+                        autoClose: 4000,
+                      });
+                    }
+                  }}
+                >
+                  {isUserRole(portal.role) ? 'Go to Dashboard' : 'Sign In'}
+                </Button>
               </Card>
             ))}
           </SimpleGrid>
+        </Container>
+      </Box>
+
+      {/* Health Awareness Section */}
+      <Box id="health-awareness" component="section" py={96} style={{ background: 'hsl(var(--muted) / 0.2)' }}>
+        <Container size="xl">
+          <Stack align="center" gap="xl" mb={64}>
+            <Badge size="lg" radius="xl" variant="light" color="pink" leftSection={<IconHeart size={16} />}>
+              Health Awareness
+            </Badge>
+            <Title order={2} ta="center" size="2.5rem">
+              Stay Informed About{' '}
+              <Text component="span" className="gradient-text" inherit>
+                Your Health
+              </Text>
+            </Title>
+            <Text size="xl" c="dimmed" ta="center" maw={800}>
+              Access valuable health information and tips to maintain your well-being
+            </Text>
+          </Stack>
+
+          <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
+            {[
+              {
+                icon: IconHeart,
+                title: 'Heart Health',
+                description: 'Learn how to maintain cardiovascular health through diet, exercise, and regular check-ups.',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+              },
+              {
+                icon: IconBrain,
+                title: 'Mental Wellness',
+                description: 'Discover strategies for managing stress, anxiety, and maintaining positive mental health.',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              },
+              {
+                icon: IconApple,
+                title: 'Nutrition Tips',
+                description: 'Get expert advice on balanced diets, superfoods, and nutritional guidelines.',
+                gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+              },
+              {
+                icon: IconRun,
+                title: 'Fitness & Exercise',
+                description: 'Find workout routines and physical activity recommendations for all fitness levels.',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+              },
+              {
+                icon: IconShield,
+                title: 'Preventive Care',
+                description: 'Understand the importance of vaccinations, screenings, and preventive health measures.',
+                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+              },
+              {
+                icon: IconPill,
+                title: 'Chronic Conditions',
+                description: 'Management tips and lifestyle changes for living with chronic health conditions.',
+                gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
+              },
+            ].map((item, index) => (
+              <Card
+                key={index}
+                className="glass-card"
+                p="xl"
+                radius="xl"
+                style={{
+                  cursor: 'pointer',
+                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                  border: '2px solid hsl(var(--border))',
+                }}
+                onClick={() => navigate('/health-awareness')}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = 'translateY(-8px)';
+                  e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
+                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.5)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = '';
+                  e.currentTarget.style.boxShadow = '';
+                  e.currentTarget.style.borderColor = '';
+                }}
+              >
+                <Box
+                  w={56}
+                  h={56}
+                  mb="md"
+                  style={{
+                    borderRadius: 'var(--radius)',
+                    background: item.gradient,
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                  }}
+                >
+                  <item.icon size={28} color="white" />
+                </Box>
+                <Text size="xl" fw={700} mb="sm">
+                  {item.title}
+                </Text>
+                <Text c="dimmed">{item.description}</Text>
+              </Card>
+            ))}
+          </SimpleGrid>
+
+          <Group justify="center" mt="xl">
+            <Button
+              size="lg"
+              radius="xl"
+              rightSection={<IconArrowRight size={18} />}
+              onClick={() => navigate('/health-awareness')}
+              style={{
+                background: 'var(--gradient-hero)',
+                boxShadow: '0 8px 32px rgba(0, 119, 182, 0.35)',
+              }}
+            >
+              Explore All Health Topics
+            </Button>
+          </Group>
         </Container>
       </Box>
 
@@ -1283,8 +1456,8 @@ export default function LandingPage() {
               <Stack gap="xs">
                 <Group gap="xs">
                   <IconMail size={16} />
-                  <Anchor href="mailto:support@arogyafirst.com" size="sm" c="dimmed">
-                    support@arogyafirst.com
+                  <Anchor href="mailto:arogya.first.01@gmail.com" size="sm" c="dimmed">
+                    arogya.first.01@gmail.com
                   </Anchor>
                 </Group>
                 <Group gap="xs">
