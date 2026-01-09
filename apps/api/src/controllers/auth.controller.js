@@ -590,12 +590,32 @@ const verifyEmailOTP = async (req, res) => {
 
 /**
  * Normalize phone number by stripping all non-digit characters
- * @param {string} phone - Raw phone number input
- * @returns {string} Cleaned 10-digit phone number
+ * For international numbers with country code, extracts the last 10 digits (for India)
+ * @param {string} phone - Raw phone number input (may include country code like +91)
+ * @returns {string} Cleaned phone number (10 digits for storage/lookup)
  */
 const normalizePhone = (phone) => {
   if (!phone) return '';
-  return phone.replace(/\D/g, '').trim();
+  // Remove all non-digit characters
+  const digitsOnly = phone.replace(/\D/g, '').trim();
+  // If number has more than 10 digits, assume country code is included
+  // Extract last 10 digits (phone number without country code)
+  if (digitsOnly.length > 10) {
+    return digitsOnly.slice(-10);
+  }
+  return digitsOnly;
+};
+
+/**
+ * Validate phone number - accepts both 10-digit and international formats
+ * @param {string} phone - Phone number to validate
+ * @returns {boolean} True if valid
+ */
+const validatePhoneNumber = (phone) => {
+  if (!phone) return false;
+  const digitsOnly = phone.replace(/\D/g, '').trim();
+  // Accept 10-digit Indian numbers or international format (10+ digits with country code)
+  return digitsOnly.length >= 10 && digitsOnly.length <= 15;
 };
 
 
@@ -606,9 +626,9 @@ const sendPhoneOTP = async (req, res) => {
   try {
     const { phone } = req.body;
 
-    // Validate phone format
-    if (!validatePhone(phone)) {
-      return errorResponse(res, 'Valid 10-digit phone number is required', 400);
+    // Validate phone format (accepts international format with country code)
+    if (!validatePhoneNumber(phone)) {
+      return errorResponse(res, 'Valid phone number is required', 400);
     }
 
     const cleanedPhone = normalizePhone(phone);
@@ -693,9 +713,9 @@ const forgotPassword = async (req, res) => {
   try {
     const { phone } = req.body;
 
-    // Validate phone format
-    if (!validatePhone(phone)) {
-      return errorResponse(res, 'Valid 10-digit phone number is required', 400);
+    // Validate phone format (accepts international format with country code)
+    if (!validatePhoneNumber(phone)) {
+      return errorResponse(res, 'Valid phone number is required', 400);
     }
 
     const cleanedPhone = normalizePhone(phone);
