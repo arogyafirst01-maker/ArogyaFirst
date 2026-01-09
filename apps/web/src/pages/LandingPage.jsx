@@ -15,7 +15,10 @@ import {
   Drawer,
   Divider,
   Anchor,
+  ActionIcon,
 } from '@mantine/core';
+import { Carousel } from '@mantine/carousel';
+import '@mantine/carousel/styles.css';
 import logo from '@/assets/logo.png';
 import {
   IconActivity,
@@ -31,6 +34,7 @@ import {
   IconSparkles,
   IconInfoCircle,
   IconArrowRight,
+  IconArrowLeft,
   IconMail,
   IconPhone,
   IconMenu2,
@@ -39,6 +43,8 @@ import {
   IconBrain,
   IconApple,
   IconRun,
+  IconChevronLeft,
+  IconChevronRight,
 } from '@tabler/icons-react';
 import { notifications } from '@mantine/notifications';
 import { useAuth } from '../contexts/AuthContext.jsx';
@@ -1240,7 +1246,42 @@ export default function LandingPage() {
             </Text>
           </Stack>
 
-          <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
+          <Carousel
+            slideSize={{ base: '100%', sm: '50%', md: '33.333%' }}
+            slideGap="lg"
+            loop
+            align="start"
+            slidesToScroll={1}
+            withIndicators
+            nextControlIcon={<IconChevronRight size={20} />}
+            previousControlIcon={<IconChevronLeft size={20} />}
+            styles={{
+              control: {
+                backgroundColor: 'white',
+                border: '2px solid hsl(var(--border))',
+                boxShadow: '0 4px 12px rgba(0,0,0,0.1)',
+                width: 44,
+                height: 44,
+                '&:hover': {
+                  backgroundColor: 'hsl(var(--primary))',
+                  color: 'white',
+                },
+              },
+              indicator: {
+                width: 12,
+                height: 12,
+                transition: 'all 0.3s ease',
+                backgroundColor: 'hsl(var(--border))',
+                '&[data-active]': {
+                  backgroundColor: 'hsl(var(--primary))',
+                  width: 24,
+                },
+              },
+              indicators: {
+                bottom: -40,
+              },
+            }}
+          >
             {[
               {
                 image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop',
@@ -1272,75 +1313,107 @@ export default function LandingPage() {
                 date: '25/1/2024',
                 tags: ['EXERCISE', 'FITNESS', 'WELLNESS'],
               },
+              {
+                image: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?w=400&h=250&fit=crop',
+                title: 'Mental Health & Stress Management',
+                category: 'MENTAL HEALTH',
+                categoryColor: 'purple',
+                description: 'Discover effective strategies for managing stress and improving your mental well-being.',
+                author: 'Dr. Lisa Park',
+                date: '28/1/2024',
+                tags: ['MENTAL-HEALTH', 'STRESS', 'WELLNESS'],
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1505576399279-565b52d4ac71?w=400&h=250&fit=crop',
+                title: 'Importance of Sleep Hygiene',
+                category: 'GENERAL HEALTH',
+                categoryColor: 'blue',
+                description: 'Learn how quality sleep impacts your overall health and tips for better rest.',
+                author: 'Dr. James Wilson',
+                date: '02/2/2024',
+                tags: ['SLEEP', 'LIFESTYLE', 'WELLNESS'],
+              },
+              {
+                image: 'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=400&h=250&fit=crop',
+                title: 'Preventive Health Screenings',
+                category: 'PREVENTIVE CARE',
+                categoryColor: 'teal',
+                description: 'Essential health screenings you should not miss at different stages of life.',
+                author: 'Dr. Amanda Foster',
+                date: '05/2/2024',
+                tags: ['SCREENING', 'PREVENTION', 'HEALTH-CHECK'],
+              },
             ].map((article, index) => (
-              <Card
-                key={index}
-                shadow="sm"
-                padding={0}
-                radius="lg"
-                withBorder
-                style={{
-                  cursor: 'pointer',
-                  transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  overflow: 'hidden',
-                  background: 'white',
-                }}
-                onClick={() => navigate('/health-awareness')}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.12)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.transform = '';
-                  e.currentTarget.style.boxShadow = '';
-                }}
-              >
-                <Card.Section>
-                  <Box
-                    component="img"
-                    src={article.image}
-                    alt={article.title}
-                    style={{
-                      width: '100%',
-                      height: 200,
-                      objectFit: 'cover',
-                    }}
-                  />
-                </Card.Section>
+              <Carousel.Slide key={index}>
+                <Card
+                  shadow="sm"
+                  padding={0}
+                  radius="lg"
+                  withBorder
+                  style={{
+                    cursor: 'pointer',
+                    transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+                    overflow: 'hidden',
+                    background: 'white',
+                    height: '100%',
+                  }}
+                  onClick={() => navigate('/health-awareness')}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.transform = 'translateY(-8px)';
+                    e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.12)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.transform = '';
+                    e.currentTarget.style.boxShadow = '';
+                  }}
+                >
+                  <Card.Section>
+                    <Box
+                      component="img"
+                      src={article.image}
+                      alt={article.title}
+                      style={{
+                        width: '100%',
+                        height: 200,
+                        objectFit: 'cover',
+                      }}
+                    />
+                  </Card.Section>
 
-                <Box p="lg">
-                  <Text size="lg" fw={700} mb="xs" lineClamp={2}>
-                    {article.title}
-                  </Text>
+                  <Box p="lg">
+                    <Text size="lg" fw={700} mb="xs" lineClamp={2}>
+                      {article.title}
+                    </Text>
 
-                  <Badge color={article.categoryColor} variant="light" mb="sm">
-                    {article.category}
-                  </Badge>
+                    <Badge color={article.categoryColor} variant="light" mb="sm">
+                      {article.category}
+                    </Badge>
 
-                  <Text size="sm" c="dimmed" lineClamp={3} mb="md">
-                    {article.description}
-                  </Text>
+                    <Text size="sm" c="dimmed" lineClamp={3} mb="md">
+                      {article.description}
+                    </Text>
 
-                  <Group gap="xs" mb="md">
-                    <IconUsers size={14} color="gray" />
-                    <Text size="xs" c="dimmed">{article.author}</Text>
-                    <IconCalendar size={14} color="gray" />
-                    <Text size="xs" c="dimmed">{article.date}</Text>
-                  </Group>
+                    <Group gap="xs" mb="md">
+                      <IconUsers size={14} color="gray" />
+                      <Text size="xs" c="dimmed">{article.author}</Text>
+                      <IconCalendar size={14} color="gray" />
+                      <Text size="xs" c="dimmed">{article.date}</Text>
+                    </Group>
 
-                  <Group gap={6}>
-                    {article.tags.map((tag) => (
-                      <Badge key={tag} size="xs" variant="dot" color="blue">
-                        {tag}
-                      </Badge>
-                    ))}
-                  </Group>
-                </Box>
-              </Card>
+                    <Group gap={6}>
+                      {article.tags.map((tag) => (
+                        <Badge key={tag} size="xs" variant="dot" color="blue">
+                          {tag}
+                        </Badge>
+                      ))}
+                    </Group>
+                  </Box>
+                </Card>
+              </Carousel.Slide>
             ))}
-          </SimpleGrid>
+          </Carousel>
 
-          <Group justify="center" mt={48}>
+          <Group justify="center" mt={80}>
             <Button
               size="lg"
               radius="xl"
