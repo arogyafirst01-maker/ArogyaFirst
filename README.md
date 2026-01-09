@@ -217,7 +217,7 @@ This is a Phase 1 project focused on manual testing. For Phase 2 and beyond:
 
 For issues, questions, or contributions:
 
-- Email: support@arogyafirst.com
+- Email: arogya.first.01@gmail.com
 - Review documentation in `docs/` directory
 - Check User Guides for feature-specific help
 
@@ -225,7 +225,7 @@ For issues, questions, or contributions:
 
 ## License
 
-[Add License Information]
+MIT License - See LICENSE file for details
 
 ---
 
