@@ -1236,94 +1236,111 @@ export default function LandingPage() {
               </Text>
             </Title>
             <Text size="xl" c="dimmed" ta="center" maw={800}>
-              Access valuable health information and tips to maintain your well-being
+              Explore articles and resources to help you maintain a healthy lifestyle
             </Text>
           </Stack>
 
           <SimpleGrid cols={{ base: 1, md: 2, lg: 3 }} spacing="lg">
             {[
               {
-                icon: IconHeart,
-                title: 'Heart Health',
-                description: 'Learn how to maintain cardiovascular health through diet, exercise, and regular check-ups.',
-                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+                image: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?w=400&h=250&fit=crop',
+                title: 'Understanding Diabetes Management',
+                category: 'CHRONIC DISEASES',
+                categoryColor: 'red',
+                description: 'Learn essential tips for managing diabetes effectively through diet, exercise, and medication.',
+                author: 'Dr. Sarah Johnson',
+                date: '15/1/2024',
+                tags: ['DIABETES', 'LIFESTYLE', 'DIET'],
               },
               {
-                icon: IconBrain,
-                title: 'Mental Wellness',
-                description: 'Discover strategies for managing stress, anxiety, and maintaining positive mental health.',
-                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                image: 'https://images.unsplash.com/photo-1490645935967-10de6ba17061?w=400&h=250&fit=crop',
+                title: 'Heart-Healthy Diet Guidelines',
+                category: 'NUTRITION',
+                categoryColor: 'green',
+                description: 'Discover the best foods to support cardiovascular health and reduce heart disease risk.',
+                author: 'Dr. Michael Chen',
+                date: '20/1/2024',
+                tags: ['HEART-HEALTH', 'DIET', 'NUTRITION'],
               },
               {
-                icon: IconApple,
-                title: 'Nutrition Tips',
-                description: 'Get expert advice on balanced diets, superfoods, and nutritional guidelines.',
-                gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
+                image: 'https://images.unsplash.com/photo-1534438327276-14e5300c3a48?w=400&h=250&fit=crop',
+                title: 'Benefits of Regular Exercise',
+                category: 'EXERCISE',
+                categoryColor: 'orange',
+                description: 'Explore how physical activity improves overall health and prevents chronic diseases.',
+                author: 'Dr. Emily Rodriguez',
+                date: '25/1/2024',
+                tags: ['EXERCISE', 'FITNESS', 'WELLNESS'],
               },
-              {
-                icon: IconRun,
-                title: 'Fitness & Exercise',
-                description: 'Find workout routines and physical activity recommendations for all fitness levels.',
-                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
-              },
-              {
-                icon: IconShield,
-                title: 'Preventive Care',
-                description: 'Understand the importance of vaccinations, screenings, and preventive health measures.',
-                gradient: 'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
-              },
-              {
-                icon: IconPill,
-                title: 'Chronic Conditions',
-                description: 'Management tips and lifestyle changes for living with chronic health conditions.',
-                gradient: 'linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%)',
-              },
-            ].map((item, index) => (
+            ].map((article, index) => (
               <Card
                 key={index}
-                className="glass-card"
-                p="xl"
-                radius="xl"
+                shadow="sm"
+                padding={0}
+                radius="lg"
+                withBorder
                 style={{
                   cursor: 'pointer',
                   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-                  border: '2px solid hsl(var(--border))',
+                  overflow: 'hidden',
+                  background: 'white',
                 }}
                 onClick={() => navigate('/health-awareness')}
                 onMouseEnter={(e) => {
                   e.currentTarget.style.transform = 'translateY(-8px)';
-                  e.currentTarget.style.boxShadow = 'var(--shadow-elevated)';
-                  e.currentTarget.style.borderColor = 'hsl(var(--primary) / 0.5)';
+                  e.currentTarget.style.boxShadow = '0 20px 40px rgba(0,0,0,0.12)';
                 }}
                 onMouseLeave={(e) => {
                   e.currentTarget.style.transform = '';
                   e.currentTarget.style.boxShadow = '';
-                  e.currentTarget.style.borderColor = '';
                 }}
               >
-                <Box
-                  w={56}
-                  h={56}
-                  mb="md"
-                  style={{
-                    borderRadius: 'var(--radius)',
-                    background: item.gradient,
-                    display: 'flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                  }}
-                >
-                  <item.icon size={28} color="white" />
+                <Card.Section>
+                  <Box
+                    component="img"
+                    src={article.image}
+                    alt={article.title}
+                    style={{
+                      width: '100%',
+                      height: 200,
+                      objectFit: 'cover',
+                    }}
+                  />
+                </Card.Section>
+
+                <Box p="lg">
+                  <Text size="lg" fw={700} mb="xs" lineClamp={2}>
+                    {article.title}
+                  </Text>
+
+                  <Badge color={article.categoryColor} variant="light" mb="sm">
+                    {article.category}
+                  </Badge>
+
+                  <Text size="sm" c="dimmed" lineClamp={3} mb="md">
+                    {article.description}
+                  </Text>
+
+                  <Group gap="xs" mb="md">
+                    <IconUsers size={14} color="gray" />
+                    <Text size="xs" c="dimmed">{article.author}</Text>
+                    <IconCalendar size={14} color="gray" />
+                    <Text size="xs" c="dimmed">{article.date}</Text>
+                  </Group>
+
+                  <Group gap={6}>
+                    {article.tags.map((tag) => (
+                      <Badge key={tag} size="xs" variant="dot" color="blue">
+                        {tag}
+                      </Badge>
+                    ))}
+                  </Group>
                 </Box>
-                <Text size="xl" fw={700} mb="sm">
-                  {item.title}
-                </Text>
-                <Text c="dimmed">{item.description}</Text>
               </Card>
             ))}
           </SimpleGrid>
 
-          <Group justify="center" mt="xl">
+          <Group justify="center" mt={48}>
             <Button
               size="lg"
               radius="xl"
@@ -1475,11 +1492,26 @@ export default function LandingPage() {
                 Product
               </Text>
               <Stack gap="xs">
-                {['Features', 'Pricing', 'Security', 'Updates'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const features = document.getElementById('features');
+                    if (features) features.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Features
+                </Anchor>
+                <Anchor size="sm" c="dimmed" style={{ cursor: 'pointer' }}>
+                  Pricing
+                </Anchor>
+                <Anchor size="sm" c="dimmed" style={{ cursor: 'pointer' }}>
+                  Security
+                </Anchor>
+                <Anchor size="sm" c="dimmed" style={{ cursor: 'pointer' }}>
+                  Updates
+                </Anchor>
               </Stack>
             </Box>
 
@@ -1489,11 +1521,61 @@ export default function LandingPage() {
                 Portals
               </Text>
               <Stack gap="xs">
-                {['Patients', 'Doctors', 'Hospitals', 'Labs', 'Pharmacies'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const portals = document.getElementById('portals');
+                    if (portals) portals.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Patients
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const portals = document.getElementById('portals');
+                    if (portals) portals.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Doctors
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const portals = document.getElementById('portals');
+                    if (portals) portals.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Hospitals
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const portals = document.getElementById('portals');
+                    if (portals) portals.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Labs
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const portals = document.getElementById('portals');
+                    if (portals) portals.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  Pharmacies
+                </Anchor>
               </Stack>
             </Box>
 
@@ -1503,11 +1585,30 @@ export default function LandingPage() {
                 Company
               </Text>
               <Stack gap="xs">
-                {['About Us', 'Careers', 'Contact', 'Blog'].map((item) => (
-                  <Anchor key={item} size="sm" c="dimmed">
-                    {item}
-                  </Anchor>
-                ))}
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    const about = document.getElementById('about');
+                    if (about) about.scrollIntoView({ behavior: 'smooth' });
+                  }}
+                >
+                  About Us
+                </Anchor>
+                <Anchor size="sm" c="dimmed" href="mailto:careers@arogyafirst.com">
+                  Careers
+                </Anchor>
+                <Anchor 
+                  size="sm" 
+                  c="dimmed" 
+                  href="mailto:arogya.first.01@gmail.com"
+                >
+                  Contact
+                </Anchor>
+                <Anchor size="sm" c="dimmed" style={{ cursor: 'pointer' }}>
+                  Blog
+                </Anchor>
               </Stack>
             </Box>
 
