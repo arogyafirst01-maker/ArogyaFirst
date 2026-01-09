@@ -1,9 +1,9 @@
-const { Router } = require('express');
-const slotController = require('../controllers/slot.controller.js');
-const { authenticate, authenticateOptional } = require('../middleware/auth.middleware.js');
-const { authorize } = require('../middleware/rbac.middleware.js');
-const { validateRequest, createSlotSchema, updateSlotSchema } = require('../middleware/validation.middleware.js');
-const { ROLES } = require('@arogyafirst/shared');
+import { Router } from 'express';
+import * as slotController from '../controllers/slot.controller.js';
+import { authenticate, authenticateOptional } from '../middleware/auth.middleware.js';
+import { authorize } from '../middleware/rbac.middleware.js';
+import { validateRequest, createSlotSchema, updateSlotSchema } from '../middleware/validation.middleware.js';
+import { ROLES } from '@arogyafirst/shared';
 
 const router = Router();
 
@@ -27,4 +27,4 @@ router.delete('/:id', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROL
 // Bulk Operations (Optional)
 router.post('/bulk', authenticate, authorize([ROLES.HOSPITAL, ROLES.DOCTOR, ROLES.LAB]), slotController.bulkCreateSlots);
 
-module.exports = router;
+export default router;

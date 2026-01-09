@@ -104,6 +104,39 @@ otpSchema.methods.isValid = function() {
 };
 
 /**
+ * Instance method to verify OTP code
+ * @param {string} inputOtp - The OTP code to verify
+ * @returns {Promise<boolean>} True if OTP matches and is valid
+ */
+otpSchema.methods.verifyOTP = async function(inputOtp) {
+  // Increment attempts
+  this.attempts += 1;
+  await this.save();
+  
+  // Check if max attempts exceeded (5 attempts max)
+  if (this.attempts > 5) {
+    return false;
+  }
+  
+  // Check if OTP is still valid
+  if (!this.isValid()) {
+    return false;
+  }
+  
+  // Compare OTP codes
+  return this.otp === inputOtp;
+};
+
+/**
+ * Instance method to mark OTP as used
+ * @returns {Promise<Document>} Updated OTP document
+ */
+otpSchema.methods.markAsUsed = async function() {
+  this.isUsed = true;
+  return this.save();
+};
+
+/**
  * Static method to create and save a new OTP
  * @param {string|null} email - Email address (null for phone-based OTP)
  * @param {string} otp - 6-digit OTP code

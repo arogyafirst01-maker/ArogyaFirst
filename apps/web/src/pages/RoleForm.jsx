@@ -139,6 +139,20 @@ const getFormConfig = (selectedRole) => {
   }
 };
 
+// Country code options
+const COUNTRY_CODES = [
+  { value: '+91', label: '🇮🇳 +91 (India)' },
+  { value: '+1', label: '🇺🇸 +1 (USA)' },
+  { value: '+44', label: '🇬🇧 +44 (UK)' },
+  { value: '+61', label: '🇦🇺 +61 (Australia)' },
+  { value: '+971', label: '🇦🇪 +971 (UAE)' },
+  { value: '+65', label: '🇸🇬 +65 (Singapore)' },
+  { value: '+81', label: '🇯🇵 +81 (Japan)' },
+  { value: '+49', label: '🇩🇪 +49 (Germany)' },
+  { value: '+33', label: '🇫🇷 +33 (France)' },
+  { value: '+86', label: '🇨🇳 +86 (China)' },
+];
+
 export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
   const form = useForm(getFormConfig(role));
   const navigate = useNavigate();
@@ -149,6 +163,9 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
   const [facilityInput, setFacilityInput] = useState('');
   const [medicines, setMedicines] = useState([]);
   const [newMedicine, setNewMedicine] = useState({ name: '', genericName: '', manufacturer: '', stock: 0, reorderLevel: 0, price: 0, batchNumber: '', expiryDate: null });
+  
+  // Country code state
+  const [countryCode, setCountryCode] = useState('+91');
 
   // Email verification state
   const [emailVerified, setEmailVerified] = useState(false);
@@ -195,7 +212,9 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
     setPhoneOtpLoading(true);
     setPhoneOtpError(null);
     try {
-      await api.post('/api/auth/send-phone-otp', { phone });
+      // Include country code with phone number
+      const fullPhone = `${countryCode}${phone}`;
+      await api.post('/api/auth/send-phone-otp', { phone: fullPhone, countryCode });
       setPhoneOtpSent(true);
       setPhoneCountdown(60);
       notifications.show({ title: 'OTP Sent', message: 'Verification code sent to your phone', color: 'green' });
@@ -216,7 +235,9 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
     setPhoneVerifyLoading(true);
     setPhoneOtpError(null);
     try {
-      await api.post('/api/auth/verify-phone-otp-registration', { phone: form.values.phone, otp: phoneOtp });
+      // Include country code with phone number for verification
+      const fullPhone = `${countryCode}${form.values.phone}`;
+      await api.post('/api/auth/verify-phone-otp-registration', { phone: fullPhone, otp: phoneOtp, countryCode });
       setPhoneVerified(true);
       notifications.show({ title: 'Success', message: 'Phone number verified successfully!', color: 'green' });
     } catch (err) {
@@ -306,6 +327,12 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
     let formattedValues = { ...values };
     if (formattedValues.dateOfBirth) {
       formattedValues.dateOfBirth = formatDate(formattedValues.dateOfBirth);
+    }
+    
+    // Include country code with phone number for patients
+    if (formattedValues.phone && role === ROLES.PATIENT) {
+      formattedValues.phone = `${countryCode}${formattedValues.phone}`;
+      formattedValues.countryCode = countryCode;
     }
 
     // Attach lab / pharmacy inventory arrays if present
@@ -492,14 +519,35 @@ export default function RoleForm({ role, onBack, onSubmit, loading, error }) {
           {role === ROLES.PATIENT && (
             <>
               <TextInput label="Full Name" placeholder="Enter your full name" required {...form.getInputProps('name')} />
-              <TextInput 
-                label="Phone Number" 
-                placeholder="10-digit phone number" 
-                required 
-                disabled={phoneVerified}
-                rightSection={phoneVerified ? <IconCheck color="green" size={20} /> : null}
-                {...form.getInputProps('phone')} 
-              />
+              
+              {/* Phone Number with Country Code */}
+              <Box>
+                <Text size="sm" fw={500} mb={4}>Phone Number <Text span c="red">*</Text></Text>
+                <Group gap="xs" align="flex-start">
+                  <Select
+                    data={COUNTRY_CODES}
+                    value={countryCode}
+                    onChange={setCountryCode}
+                    disabled={phoneVerified}
+                    w={140}
+                    searchable
+                    allowDeselect={false}
+                    styles={{
+                      input: {
+                        fontWeight: 500,
+                      }
+                    }}
+                  />
+                  <TextInput 
+                    placeholder="10-digit phone number" 
+                    required 
+                    disabled={phoneVerified}
+                    rightSection={phoneVerified ? <IconCheck color="green" size={20} /> : null}
+                    style={{ flex: 1 }}
+                    {...form.getInputProps('phone')} 
+                  />
+                </Group>
+              </Box>
               
               {/* Phone Verification Section */}
               {!phoneVerified && (
