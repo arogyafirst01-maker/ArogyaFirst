@@ -91,7 +91,21 @@ const getNavigationItems = (role) => {
 };
 
 const isActive = (currentPath, itemPath) => {
-  if (itemPath === '/dashboard') return currentPath === itemPath;
+  // Exact match for dashboard paths
+  if (itemPath === '/dashboard' || itemPath === '/hospital-dashboard' || itemPath === '/lab-dashboard' || itemPath === '/pharmacy-dashboard') {
+    return currentPath === itemPath;
+  }
+  
+  // Special handling for booking paths to prevent both being highlighted
+  // /bookings/new should only match /bookings/new, not /bookings
+  if (itemPath === '/bookings') {
+    return currentPath === '/bookings';
+  }
+  if (itemPath === '/bookings/new') {
+    return currentPath === '/bookings/new' || currentPath.startsWith('/bookings/new/');
+  }
+  
+  // For other paths, use startsWith matching
   return currentPath.startsWith(itemPath);
 };
 
