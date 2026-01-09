@@ -1288,6 +1288,7 @@ export default function LandingPage() {
                 title: 'Understanding Diabetes Management',
                 category: 'CHRONIC DISEASES',
                 categoryColor: 'red',
+                gradient: 'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
                 description: 'Learn essential tips for managing diabetes effectively through diet, exercise, and medication.',
                 author: 'Dr. Sarah Johnson',
                 date: '15/1/2024',
@@ -1298,6 +1299,7 @@ export default function LandingPage() {
                 title: 'Heart-Healthy Diet Guidelines',
                 category: 'NUTRITION',
                 categoryColor: 'green',
+                gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
                 description: 'Discover the best foods to support cardiovascular health and reduce heart disease risk.',
                 author: 'Dr. Michael Chen',
                 date: '20/1/2024',
@@ -1308,6 +1310,7 @@ export default function LandingPage() {
                 title: 'Benefits of Regular Exercise',
                 category: 'EXERCISE',
                 categoryColor: 'orange',
+                gradient: 'linear-gradient(135deg, #f5af19 0%, #f12711 100%)',
                 description: 'Explore how physical activity improves overall health and prevents chronic diseases.',
                 author: 'Dr. Emily Rodriguez',
                 date: '25/1/2024',
@@ -1318,6 +1321,7 @@ export default function LandingPage() {
                 title: 'Mental Health & Stress Management',
                 category: 'MENTAL HEALTH',
                 categoryColor: 'purple',
+                gradient: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
                 description: 'Discover effective strategies for managing stress and improving your mental well-being.',
                 author: 'Dr. Lisa Park',
                 date: '28/1/2024',
@@ -1328,6 +1332,7 @@ export default function LandingPage() {
                 title: 'Importance of Sleep Hygiene',
                 category: 'GENERAL HEALTH',
                 categoryColor: 'blue',
+                gradient: 'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
                 description: 'Learn how quality sleep impacts your overall health and tips for better rest.',
                 author: 'Dr. James Wilson',
                 date: '02/2/2024',
@@ -1338,6 +1343,7 @@ export default function LandingPage() {
                 title: 'Preventive Health Screenings',
                 category: 'PREVENTIVE CARE',
                 categoryColor: 'teal',
+                gradient: 'linear-gradient(135deg, #11998e 0%, #38ef7d 100%)',
                 description: 'Essential health screenings you should not miss at different stages of life.',
                 author: 'Dr. Amanda Foster',
                 date: '05/2/2024',
@@ -1367,11 +1373,16 @@ export default function LandingPage() {
                     e.currentTarget.style.boxShadow = '';
                   }}
                 >
-                  <Card.Section>
+                  <Card.Section style={{ minHeight: 200, background: article.gradient }}>
                     <Box
                       component="img"
                       src={article.image}
                       alt={article.title}
+                      loading="lazy"
+                      onError={(e) => {
+                        // Hide broken image - gradient background will show through
+                        e.currentTarget.style.display = 'none';
+                      }}
                       style={{
                         width: '100%',
                         height: 200,
