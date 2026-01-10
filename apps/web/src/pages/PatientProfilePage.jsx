@@ -168,6 +168,7 @@ const PatientProfilePage = () => {
                 <DateInput
                   label="Date of Birth"
                   required
+                  maxDate={new Date()}
                   {...form.getInputProps('dateOfBirth')}
                 />
                 <TextInput

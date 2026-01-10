@@ -584,7 +584,7 @@ const DoctorProfilePage = () => {
                   <TextInput label="Qualification" {...profileForm.getInputProps('qualification')} />
                   <NumberInput label="Experience (years)" {...profileForm.getInputProps('experience')} min={0} />
                   <TextInput label="Location" {...profileForm.getInputProps('location')} />
-                  <DateInput label="Date of Birth" {...profileForm.getInputProps('dateOfBirth')} />
+                  <DateInput label="Date of Birth" maxDate={new Date()} {...profileForm.getInputProps('dateOfBirth')} />
                   <TextInput label="Aadhaar Last 4 Digits" {...profileForm.getInputProps('aadhaarLast4')} />
                   <TextInput label="Specialization" {...profileForm.getInputProps('specialization')} />
                   <TextInput label="Hospital ID" {...profileForm.getInputProps('hospitalId')} disabled={!!doctorData.hospitalId} />

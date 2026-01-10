@@ -578,6 +578,7 @@ export default function MedicalHistoryPage() {
               value={exportDateRange}
               onChange={setExportDateRange}
               size="xs"
+              maxDate={new Date()}
               placeholder="Pick dates range"
               style={{ padding: '8px 12px' }}
             />
@@ -693,6 +694,7 @@ export default function MedicalHistoryPage() {
               value={startDate}
               onChange={setStartDate}
               clearable
+              maxDate={new Date()}
               valueFormat="YYYY-MM-DD"
             />
           </Grid.Col>
@@ -702,6 +704,7 @@ export default function MedicalHistoryPage() {
               value={endDate}
               onChange={setEndDate}
               clearable
+              maxDate={new Date()}
               valueFormat="YYYY-MM-DD"
             />
           </Grid.Col>
@@ -811,6 +814,7 @@ export default function MedicalHistoryPage() {
                       value={zoomDateRange[0]}
                       onChange={(date) => setZoomDateRange([date, zoomDateRange[1]])}
                       clearable
+                      maxDate={new Date()}
                       valueFormat="YYYY-MM-DD"
                     />
                   </Grid.Col>
@@ -821,6 +825,7 @@ export default function MedicalHistoryPage() {
                       value={zoomDateRange[1]}
                       onChange={(date) => setZoomDateRange([zoomDateRange[0], date])}
                       clearable
+                      maxDate={new Date()}
                       valueFormat="YYYY-MM-DD"
                     />
                   </Grid.Col>

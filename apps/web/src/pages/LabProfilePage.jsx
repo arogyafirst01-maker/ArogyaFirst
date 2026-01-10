@@ -902,11 +902,11 @@ export default function LabProfilePage() {
             <TextInput label="Name" {...machineForm.getInputProps('name')} required />
             <TextInput label="Model" {...machineForm.getInputProps('model')} required />
             <TextInput label="Manufacturer" {...machineForm.getInputProps('manufacturer')} />
-            <DateInput label="Purchase Date" {...machineForm.getInputProps('purchaseDate')} />
+            <DateInput label="Purchase Date" maxDate={new Date()} {...machineForm.getInputProps('purchaseDate')} />
             {machineModalType === 'edit' && (
-              <DateInput label="Last Maintenance Date" {...machineForm.getInputProps('lastMaintenanceDate')} />
+              <DateInput label="Last Maintenance Date" maxDate={new Date()} {...machineForm.getInputProps('lastMaintenanceDate')} />
             )}
-            <DateInput label="Next Maintenance Date" {...machineForm.getInputProps('nextMaintenanceDate')} />
+            <DateInput label="Next Maintenance Date" minDate={new Date()} {...machineForm.getInputProps('nextMaintenanceDate')} />
             <Select
               label="Status"
               data={Object.values(MACHINE_STATUS)}
