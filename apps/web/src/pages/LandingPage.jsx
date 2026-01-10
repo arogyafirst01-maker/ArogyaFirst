@@ -57,6 +57,23 @@ export default function LandingPage() {
   const [scrolled, setScrolled] = useState(false);
 
   const isAuthenticated = status === 'authenticated';
+  
+  // Compute display name once - only valid if authenticated AND has a real name
+  const displayName = (() => {
+    if (status !== 'authenticated' || !user) return '';
+    const name = 
+      user.patientData?.name ||
+      user.hospitalData?.name ||
+      user.doctorData?.name ||
+      user.labData?.name ||
+      user.pharmacyData?.name ||
+      user.name ||
+      '';
+    return typeof name === 'string' ? name.trim() : '';
+  })();
+  
+  // Only show personalized greeting if we have BOTH authentication AND a valid name
+  const showPersonalizedGreeting = isAuthenticated && displayName.length > 0;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -564,90 +581,70 @@ export default function LandingPage() {
                     letterSpacing: '-1.5px',
                   }}
                 >
-                  {(() => {
-                    // Extract user name from any role-specific data - must have at least 1 character
-                    const rawName = isAuthenticated ? (
-                      user?.patientData?.name || 
-                      user?.hospitalData?.name || 
-                      user?.doctorData?.name || 
-                      user?.labData?.name || 
-                      user?.pharmacyData?.name ||
-                      user?.name ||
-                      ''
-                    ) : '';
-                    const userName = typeof rawName === 'string' ? rawName.trim() : '';
-                    
-                    // Show authenticated greeting only if we have a valid name with actual content
-                    if (isAuthenticated && userName && userName.length > 0) {
-                      return (
-                        <>
-                          Welcome back,{' '}
-                          <br />
-                          <span
-                            style={{
-                              fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                              fontWeight: 900,
-                              background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
-                              WebkitBackgroundClip: 'text',
-                              backgroundClip: 'text',
-                              WebkitTextFillColor: 'transparent',
-                              color: 'transparent',
-                              position: 'relative',
-                              display: 'inline-block',
-                              letterSpacing: '-2px',
-                            }}
-                          >
-                            {userName}!
-                            <span
-                              style={{
-                                position: 'absolute',
-                                bottom: 0,
-                                left: 0,
-                                width: '60%',
-                                height: 4,
-                                background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
-                                borderRadius: 2,
-                                display: 'block',
-                              }}
-                            />
-                          </span>
-                        </>
-                      );
-                    }
-                    
-                    // Default: show "Your Health, Connected" for non-authenticated or loading state
-                    return (
-                      <>
-                        Your Health,{' '}
-                        <br />
+                  {showPersonalizedGreeting ? (
+                    <>
+                      Welcome back,{' '}
+                      <br />
+                      <span
+                        style={{
+                          fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+                          fontWeight: 900,
+                          background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
+                          WebkitBackgroundClip: 'text',
+                          backgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          color: 'transparent',
+                          position: 'relative',
+                          display: 'inline-block',
+                          letterSpacing: '-2px',
+                        }}
+                      >
+                        {displayName}!
                         <span
                           style={{
-                            background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
-                            WebkitBackgroundClip: 'text',
-                            backgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            position: 'relative',
-                            fontSize: 'inherit',
-                            fontWeight: 'inherit',
+                            position: 'absolute',
+                            bottom: 0,
+                            left: 0,
+                            width: '60%',
+                            height: 4,
+                            background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
+                            borderRadius: 2,
+                            display: 'block',
                           }}
-                        >
-                          Connected
-                          <span
-                            style={{
-                              position: 'absolute',
-                              bottom: -2,
-                              left: 0,
-                              right: 0,
-                              height: 3,
-                              background: 'linear-gradient(90deg, #00ff88, #00b894)',
-                              borderRadius: 2,
-                              display: 'block',
-                            }}
-                          />
-                        </span>
-                      </>
-                    );
-                  })()}
+                        />
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      Your Health,{' '}
+                      <br />
+                      <span
+                        style={{
+                          background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
+                          WebkitBackgroundClip: 'text',
+                          backgroundClip: 'text',
+                          WebkitTextFillColor: 'transparent',
+                          position: 'relative',
+                          fontSize: 'inherit',
+                          fontWeight: 'inherit',
+                        }}
+                      >
+                        Connected
+                        <span
+                          style={{
+                            position: 'absolute',
+                            bottom: -2,
+                            left: 0,
+                            right: 0,
+                            height: 3,
+                            background: 'linear-gradient(90deg, #00ff88, #00b894)',
+                            borderRadius: 2,
+                            display: 'block',
+                          }}
+                        />
+                      </span>
+                    </>
+                  )}
                 </Title>
                 <Text
                   size="lg"
@@ -659,7 +656,7 @@ export default function LandingPage() {
                     fontWeight: 400,
                   }}
                 >
-                  {isAuthenticated 
+                  {showPersonalizedGreeting 
                     ? 'Ready to manage your healthcare journey? Book appointments, access your records, or explore new health features.'
                     : 'Book appointments instantly, manage records securely, and access comprehensive healthcare services—all in one unified platform designed for modern healthcare.'
                   }
