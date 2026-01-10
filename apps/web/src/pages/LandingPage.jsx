@@ -581,7 +581,7 @@ export default function LandingPage() {
                     letterSpacing: '-1.5px',
                   }}
                 >
-                  {showPersonalizedGreeting ? (
+                  {showPersonalizedGreeting && displayName ? (
                     <>
                       Welcome back,{' '}
                       <br />
@@ -589,29 +589,14 @@ export default function LandingPage() {
                         style={{
                           fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                           fontWeight: 900,
-                          background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          color: 'transparent',
+                          color: '#FFB347',
                           position: 'relative',
-                          display: 'inline-block',
+                          display: 'inline',
                           letterSpacing: '-2px',
+                          textShadow: '0 2px 10px rgba(255, 165, 0, 0.3)',
                         }}
                       >
                         {displayName}!
-                        <span
-                          style={{
-                            position: 'absolute',
-                            bottom: 0,
-                            left: 0,
-                            width: '60%',
-                            height: 4,
-                            background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
-                            borderRadius: 2,
-                            display: 'block',
-                          }}
-                        />
                       </span>
                     </>
                   ) : (
@@ -620,28 +605,14 @@ export default function LandingPage() {
                       <br />
                       <span
                         style={{
-                          background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
+                          color: '#00ff88',
                           position: 'relative',
                           fontSize: 'inherit',
                           fontWeight: 'inherit',
+                          textShadow: '0 2px 10px rgba(0, 255, 136, 0.3)',
                         }}
                       >
                         Connected
-                        <span
-                          style={{
-                            position: 'absolute',
-                            bottom: -2,
-                            left: 0,
-                            right: 0,
-                            height: 3,
-                            background: 'linear-gradient(90deg, #00ff88, #00b894)',
-                            borderRadius: 2,
-                            display: 'block',
-                          }}
-                        />
                       </span>
                     </>
                   )}
