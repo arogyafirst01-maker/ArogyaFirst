@@ -565,53 +565,60 @@ export default function LandingPage() {
                   }}
                 >
                   {isAuthenticated ? (
-                    <>
-                      Welcome back,{' '}
-                      <br />
-                      {(user?.patientData?.name || user?.hospitalData?.name || user?.doctorData?.name || user?.labData?.name || user?.pharmacyData?.name) ? (
-                        <Text
-                          component="span"
-                          style={{
-                            fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                            fontWeight: 900,
-                            background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
-                            WebkitBackgroundClip: 'text',
-                            backgroundClip: 'text',
-                            WebkitTextFillColor: 'transparent',
-                            color: 'transparent',
-                            position: 'relative',
-                            display: 'inline-block',
-                            letterSpacing: '-2px',
-                          }}
-                        >
-                          {user?.patientData?.name || user?.hospitalData?.name || user?.doctorData?.name || user?.labData?.name || user?.pharmacyData?.name}!
-                          <Box
+                    (() => {
+                      // Extract user name from any role-specific data
+                      const userName = (
+                        user?.patientData?.name || 
+                        user?.hospitalData?.name || 
+                        user?.doctorData?.name || 
+                        user?.labData?.name || 
+                        user?.pharmacyData?.name ||
+                        user?.name ||
+                        ''
+                      ).trim();
+                      
+                      return (
+                        <>
+                          Welcome back,{' '}
+                          <br />
+                          <Text
                             component="span"
                             style={{
-                              position: 'absolute',
-                              bottom: 0,
-                              left: 0,
-                              width: '60%',
-                              height: 4,
-                              background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
-                              borderRadius: 2,
+                              fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+                              fontWeight: 900,
+                              ...(userName ? {
+                                background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
+                                WebkitBackgroundClip: 'text',
+                                backgroundClip: 'text',
+                                WebkitTextFillColor: 'transparent',
+                                color: 'transparent',
+                              } : {
+                                color: 'white',
+                              }),
+                              position: 'relative',
+                              display: 'inline-block',
+                              letterSpacing: '-2px',
                             }}
-                          />
-                        </Text>
-                      ) : (
-                        <Text
-                          component="span"
-                          style={{
-                            fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                            fontWeight: 900,
-                            color: 'white',
-                            letterSpacing: '-2px',
-                          }}
-                        >
-                          User!
-                        </Text>
-                      )}
-                    </>
+                          >
+                            {userName || 'User'}!
+                            {userName && (
+                              <Box
+                                component="span"
+                                style={{
+                                  position: 'absolute',
+                                  bottom: 0,
+                                  left: 0,
+                                  width: '60%',
+                                  height: 4,
+                                  background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
+                                  borderRadius: 2,
+                                }}
+                              />
+                            )}
+                          </Text>
+                        </>
+                      );
+                    })()
                   ) : (
                     <>
                       Your Health,{' '}
