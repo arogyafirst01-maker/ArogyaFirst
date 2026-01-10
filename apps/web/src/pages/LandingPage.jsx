@@ -581,35 +581,40 @@ export default function LandingPage() {
                     letterSpacing: '-1.5px',
                   }}
                 >
-                  {showPersonalizedGreeting && displayName ? (
+                  {isAuthenticated ? (
+                    // Logged in users: show "Welcome back, Name!" or just "Welcome back!"
                     <>
-                      Welcome back,{' '}
-                      <br />
-                      <span
-                        style={{
-                          fontSize: 'clamp(2.5rem, 7vw, 5rem)',
-                          fontWeight: 900,
-                          color: '#FFB347',
-                          position: 'relative',
-                          display: 'inline',
-                          letterSpacing: '-2px',
-                          textShadow: '0 2px 10px rgba(255, 165, 0, 0.3)',
-                        }}
-                      >
-                        {displayName}!
-                      </span>
+                      Welcome back{displayName ? ',' : '!'}{' '}
+                      {displayName && (
+                        <>
+                          <br />
+                          <span
+                            style={{
+                              fontSize: 'clamp(2.5rem, 7vw, 5rem)',
+                              fontWeight: 900,
+                              color: '#FFB347',
+                              position: 'relative',
+                              display: 'inline',
+                              letterSpacing: '-2px',
+                              textShadow: '0 2px 10px rgba(255, 165, 0, 0.3)',
+                            }}
+                          >
+                            {displayName}!
+                          </span>
+                        </>
+                      )}
                     </>
                   ) : (
+                    // Not logged in: show "Your Health, Connected"
                     <>
                       Your Health,{' '}
                       <br />
                       <span
                         style={{
-                          color: '#00ff88',
+                          color: 'white',
                           position: 'relative',
                           fontSize: 'inherit',
                           fontWeight: 'inherit',
-                          textShadow: '0 2px 10px rgba(0, 255, 136, 0.3)',
                         }}
                       >
                         Connected
