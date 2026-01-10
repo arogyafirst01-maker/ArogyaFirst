@@ -565,8 +565,8 @@ export default function LandingPage() {
                   }}
                 >
                   {(() => {
-                    // Extract user name from any role-specific data
-                    const userName = isAuthenticated ? (
+                    // Extract user name from any role-specific data - must have at least 1 character
+                    const rawName = isAuthenticated ? (
                       user?.patientData?.name || 
                       user?.hospitalData?.name || 
                       user?.doctorData?.name || 
@@ -574,16 +574,16 @@ export default function LandingPage() {
                       user?.pharmacyData?.name ||
                       user?.name ||
                       ''
-                    ).trim() : '';
+                    ) : '';
+                    const userName = typeof rawName === 'string' ? rawName.trim() : '';
                     
-                    // Show authenticated greeting only if we have a valid name
-                    if (isAuthenticated && userName) {
+                    // Show authenticated greeting only if we have a valid name with actual content
+                    if (isAuthenticated && userName && userName.length > 0) {
                       return (
                         <>
                           Welcome back,{' '}
                           <br />
-                          <Text
-                            component="span"
+                          <span
                             style={{
                               fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                               fontWeight: 900,
@@ -598,8 +598,7 @@ export default function LandingPage() {
                             }}
                           >
                             {userName}!
-                            <Box
-                              component="span"
+                            <span
                               style={{
                                 position: 'absolute',
                                 bottom: 0,
@@ -608,9 +607,10 @@ export default function LandingPage() {
                                 height: 4,
                                 background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
                                 borderRadius: 2,
+                                display: 'block',
                               }}
                             />
-                          </Text>
+                          </span>
                         </>
                       );
                     }
@@ -620,20 +620,19 @@ export default function LandingPage() {
                       <>
                         Your Health,{' '}
                         <br />
-                        <Text
-                          component="span"
-                          inherit
+                        <span
                           style={{
                             background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
                             WebkitBackgroundClip: 'text',
                             backgroundClip: 'text',
                             WebkitTextFillColor: 'transparent',
                             position: 'relative',
+                            fontSize: 'inherit',
+                            fontWeight: 'inherit',
                           }}
                         >
                           Connected
-                          <Box
-                            component="span"
+                          <span
                             style={{
                               position: 'absolute',
                               bottom: -2,
@@ -642,9 +641,10 @@ export default function LandingPage() {
                               height: 3,
                               background: 'linear-gradient(90deg, #00ff88, #00b894)',
                               borderRadius: 2,
+                              display: 'block',
                             }}
                           />
-                        </Text>
+                        </span>
                       </>
                     );
                   })()}
