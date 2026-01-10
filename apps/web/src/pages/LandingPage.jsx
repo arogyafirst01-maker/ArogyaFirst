@@ -564,19 +564,20 @@ export default function LandingPage() {
                     letterSpacing: '-1.5px',
                   }}
                 >
-                  {isAuthenticated ? (
-                    (() => {
-                      // Extract user name from any role-specific data
-                      const userName = (
-                        user?.patientData?.name || 
-                        user?.hospitalData?.name || 
-                        user?.doctorData?.name || 
-                        user?.labData?.name || 
-                        user?.pharmacyData?.name ||
-                        user?.name ||
-                        ''
-                      ).trim();
-                      
+                  {(() => {
+                    // Extract user name from any role-specific data
+                    const userName = isAuthenticated ? (
+                      user?.patientData?.name || 
+                      user?.hospitalData?.name || 
+                      user?.doctorData?.name || 
+                      user?.labData?.name || 
+                      user?.pharmacyData?.name ||
+                      user?.name ||
+                      ''
+                    ).trim() : '';
+                    
+                    // Show authenticated greeting only if we have a valid name
+                    if (isAuthenticated && userName) {
                       return (
                         <>
                           Welcome back,{' '}
@@ -586,70 +587,67 @@ export default function LandingPage() {
                             style={{
                               fontSize: 'clamp(2.5rem, 7vw, 5rem)',
                               fontWeight: 900,
-                              ...(userName ? {
-                                background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
-                                WebkitBackgroundClip: 'text',
-                                backgroundClip: 'text',
-                                WebkitTextFillColor: 'transparent',
-                                color: 'transparent',
-                              } : {
-                                color: 'white',
-                              }),
+                              background: 'linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF6B35 100%)',
+                              WebkitBackgroundClip: 'text',
+                              backgroundClip: 'text',
+                              WebkitTextFillColor: 'transparent',
+                              color: 'transparent',
                               position: 'relative',
                               display: 'inline-block',
                               letterSpacing: '-2px',
                             }}
                           >
-                            {userName || 'User'}!
-                            {userName && (
-                              <Box
-                                component="span"
-                                style={{
-                                  position: 'absolute',
-                                  bottom: 0,
-                                  left: 0,
-                                  width: '60%',
-                                  height: 4,
-                                  background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
-                                  borderRadius: 2,
-                                }}
-                              />
-                            )}
+                            {userName}!
+                            <Box
+                              component="span"
+                              style={{
+                                position: 'absolute',
+                                bottom: 0,
+                                left: 0,
+                                width: '60%',
+                                height: 4,
+                                background: 'linear-gradient(90deg, #FFD700, #FF6B35)',
+                                borderRadius: 2,
+                              }}
+                            />
                           </Text>
                         </>
                       );
-                    })()
-                  ) : (
-                    <>
-                      Your Health,{' '}
-                      <br />
-                      <Text
-                        component="span"
-                        inherit
-                        style={{
-                          background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
-                          WebkitBackgroundClip: 'text',
-                          backgroundClip: 'text',
-                          WebkitTextFillColor: 'transparent',
-                          position: 'relative',
-                        }}
-                      >
-                        Connected
-                        <Box
+                    }
+                    
+                    // Default: show "Your Health, Connected" for non-authenticated or loading state
+                    return (
+                      <>
+                        Your Health,{' '}
+                        <br />
+                        <Text
                           component="span"
+                          inherit
                           style={{
-                            position: 'absolute',
-                            bottom: -2,
-                            left: 0,
-                            right: 0,
-                            height: 3,
-                            background: 'linear-gradient(90deg, #00ff88, #00b894)',
-                            borderRadius: 2,
+                            background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.85) 100%)',
+                            WebkitBackgroundClip: 'text',
+                            backgroundClip: 'text',
+                            WebkitTextFillColor: 'transparent',
+                            position: 'relative',
                           }}
-                        />
-                      </Text>
-                    </>
-                  )}
+                        >
+                          Connected
+                          <Box
+                            component="span"
+                            style={{
+                              position: 'absolute',
+                              bottom: -2,
+                              left: 0,
+                              right: 0,
+                              height: 3,
+                              background: 'linear-gradient(90deg, #00ff88, #00b894)',
+                              borderRadius: 2,
+                            }}
+                          />
+                        </Text>
+                      </>
+                    );
+                  })()}
                 </Title>
                 <Text
                   size="lg"
